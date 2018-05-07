@@ -36,15 +36,9 @@ public class Pilot {
 		}
 		p.param.stockerPreference();
 		phrase = n;
-<<<<<<< HEAD
 		///désacive la taille et la police et le segment de départ
 		p.fenetreParam.pan.fontFamilyComboBox.setEnabled(false);
 		p.fenetreParam.pan.fontSizeComboBox.setEnabled(false);
-=======
-		/// désacive la taille et la police et le segment de départ
-		p.fenetreParam.pan.listePolices.setEnabled(false);
-		p.fenetreParam.pan.listeTailles.setEnabled(false);
->>>>>>> 8a65a4be24ed03c0c7f1cc98935ea532099c5558
 		p.fenetreParam.pan.segmentDeDepart.setEnabled(false);
 		p.fenetreParam.pan.champMysterCarac.setEditable(false);
 		/// désactive les boutons de contrôle pour éviter le spam ///

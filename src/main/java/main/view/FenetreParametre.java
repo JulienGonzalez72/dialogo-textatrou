@@ -339,39 +339,7 @@ public class FenetreParametre extends JFrame {
 		}
 
 		private void appliquerCouleur(Color color, JComboBox<Object> listeCouleurs) {
-			System.out.println("FenetreParametre.PanneauParam.appliquerCouleur()");
-			if (color.equals(Constants.BG_COLOR)) {
-				//listeCouleurs.setSelectedItem(colors[0]);
-			}
 			listeCouleurs.setSelectedItem(colorToString(color));
-		}
-		
-		private Color stringToColor(String name) {
-			/*if (name.equalsIgnoreCase("blanc")) return Color.WHITE;
-			if (name.equalsIgnoreCase("bleu")) return Color.BLUE;
-			if (name.equalsIgnoreCase("cyan")) return Color.CYAN;
-			if (name.equalsIgnoreCase("jaune")) return Color.YELLOW;
-			if (name.equalsIgnoreCase("orange")) return Color.ORANGE;
-			if (name.equalsIgnoreCase("rose")) return Color.PINK;
-			if (name.equalsIgnoreCase("rouge")) return Color.RED;
-			if (name.equalsIgnoreCase("vert")) return Color.GREEN;*/
-			return Constants.COLORS.get(name);
-		}
-		
-		private String colorToString(Color color) {
-			Set<String> keys = Constants.COLORS.keySet();
-			Iterator<String> it = keys.iterator();
-			while (it.hasNext()) {
-				String key = it.next();
-				if (stringToColor(key).equals(color)) {
-					return key;
-				}
-			}
-			return null;
-		}
-		
-		private String[] getColorNames() {
-			return Constants.COLORS.keySet().toArray(new String[0]);
 		}
 		
 		private class ColorCellRenderer implements ListCellRenderer<Object> {
@@ -515,6 +483,34 @@ public class FenetreParametre extends JFrame {
 		fenetre.setVisible(false);
 		controlPanel.disableAll();
 		fenetre.pan.pilot.doStop();
+	}
+	
+	public static Color stringToColor(String name) {
+		/*if (name.equalsIgnoreCase("blanc")) return Color.WHITE;
+		if (name.equalsIgnoreCase("bleu")) return Color.BLUE;
+		if (name.equalsIgnoreCase("cyan")) return Color.CYAN;
+		if (name.equalsIgnoreCase("jaune")) return Color.YELLOW;
+		if (name.equalsIgnoreCase("orange")) return Color.ORANGE;
+		if (name.equalsIgnoreCase("rose")) return Color.PINK;
+		if (name.equalsIgnoreCase("rouge")) return Color.RED;
+		if (name.equalsIgnoreCase("vert")) return Color.GREEN;*/
+		return Constants.COLORS.get(name);
+	}
+	
+	public static String colorToString(Color color) {
+		Set<String> keys = Constants.COLORS.keySet();
+		Iterator<String> it = keys.iterator();
+		while (it.hasNext()) {
+			String key = it.next();
+			if (stringToColor(key).equals(color)) {
+				return key;
+			}
+		}
+		return null;
+	}
+	
+	public static String[] getColorNames() {
+		return Constants.COLORS.keySet().toArray(new String[0]);
 	}
 
 }

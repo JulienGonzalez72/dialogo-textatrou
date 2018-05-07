@@ -114,7 +114,8 @@ public final class Constants {
 	static {
 		COLORS.put("Blanc", Color.WHITE);
 		COLORS.put("Bleu", Color.BLUE);
-		COLORS.put("Jaune", Color.YELLOW);
+		COLORS.put("Cyan", Color.CYAN);
+		COLORS.put("Jaune", new Color(255, 255, 150));
 		COLORS.put("Orange", Color.ORANGE);
 		COLORS.put("Rose", Color.PINK);
 		COLORS.put("Rouge", Color.RED);

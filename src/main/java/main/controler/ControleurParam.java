@@ -34,28 +34,7 @@ public class ControleurParam implements ActionListener, ChangeListener {
 		if (jcb == panneau.colorComboBox || jcb == panneau.wrongColorComboBox || jcb == panneau.rightColorComboBox
 				|| panneau.correctionColorComboBox == jcb) {
 			String s = (String) jcb.getSelectedItem();
-			Color color = null;
-			if (s == "Jaune") {
-				color = new Color(255, 255, 150);
-			}
-			if (s == "Orange") {
-				color = Color.ORANGE;
-			}
-			if (s == "Blanc") {
-				color = Color.WHITE;
-			}
-			if (s == "Rose") {
-				color = Color.PINK;
-			}
-			if (s == "Bleu") {
-				color = Color.CYAN;
-			}
-			if (s == "Rouge") {
-				color = Color.RED;
-			}
-			if (s == "Vert") {
-				color = Color.GREEN;
-			}
+			Color color = FenetreParametre.stringToColor(s);
 			((JComboBox<?>) jcb).setBackground(color);
 			if (jcb == panneau.wrongColorComboBox) {
 				Constants.WRONG_COLOR = color;
