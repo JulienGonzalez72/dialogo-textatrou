@@ -376,11 +376,11 @@ public class FenetreParametre extends JFrame {
 
 		public JComboBox<Object> fastComboBox(ControleurParam controleur, Object[] elements) {
 			JComboBox<Object> r = new JComboBox<Object>(elements);
-			try {
+			/*try {
 				((JLabel) r.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 			} catch (Exception e) {
 				// TODO: handle exception
-			}
+			}*/
 			r.addActionListener(controleur);
 			r.setBackground(Constants.BG_COLOR);
 			r.setFont(new Font("OpenDyslexic", Font.PLAIN, 15));
