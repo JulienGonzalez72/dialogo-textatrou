@@ -27,6 +27,12 @@ public final class Constants {
 	 * Couleur de fond du TextPane
 	 */
 	public static Color BG_COLOR = new Color(255, 255, 150);
+	
+	/**
+	 * Couleur de clignotement du fond lorsque l'utilisateur s'est trompé
+	 */
+	public static final Color ALERT_COLOR = new Color(255, 150, 150);
+	
 	/**
 	 * Nom de l'eleve courant
 	 */

@@ -6,6 +6,8 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.*;
 import java.util.List;
+import java.util.Timer;
+
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 
@@ -21,8 +23,6 @@ import main.reading.ReadMode;
 import main.reading.ReadThread;
 
 public class Panneau extends JDesktopPane {
-	
-	//bite
 	
 	private static final long serialVersionUID = 1L;
 	public static int premierSegment;
@@ -377,9 +377,11 @@ public class Panneau extends JDesktopPane {
 						pilot.doNext();
 					} else {
 						pilot.nextHole();
-					}		
-				} else {
-					System.out.println("Erreur !");
+					}
+				}
+				/// si faux ///
+				else {
+					blink();
 					nbErreurs++;
 				}
 			}
@@ -388,6 +390,26 @@ public class Panneau extends JDesktopPane {
 		frame.add(jtf);
 		frame.setVisible(true);
 
+	}
+	
+	public void blink() {
+		Timer blinkTimer = new Timer();
+		final long interval = 250;
+		blinkTimer.scheduleAtFixedRate(new TimerTask() {
+			private long time;
+			public void run() {
+				time += interval;
+				if (time >= interval * 4) {
+					editorPane.setBackground(Constants.BG_COLOR);
+					cancel();
+					return;
+				}
+				if (time % (interval * 2) != 0)
+					editorPane.setBackground(Constants.ALERT_COLOR);
+				else
+					editorPane.setBackground(Constants.BG_COLOR);
+			}
+		}, 0, interval);
 	}
 
 	/**
