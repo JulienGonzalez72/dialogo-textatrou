@@ -72,11 +72,6 @@ public class FenetreParametre extends JFrame {
 		public JTextField champMysterCarac;
 		public JButton valider;
 		public JCheckBox rejouerSon;
-<<<<<<< HEAD
-=======
-		public JRadioButton highlightMode, guidedMode, segmentedMode, anticipatedMode;
-		public ButtonGroup modes;
->>>>>>> 507f00d9b69b9e6cce05ccb608fe85950fe1e402
 		public JSlider sliderAttente;
 		public final Object[] fontFamilies;
 		public final Object[] fontSizes;
@@ -117,8 +112,8 @@ public class FenetreParametre extends JFrame {
 					return renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				}
 			});
-			fontFamilyComboBox.setFont(ControleurParam.getFont((String) fontFamilyComboBox.getSelectedItem(), 0, Font.BOLD,
-					Constants.DEFAULT_FONT_SIZE));
+			fontFamilyComboBox.setFont(ControleurParam.getFont((String) fontFamilyComboBox.getSelectedItem(), 0,
+					Font.BOLD, Constants.DEFAULT_FONT_SIZE));
 			fontFamilyComboBox.addActionListener(controleur);
 
 			fontSizeComboBox = new JComboBox<Object>(fontSizes);
@@ -132,15 +127,6 @@ public class FenetreParametre extends JFrame {
 					return renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				}
 			});
-<<<<<<< HEAD
-			listeTailles.addActionListener(controleur);
-			listeTailles.setFont(new Font("OpenDyslexic", Font.PLAIN, 15));
-
-			listeCouleurs = fastComboBox(controleur, couleurs);
-			listeBonnesCouleurs = fastComboBox(controleur, couleurs);
-			listeMauvaisesCouleurs = fastComboBox(controleur, couleurs);
-			listeCorrectionCouleurs = fastComboBox(controleur, couleurs);
-=======
 			fontSizeComboBox.addActionListener(controleur);
 			fontSizeComboBox.setFont(new Font("OpenDyslexic", Font.PLAIN, 15));
 
@@ -152,7 +138,6 @@ public class FenetreParametre extends JFrame {
 			wrongColorComboBox.setRenderer(new ColorCellRenderer());
 			correctionColorComboBox = fastComboBox(controleur, getColorNames());
 			correctionColorComboBox.setRenderer(new ColorCellRenderer());
->>>>>>> 507f00d9b69b9e6cce05ccb608fe85950fe1e402
 
 			segmentDeDepart = fastTextField(String.valueOf(param.premierSegment),
 					new Font("OpenDyslexic", Font.PLAIN, 15), "1");
@@ -208,25 +193,6 @@ public class FenetreParametre extends JFrame {
 			midPanel.add(new JLabel());
 			fastCentering(lfBox, midPanel, "   ");
 
-<<<<<<< HEAD
-=======
-			anticipatedMode = fastRadio("Anticipé", controleur);
-			anticipatedMode.setToolTipText("Mode Anticipé");
-			highlightMode = fastRadio("Suivi", controleur);
-			highlightMode.setToolTipText("Mode de lecture segmentée : version surlignage");
-			guidedMode = fastRadio("Guidé", controleur);
-			guidedMode.setToolTipText("Mode guidé");
-			segmentedMode = fastRadio("Segmenté", controleur);
-			segmentedMode.setToolTipText("Mode de lecture segmentée");
-			segmentedMode.setSelected(true);
-
-			modes = new ButtonGroup();
-			modes.add(highlightMode);
-			modes.add(guidedMode);
-			modes.add(segmentedMode);
-			modes.add(anticipatedMode);
-
->>>>>>> 507f00d9b69b9e6cce05ccb608fe85950fe1e402
 			sliderAttente = new JSlider();
 			sliderAttente.setMaximum(Constants.MAX_WAIT_TIME_PERCENT);
 			sliderAttente.setMinimum(Constants.MIN_WAIT_TIME_PERCENT);
@@ -245,14 +211,6 @@ public class FenetreParametre extends JFrame {
 			temp.add(rejouerSon);
 			panelSud.add(temp);
 
-<<<<<<< HEAD
-=======
-			panelModes = new JPanel(new GridLayout(1, 4));
-			panelModes.add(guidedMode);
-			panelModes.add(highlightMode);
-			panelModes.add(segmentedMode);
-			panelModes.add(anticipatedMode);
->>>>>>> 507f00d9b69b9e6cce05ccb608fe85950fe1e402
 			panelSud.add(new JLabel());
 			panelSud.add(new JLabel());
 			panelSud.add(add(attente));
@@ -262,13 +220,13 @@ public class FenetreParametre extends JFrame {
 
 			add(midPanel, BorderLayout.CENTER);
 			add(panelSud, BorderLayout.SOUTH);
-			
+
 			chargerPreferences();
 
 		}
 
 		public void chargerPreferences() throws NumberFormatException, IOException {
-			String fichier = "./ressources/preferences/preference_" + Constants.NOM_ELEVE +".txt";
+			String fichier = "./ressources/preferences/preference_" + Constants.NOM_ELEVE + ".txt";
 			InputStream ips = null;
 			try {
 				ips = new FileInputStream(fichier);
@@ -330,31 +288,10 @@ public class FenetreParametre extends JFrame {
 			}
 			fontFamilyComboBox.setSelectedItem(fontFamilies[index]);
 
-<<<<<<< HEAD
-			appliquerCouleur(param.fromStringToColor(pro.getProperty("couleurFond")), listeCouleurs);
-			appliquerCouleur(param.fromStringToColor(pro.getProperty("couleurBonne")), listeBonnesCouleurs);
-			appliquerCouleur(param.fromStringToColor(pro.getProperty("couleurFausse")), listeMauvaisesCouleurs);
-			appliquerCouleur(param.fromStringToColor(pro.getProperty("couleurCorrection")), listeCorrectionCouleurs);
-=======
 			appliquerCouleur(param.fromStringToColor(pro.getProperty("couleurFond")), colorComboBox);
 			appliquerCouleur(param.fromStringToColor(pro.getProperty("couleurBonne")), rightColorComboBox);
 			appliquerCouleur(param.fromStringToColor(pro.getProperty("couleurFausse")), wrongColorComboBox);
 			appliquerCouleur(param.fromStringToColor(pro.getProperty("couleurCorrection")), correctionColorComboBox);
-			switch (param.readMode) {
-			case SEGMENTE:
-				segmentedMode.setSelected(true);
-				break;
-			case SUIVI:
-				highlightMode.setSelected(true);
-				break;
-			case GUIDEE:
-				guidedMode.setSelected(true);
-				break;
-			case ANTICIPE:
-				anticipatedMode.setSelected(true);
-				break;
-			}
->>>>>>> 507f00d9b69b9e6cce05ccb608fe85950fe1e402
 
 			int temp = Integer.valueOf(pro.getProperty("tempsAttente"));
 			param.tempsPauseEnPourcentageDuTempsDeLecture = temp;
@@ -364,31 +301,9 @@ public class FenetreParametre extends JFrame {
 		}
 
 		private void appliquerCouleur(Color color, JComboBox<Object> listeCouleurs) {
-<<<<<<< HEAD
-			if (color.equals(Constants.BG_COLOR)) {
-				listeCouleurs.setSelectedItem(couleurs[0]);
-			}
-			if (color.equals(Color.WHITE)) {
-				listeCouleurs.setSelectedItem(couleurs[1]);
-			}
-			if (color.equals(Color.ORANGE)) {
-				listeCouleurs.setSelectedItem(couleurs[2]);
-			}
-			if (color.equals(Color.PINK)) {
-				listeCouleurs.setSelectedItem(couleurs[3]);
-			}
-			if (color.equals(Color.CYAN)) {
-				listeCouleurs.setSelectedItem(couleurs[4]);
-			}
-			if (color.equals(Color.RED)) {
-				listeCouleurs.setSelectedItem(couleurs[5]);
-			}
-			if (color.equals(Color.GREEN)) {
-				listeCouleurs.setSelectedItem(couleurs[6]);
-=======
 			listeCouleurs.setSelectedItem(colorToString(color));
 		}
-		
+
 		private class ColorCellRenderer implements ListCellRenderer<Object> {
 			private DefaultListCellRenderer renderer = new DefaultListCellRenderer();
 
@@ -398,7 +313,6 @@ public class FenetreParametre extends JFrame {
 				list.setFixedCellHeight(Constants.COMBOBOX_CELL_HEIGHT);
 				renderer.setHorizontalAlignment(SwingConstants.CENTER);
 				return renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
->>>>>>> 507f00d9b69b9e6cce05ccb608fe85950fe1e402
 			}
 		}
 
@@ -426,7 +340,8 @@ public class FenetreParametre extends JFrame {
 			JComboBox<Object> r = new JComboBox<Object>(elements);
 			try {
 				((JLabel) r.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
-			} catch (Exception e) {}
+			} catch (Exception e) {
+			}
 			r.addActionListener(controleur);
 			r.setBackground(Constants.BG_COLOR);
 			r.setFont(new Font("OpenDyslexic", Font.PLAIN, 15));
@@ -521,19 +436,21 @@ public class FenetreParametre extends JFrame {
 		controlPanel.disableAll();
 		fenetre.pan.pilot.doStop();
 	}
-	
+
 	public static Color stringToColor(String name) {
-		/*if (name.equalsIgnoreCase("blanc")) return Color.WHITE;
-		if (name.equalsIgnoreCase("bleu")) return Color.BLUE;
-		if (name.equalsIgnoreCase("cyan")) return Color.CYAN;
-		if (name.equalsIgnoreCase("jaune")) return Color.YELLOW;
-		if (name.equalsIgnoreCase("orange")) return Color.ORANGE;
-		if (name.equalsIgnoreCase("rose")) return Color.PINK;
-		if (name.equalsIgnoreCase("rouge")) return Color.RED;
-		if (name.equalsIgnoreCase("vert")) return Color.GREEN;*/
+		/*
+		 * if (name.equalsIgnoreCase("blanc")) return Color.WHITE; if
+		 * (name.equalsIgnoreCase("bleu")) return Color.BLUE; if
+		 * (name.equalsIgnoreCase("cyan")) return Color.CYAN; if
+		 * (name.equalsIgnoreCase("jaune")) return Color.YELLOW; if
+		 * (name.equalsIgnoreCase("orange")) return Color.ORANGE; if
+		 * (name.equalsIgnoreCase("rose")) return Color.PINK; if
+		 * (name.equalsIgnoreCase("rouge")) return Color.RED; if
+		 * (name.equalsIgnoreCase("vert")) return Color.GREEN;
+		 */
 		return Constants.COLORS.get(name);
 	}
-	
+
 	public static String colorToString(Color color) {
 		Set<String> keys = Constants.COLORS.keySet();
 		Iterator<String> it = keys.iterator();
@@ -545,7 +462,7 @@ public class FenetreParametre extends JFrame {
 		}
 		return null;
 	}
-	
+
 	public static String[] getColorNames() {
 		return Constants.COLORS.keySet().toArray(new String[0]);
 	}

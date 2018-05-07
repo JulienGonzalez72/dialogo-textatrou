@@ -21,7 +21,7 @@ import main.model.Player;
 import main.model.TextHandler;
 
 public class Panneau extends JDesktopPane {
-	
+
 	private static final long serialVersionUID = 1L;
 	public static int premierSegment;
 	public static int defautNBEssaisParSegment;
@@ -46,13 +46,13 @@ public class Panneau extends JDesktopPane {
 	public Parametres param;
 	public int numeroCourant = 0;
 	int nbMotsDansLaPage;
-	
+
 	/**
-	 *  Barre de progression
+	 * Barre de progression
 	 */
 	public JProgressBar progressBar;
 
-	public Panneau(Fenetre fenetre,FenetreParametre fenetreParam,Parametres param) throws IOException {
+	public Panneau(Fenetre fenetre, FenetreParametre fenetreParam, Parametres param) throws IOException {
 		this.fenetre = fenetre;
 		this.controlerGlobal = new ControlerText(this);
 		this.param = param;
@@ -64,16 +64,16 @@ public class Panneau extends JDesktopPane {
 		if (Constants.HAS_INSTRUCTIONS) {
 			texteCesures = texteCesures.substring(texteCesures.indexOf("/") + 1, texteCesures.length());
 		}
-		textHandler = new TextHandler(texteCesures,param);
-		
+		textHandler = new TextHandler(texteCesures, param);
+
 		this.setLayout(new BorderLayout());
 		editorPane = new TextPane(param);
 		editorPane.setEditable(false);
 		add(editorPane, BorderLayout.CENTER);
-		
+
 		nbMotsDansLaPage = Panneau.stringOccur(textHandler.txt, " _");
-		
-		progressBar = new JProgressBar(0, (textHandler.getPhrasesCount()-1));
+
+		progressBar = new JProgressBar(0, (textHandler.getPhrasesCount() - 1));
 		progressBar.setStringPainted(true);
 		progressBar.setForeground(Constants.RIGHT_COLOR);
 		add(progressBar, BorderLayout.SOUTH);
@@ -83,9 +83,9 @@ public class Panneau extends JDesktopPane {
 	 * S'exécute lorsque le panneau s'est bien intégré à la fenêtre.
 	 */
 	public void init() {
-		param.appliquerPreferenceTaillePosition(fenetreParam,(Fenetre) fenetre);
+		param.appliquerPreferenceTaillePosition(fenetreParam, (Fenetre) fenetre);
 		fenetreParam.editorPane = editorPane;
-		progressBar.setString(param.premierSegment+"/"+(textHandler.getPhrasesCount()-1));
+		progressBar.setString(param.premierSegment + "/" + (textHandler.getPhrasesCount() - 1));
 		progressBar.setValue(param.premierSegment);
 		editorPane.setBackground(param.couleurFond);
 		editorPane.setFont(param.police);
@@ -95,21 +95,19 @@ public class Panneau extends JDesktopPane {
 		/// construit la mise en page virtuelle ///
 		rebuildPages();
 		/// initialise le lecteur et le démarre ///
-		player = new Player(textHandler,param);
+		player = new Player(textHandler, param);
 		player.load(param.premierSegment - 1);
 
-		
 		controlPanel = fenetreParam.controlPanel;
 		fenetreParam.controlPanel.init();
-		this.pilot = new Pilot(this);	
-		
+		this.pilot = new Pilot(this);
+
 		controlerKey = new ControlerKey(pilot);
 		editorPane.addKeyListener(controlerKey);
 		controlerMouse = new ControlerMouse(this, textHandler);
 		editorPane.addMouseListener(controlerMouse);
 		editorPane.requestFocus();
-		
-	
+
 	}
 
 	public void setCursor(String fileName) {
@@ -237,7 +235,7 @@ public class Panneau extends JDesktopPane {
 			return;
 		}
 		pageActuelle = page;
-		//misea jour du titre de la fenêtre
+		// misea jour du titre de la fenêtre
 		fenetre.setTitle("Lexidia - Texte à Trou - Page " + page);
 		String texteAfficher = "";
 		// on recupere les segments a afficher dans la page
@@ -248,7 +246,7 @@ public class Panneau extends JDesktopPane {
 		for (String string : liste) {
 			texteAfficher += string;
 		}
-		editorPane.setText(texteAfficher.replaceAll("_", param.mysterCarac+""));
+		editorPane.setText(texteAfficher.replaceAll("_", param.mysterCarac + ""));
 	}
 
 	public boolean pageFinis() {
@@ -257,30 +255,28 @@ public class Panneau extends JDesktopPane {
 				|| player.getCurrentPhraseIndex() + 2 == textHandler.getPhrasesCount();
 	}
 
-
-
 	public int getNumeroPremierSegmentAffiché() {
 		return segmentsEnFonctionDeLaPage.get(pageActuelle).get(0);
 	}
 
 	public void afficherCompteRendu() {
-		//met a jour la barre de progression
-		progressBar.setValue(textHandler.getPhrasesCount()-1);
-		progressBar.setString((textHandler.getPhrasesCount()-1)+"/"+(textHandler.getPhrasesCount()-1));
-		
+		// met a jour la barre de progression
+		progressBar.setValue(textHandler.getPhrasesCount() - 1);
+		progressBar.setString((textHandler.getPhrasesCount() - 1) + "/" + (textHandler.getPhrasesCount() - 1));
+
 		Object optionPaneBG = UIManager.get("OptionPane.background");
 		Object panelBG = UIManager.get("Panel.background");
 		try {
 			UIManager.put("OptionPane.background", Color.WHITE);
 			UIManager.put("Panel.background", Color.WHITE);
 			String message = "L'exercice est terminé." + "\n" + "Le patient a fait " + nbErreurs + " erreur"
-						+ (nbErreurs > 1 ? "s" : "");		
+					+ (nbErreurs > 1 ? "s" : "");
 			JOptionPane.showMessageDialog(this, message, "Compte Rendu", JOptionPane.INFORMATION_MESSAGE);
 		} finally {
 			UIManager.put("OptionPane.background", optionPaneBG);
 			UIManager.put("Panel.background", panelBG);
 		}
-		///réactive la taille et la police et le segment de départ
+		/// réactive la taille et la police et le segment de départ
 		fenetreParam.pan.fontFamilyComboBox.setEnabled(true);
 		fenetreParam.pan.fontSizeComboBox.setEnabled(true);
 		fenetreParam.pan.segmentDeDepart.setEnabled(true);
@@ -308,29 +304,30 @@ public class Panneau extends JDesktopPane {
 		int fin = segmentsEnFonctionDeLaPage.get(n).get(segmentsEnFonctionDeLaPage.get(n).size() - 1);
 		return textHandler.getPhrasesLength(start, fin);
 	}
-	
+
 	public JInternalFrame frame;
-	
+
 	/**
-	 * Affiche une fenetre correspondant au mot délimité par start et end, d'indice numeroCourant
+	 * Affiche une fenetre correspondant au mot délimité par start et end, d'indice
+	 * numeroCourant
 	 */
 	public void afficherFrame(int start, int end) throws BadLocationException {
 
 		editorPane.setEnabled(false);
 
 		frame = new JInternalFrame();
-		((javax.swing.plaf.basic.BasicInternalFrameUI) 
-			      frame.getUI()).setNorthPane(null);
+		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
 		frame.setBorder(null);
 		fenetre.pan.add(frame);
 		fenetre.pan.setLayout(null);
 		Rectangle r = editorPane.modelToView(start).union(editorPane.modelToView(end));
-		frame.setBounds(r.x,r.y,r.width,r.height/2);
+		frame.setBounds(r.x, r.y, r.width, r.height / 2);
 
 		JTextField jtf = new JTextField();
-		Font f = new Font(editorPane.getFont().getFontName(),editorPane.getFont().getStyle(),editorPane.getFont().getSize()/2);
+		Font f = new Font(editorPane.getFont().getFontName(), editorPane.getFont().getStyle(),
+				editorPane.getFont().getSize() / 2);
 		jtf.setFont(f);
-		
+
 		jtf.setHorizontalAlignment(JTextField.CENTER);
 		jtf.addActionListener(new ActionListener() {
 
@@ -338,7 +335,7 @@ public class Panneau extends JDesktopPane {
 			public void actionPerformed(ActionEvent arg0) {
 				JTextField jtf = (JTextField) arg0.getSource();
 				String bonMot = textHandler.mots.get(numeroCourant);
-				//Si juste
+				// Si juste
 				if (jtf.getText().equalsIgnoreCase(bonMot)) {
 					System.out.println("Bravo !!!!");
 					frame.dispose();
@@ -368,17 +365,9 @@ public class Panneau extends JDesktopPane {
 						pilot.doNext();
 					} else {
 						pilot.nextHole();
-<<<<<<< HEAD
-					}	
-				} else {
-					System.out.println("Erreur !");
-=======
 					}
-				}
-				/// si faux ///
-				else {
+				} else {
 					blink();
->>>>>>> 507f00d9b69b9e6cce05ccb608fe85950fe1e402
 					nbErreurs++;
 				}
 			}
@@ -388,12 +377,13 @@ public class Panneau extends JDesktopPane {
 		frame.setVisible(true);
 
 	}
-	
+
 	public void blink() {
 		Timer blinkTimer = new Timer();
 		final long interval = 250;
 		blinkTimer.scheduleAtFixedRate(new TimerTask() {
 			private long time;
+
 			public void run() {
 				time += interval;
 				if (time >= interval * 4) {
@@ -410,30 +400,39 @@ public class Panneau extends JDesktopPane {
 	}
 
 	/**
-	 * Renvoie le nombre d'occurrences de la sous-chaine de caractères spécifiée dans la chaine de caractères spécifiée
-	 * @param text chaine de caractères initiale
-	 * @param string sous-chaine de caractères dont le nombre d'occurrences doit etre compté
-	 * @return le nombre d'occurrences du pattern spécifié dans la chaine de caractères spécifiée
+	 * Renvoie le nombre d'occurrences de la sous-chaine de caractères spécifiée
+	 * dans la chaine de caractères spécifiée
+	 * 
+	 * @param text
+	 *            chaine de caractères initiale
+	 * @param string
+	 *            sous-chaine de caractères dont le nombre d'occurrences doit etre
+	 *            compté
+	 * @return le nombre d'occurrences du pattern spécifié dans la chaine de
+	 *         caractères spécifiée
 	 */
-	 public static final int stringOccur(String text, String string) {
-	    return regexOccur(text, Pattern.quote(string));
+	public static final int stringOccur(String text, String string) {
+		return regexOccur(text, Pattern.quote(string));
 	}
 
-	 /**
-	 * Renvoie le nombre d'occurrences du pattern spécifié dans la chaine de caractères spécifiée
-	 * @param text chaine de caractères initiale
-	 * @param regex expression régulière dont le nombre d'occurrences doit etre compté
-	 * @return le nombre d'occurrences du pattern spécifié dans la chaine de caractères spécifiée
+	/**
+	 * Renvoie le nombre d'occurrences du pattern spécifié dans la chaine de
+	 * caractères spécifiée
+	 * 
+	 * @param text
+	 *            chaine de caractères initiale
+	 * @param regex
+	 *            expression régulière dont le nombre d'occurrences doit etre compté
+	 * @return le nombre d'occurrences du pattern spécifié dans la chaine de
+	 *         caractères spécifiée
 	 */
-	 public static final int regexOccur(String text, String regex) {
-	    Matcher matcher = Pattern.compile(regex).matcher(text);
-	    int occur = 0;
-	    while(matcher.find()) {
-	        occur ++;
-	    }
-	    return occur;
+	public static final int regexOccur(String text, String regex) {
+		Matcher matcher = Pattern.compile(regex).matcher(text);
+		int occur = 0;
+		while (matcher.find()) {
+			occur++;
+		}
+		return occur;
 	}
-	 
-
 
 }
