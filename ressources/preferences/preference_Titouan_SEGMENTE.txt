@@ -1,5 +1,5 @@
 #Sauvegarde
-#Mon May 07 14:44:36 CEST 2018
+#Mon May 07 14:50:29 CEST 2018
 taillePolice=42
 couleurCorrection=0/255/255
 couleurBonne=0/255/0
