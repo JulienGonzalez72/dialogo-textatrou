@@ -8,7 +8,6 @@ import java.util.Properties;
 import java.util.Set;
 
 import javax.swing.*;
-import javax.swing.UIManager.LookAndFeelInfo;
 
 import main.Constants;
 import main.Parametres;
@@ -61,18 +60,19 @@ public class FenetreParametre extends JFrame {
 
 		private static final long serialVersionUID = 1L;
 
-		public JPanel panelModes;
 		public JComboBox<Object> fontFamilyComboBox;
 		public JComboBox<Object> fontSizeComboBox;
 		public JComboBox<Object> colorComboBox;
-		public JComboBox<Object> rightColorComboBox;
-		public JComboBox<Object> wrongColorComboBox;
-		public JComboBox<Object> correctionColorComboBox;
 		public JTextField segmentDeDepart;
 		public JTextField champMysterCarac;
 		public JButton valider;
+<<<<<<< HEAD
 		public JCheckBox fixedField;
 		public JSlider sliderAttente;
+=======
+		public JCheckBox rejouerSon;
+		public JSlider waitSlider;
+>>>>>>> 0f389c87bcc08ad50d8c236367a85431ac84249d
 		public final Object[] fontFamilies;
 		public final Object[] fontSizes;
 		public FenetreParametre fen;
@@ -88,9 +88,6 @@ public class FenetreParametre extends JFrame {
 			JLabel police = fastLabel("Police : ");
 			JLabel taillePolice = fastLabel("Taille de la police : ");
 			JLabel couleurDeFond = fastLabel("Couleur de fond : ");
-			JLabel couleurJuste = fastLabel("Couleur pour \"juste\" : ");
-			JLabel couleurFausse = fastLabel("Couleur pour \"faux\" : ");
-			JLabel couleurCorrection = fastLabel("Couleur de correction : ");
 			JLabel segments = fastLabel("Segment de départ ");
 			JLabel attente = fastLabel("Temps d'attente en % du temps de lecture");
 
@@ -112,8 +109,8 @@ public class FenetreParametre extends JFrame {
 					return renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				}
 			});
-			fontFamilyComboBox.setFont(ControleurParam.getFont((String) fontFamilyComboBox.getSelectedItem(), 0,
-					Font.BOLD, Constants.DEFAULT_FONT_SIZE));
+			fontFamilyComboBox.setFont(ControleurParam.getFont((String) fontFamilyComboBox.getSelectedItem(), 0, Font.BOLD,
+					Constants.DEFAULT_FONT_SIZE));
 			fontFamilyComboBox.addActionListener(controleur);
 
 			fontSizeComboBox = new JComboBox<Object>(fontSizes);
@@ -132,12 +129,6 @@ public class FenetreParametre extends JFrame {
 
 			colorComboBox = fastComboBox(controleur, getColorNames());
 			colorComboBox.setRenderer(new ColorCellRenderer());
-			rightColorComboBox = fastComboBox(controleur, getColorNames());
-			rightColorComboBox.setRenderer(new ColorCellRenderer());
-			wrongColorComboBox = fastComboBox(controleur, getColorNames());
-			wrongColorComboBox.setRenderer(new ColorCellRenderer());
-			correctionColorComboBox = fastComboBox(controleur, getColorNames());
-			correctionColorComboBox.setRenderer(new ColorCellRenderer());
 
 			segmentDeDepart = fastTextField(String.valueOf(param.premierSegment),
 					new Font("OpenDyslexic", Font.PLAIN, 15), "1");
@@ -160,8 +151,9 @@ public class FenetreParametre extends JFrame {
 			fastCentering(champMysterCarac, midPanel, "   ");
 
 			midPanel.add(couleurDeFond);
-			midPanel.add(couleurJuste);
+			midPanel.add(fastLabel(""));
 			fastCentering(colorComboBox, midPanel, "   ");
+<<<<<<< HEAD
 			fastCentering(rightColorComboBox, midPanel, "   ");
 
 			midPanel.add(couleurFausse);
@@ -207,26 +199,43 @@ public class FenetreParametre extends JFrame {
 			panelSud.add(new JLabel());
 			fixedField = fastCheckBox("Champs de saisie fixe", controleur);
 			fixedField.setSelected(true);
+=======
+
+			waitSlider = new JSlider();
+			waitSlider.setMaximum(Constants.MAX_WAIT_TIME_PERCENT);
+			waitSlider.setMinimum(Constants.MIN_WAIT_TIME_PERCENT);
+			waitSlider.setValue(Constants.DEFAULT_WAIT_TIME_PERCENT);
+			waitSlider.setPaintTicks(true);
+			waitSlider.setPaintLabels(true);
+			waitSlider.setMinorTickSpacing(10);
+			waitSlider.setMajorTickSpacing(50);
+			waitSlider.addChangeListener(controleur);
+
+			JPanel panelSud = new JPanel(new GridLayout(6, 1));
+			//panelSud.add(new JLabel());
+			rejouerSon = fastCheckBox("Rejouer les phrases si erreur", controleur);
+			rejouerSon.setSelected(true);
+>>>>>>> 0f389c87bcc08ad50d8c236367a85431ac84249d
 			JPanel temp = new JPanel();
 			temp.add(fixedField);
 			panelSud.add(temp);
-
-			panelSud.add(new JLabel());
+			
+			//panelSud.add(new JLabel());
 			panelSud.add(new JLabel());
 			panelSud.add(add(attente));
-			panelSud.add(sliderAttente);
+			panelSud.add(waitSlider);
 			panelSud.add(new JLabel());
 			panelSud.add(valider);
 
 			add(midPanel, BorderLayout.CENTER);
 			add(panelSud, BorderLayout.SOUTH);
-
+			
 			chargerPreferences();
 
 		}
 
 		public void chargerPreferences() throws NumberFormatException, IOException {
-			String fichier = "./ressources/preferences/preference_" + Constants.NOM_ELEVE + ".txt";
+			String fichier = "./ressources/preferences/preference_" + Constants.NOM_ELEVE +".txt";
 			InputStream ips = null;
 			try {
 				ips = new FileInputStream(fichier);
@@ -289,13 +298,10 @@ public class FenetreParametre extends JFrame {
 			fontFamilyComboBox.setSelectedItem(fontFamilies[index]);
 
 			appliquerCouleur(param.fromStringToColor(pro.getProperty("couleurFond")), colorComboBox);
-			appliquerCouleur(param.fromStringToColor(pro.getProperty("couleurBonne")), rightColorComboBox);
-			appliquerCouleur(param.fromStringToColor(pro.getProperty("couleurFausse")), wrongColorComboBox);
-			appliquerCouleur(param.fromStringToColor(pro.getProperty("couleurCorrection")), correctionColorComboBox);
 
 			int temp = Integer.valueOf(pro.getProperty("tempsAttente"));
 			param.tempsPauseEnPourcentageDuTempsDeLecture = temp;
-			sliderAttente.setValue(temp);
+			waitSlider.setValue(temp);
 
 			fixedField.setSelected(Boolean.valueOf(pro.getProperty("rejouerSon")));
 		}
@@ -303,7 +309,7 @@ public class FenetreParametre extends JFrame {
 		private void appliquerCouleur(Color color, JComboBox<Object> listeCouleurs) {
 			listeCouleurs.setSelectedItem(colorToString(color));
 		}
-
+		
 		private class ColorCellRenderer implements ListCellRenderer<Object> {
 			private DefaultListCellRenderer renderer = new DefaultListCellRenderer();
 
@@ -338,13 +344,18 @@ public class FenetreParametre extends JFrame {
 
 		public JComboBox<Object> fastComboBox(ControleurParam controleur, Object[] elements) {
 			JComboBox<Object> r = new JComboBox<Object>(elements);
-			try {
-				((JLabel) r.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
-			} catch (Exception e) {
-			}
 			r.addActionListener(controleur);
 			r.setBackground(Constants.BG_COLOR);
 			r.setFont(new Font("OpenDyslexic", Font.PLAIN, 15));
+			return r;
+		}
+
+		public JRadioButton fastRadio(String nom, ControleurParam controleur) {
+			JRadioButton r = new JRadioButton(nom);
+			r.setFont(new Font("OpenDyslexic", Font.ITALIC, 15));
+			r.addActionListener(controleur);
+			r.setVerticalTextPosition(JRadioButton.TOP);
+			r.setHorizontalTextPosition(JRadioButton.CENTER);
 			return r;
 		}
 
@@ -436,11 +447,22 @@ public class FenetreParametre extends JFrame {
 		controlPanel.disableAll();
 		fenetre.pan.pilot.doStop();
 	}
-
+	
 	public static Color stringToColor(String name) {
+<<<<<<< HEAD
+=======
+		/*if (name.equalsIgnoreCase("blanc")) return Color.WHITE;
+		if (name.equalsIgnoreCase("bleu")) return Color.BLUE;
+		if (name.equalsIgnoreCase("cyan")) return Color.CYAN;
+		if (name.equalsIgnoreCase("jaune")) return Color.YELLOW;
+		if (name.equalsIgnoreCase("orange")) return Color.ORANGE;
+		if (name.equalsIgnoreCase("rose")) return Color.PINK;
+		if (name.equalsIgnoreCase("rouge")) return Color.RED;
+		if (name.equalsIgnoreCase("vert")) return Color.GREEN;*/
+>>>>>>> 0f389c87bcc08ad50d8c236367a85431ac84249d
 		return Constants.COLORS.get(name);
 	}
-
+	
 	public static String colorToString(Color color) {
 		Set<String> keys = Constants.COLORS.keySet();
 		Iterator<String> it = keys.iterator();
@@ -452,7 +474,7 @@ public class FenetreParametre extends JFrame {
 		}
 		return null;
 	}
-
+	
 	public static String[] getColorNames() {
 		return Constants.COLORS.keySet().toArray(new String[0]);
 	}

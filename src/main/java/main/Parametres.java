@@ -42,9 +42,6 @@ public class Parametres {
 		prop.put("taillePolice", String.valueOf(taillePolice));
 		prop.put("typePolice", police.getFontName());
 		prop.put("couleurFond", fromColorToString(couleurFond));
-		prop.put("couleurBonne", fromColorToString(Constants.RIGHT_COLOR));
-		prop.put("couleurFausse", fromColorToString(Constants.WRONG_COLOR));
-		prop.put("couleurCorrection", fromColorToString(Constants.WRONG_PHRASE_COLOR));
 		prop.put("tempsAttente", String.valueOf(tempsPauseEnPourcentageDuTempsDeLecture));
 		prop.put("rejouerSon", String.valueOf(fixedField));
 		String fichier = "./ressources/preferences/preference_" + Constants.NOM_ELEVE + ".txt";
@@ -96,11 +93,8 @@ public class Parametres {
 		fen.pan.colorComboBox.setBackground(couleurFond = fromStringToColor(pro.getProperty("couleurFond")));
 		pan.editorPane.setFont(police);
 		pan.editorPane.setBackground(couleurFond);
-		Constants.RIGHT_COLOR = fromStringToColor(pro.getProperty("couleurBonne"));
-		Constants.WRONG_COLOR = fromStringToColor(pro.getProperty("couleurFausse"));
-		Constants.WRONG_PHRASE_COLOR = fromStringToColor(pro.getProperty("couleurCorrection"));
 		tempsPauseEnPourcentageDuTempsDeLecture = Integer.valueOf(pro.getProperty("tempsAttente"));
-		fen.pan.sliderAttente.setValue(tempsPauseEnPourcentageDuTempsDeLecture);
+		fen.pan.waitSlider.setValue(tempsPauseEnPourcentageDuTempsDeLecture);
 	}
 
 	/**

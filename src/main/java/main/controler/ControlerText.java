@@ -1,6 +1,5 @@
 package main.controler;
 
-import java.awt.Color;
 import java.awt.Cursor;
 import main.Constants;
 import main.view.Panneau;
@@ -102,33 +101,10 @@ public class ControlerText {
 	}
 
 	/**
-	 * Colorie le segment numero n en couleur c
-	 */
-	public void highlightPhrase(Color c, int n) {
-		if (p.textHandler.getPhrase(n) != null) {
-			int debutRelatifSegment = p.textHandler.getRelativeStartPhrasePosition(p.getNumeroPremierSegmentAffiché(),
-					n);
-			int finRelativeSegment = debutRelatifSegment + p.textHandler.getPhrase(n).length();
-			p.editorPane.surlignerPhrase(debutRelatifSegment, finRelativeSegment, c);
-		}
-	}
-
-	/**
-	 * Supprime le surlignage qui se trouve sur le segment n. Ne fait rien si ce
-	 * segment n'est pas surligné.
-	 */
-	public void removeHighlightPhrase(int n) {
-		int debutRelatifSegment = p.textHandler.getRelativeStartPhrasePosition(p.getNumeroPremierSegmentAffiché(), n);
-		int finRelativeSegment = debutRelatifSegment + p.textHandler.getPhrase(n).length();
-		p.editorPane.removeHighlight(debutRelatifSegment, finRelativeSegment);
-	}
-
-	/**
 	 * Arrête l'enregistrement courant et enlève tout le surlignage.
 	 */
 	public void stopAll() {
 		p.player.stop();
-		p.editorPane.désurlignerTout();
 	}
 
 	/**
@@ -138,13 +114,6 @@ public class ControlerText {
 	 */
 	public void loadSound(int phrase) {
 		p.player.load(phrase);
-	}
-
-	/**
-	 * Enlève tout le surlignage d'erreur.
-	 */
-	public void removeWrongHighlights() {
-		p.editorPane.enleverSurlignageRouge();
 	}
 
 	/**
@@ -159,13 +128,6 @@ public class ControlerText {
 			}
 		}
 		return numeroPage;
-	}
-
-	/**
-	 * Surligne tout depuis le début de la page jusqu'au segment de phrase indiqué.
-	 */
-	public void highlightUntilPhrase(Color c, int n) {
-		p.surlignerJusquaSegment(c, n);
 	}
 
 

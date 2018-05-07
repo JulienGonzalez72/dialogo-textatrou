@@ -10,19 +10,7 @@ public final class Constants {
 	 * Nom des fichiers contenants les fonts pour dislexyques
 	 */
 	public static final String[] FONTS_NAMES = { "OpenDyslexic-Bold.otf", "AndBasR.ttf", "LEXIA___.otf" };
-
-	/**
-	 * Couleur pour indiquer l'erreur
-	 */
-	public static Color WRONG_COLOR = new Color(255, 40, 40);
-	/**
-	 * Couleur pour indiquer la réussite
-	 */
-	public static Color RIGHT_COLOR = Color.GREEN;
-	/**
-	 * Couleur pour corriger
-	 */
-	public static Color WRONG_PHRASE_COLOR = Color.CYAN;
+	
 	/**
 	 * Couleur de fond du TextPane
 	 */
@@ -57,9 +45,9 @@ public final class Constants {
 	public static final int MIN_WAIT_TIME_PERCENT = 0;
 	public static final int MAX_WAIT_TIME_PERCENT = 300;
 	public static final int DEFAULT_WAIT_TIME_PERCENT = 0;
-	public static final int hauteurFenetreParam = 850;
-	public static final int largeurFenetreParam = 500;
-	public static final String titreFenetreParam = "Dialogo by roman and julien";
+	public static final int PARAM_FRAME_HEIGHT = 700;
+	public static final int PARAM_FRAME_WIDTH = 500;
+	public static final String PARAM_FRAME_TITLE = "Dialogo by roman and julien";
 	public static final boolean LOAD_FIRST_PHRASE = false;
 
 	/**

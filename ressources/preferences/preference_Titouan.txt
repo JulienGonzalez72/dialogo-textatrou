@@ -1,14 +1,20 @@
 #Sauvegarde
+<<<<<<< HEAD
 #Mon May 07 16:43:04 CEST 2018
+=======
+#Mon May 07 16:02:49 CEST 2018
+>>>>>>> 0f389c87bcc08ad50d8c236367a85431ac84249d
 taillePolice=42
-couleurCorrection=255/200/0
-couleurBonne=0/255/0
 typePolice=OpenDyslexic Bold
-couleurFausse=255/0/0
 h=850
 tempsAttente=25
+<<<<<<< HEAD
 y=93
 x=603
+=======
+y=26
+x=575
+>>>>>>> 0f389c87bcc08ad50d8c236367a85431ac84249d
 w=1000
 rejouerSon=true
 couleurFond=255/255/150
