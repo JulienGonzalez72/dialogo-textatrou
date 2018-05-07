@@ -36,8 +36,8 @@ public class Pilot {
 		p.param.stockerPreference();
 		phrase = n;
 		///désacive la taille et la police et le segment de départ
-		p.fenetreParam.pan.listePolices.setEnabled(false);
-		p.fenetreParam.pan.listeTailles.setEnabled(false);
+		p.fenetreParam.pan.fontFamilyComboBox.setEnabled(false);
+		p.fenetreParam.pan.fontSizeComboBox.setEnabled(false);
 		p.fenetreParam.pan.segmentDeDepart.setEnabled(false);
 		/// désactive les boutons de contrôle pour éviter le spam ///
 		p.controlPanel.disableAll(Constants.DISABLE_TIME);

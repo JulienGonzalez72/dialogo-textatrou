@@ -1,6 +1,8 @@
 package main;
 
 import java.awt.Color;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class Constants {
 
@@ -102,5 +104,21 @@ public final class Constants {
 	 * Temps de chargement après chaque pression sur un bouton de contrôle suivant/précédent.
 	 */
 	public static final long DISABLE_TIME = 200;
+	
+	/**
+	 * Hauteur des cellules des listes déroulantes de la fenêtre des paramètres.
+	 */
+	public static final int COMBOBOX_CELL_HEIGHT = 30;
+	
+	public static final Map<String, Color> COLORS = new HashMap<>();
+	static {
+		COLORS.put("Blanc", Color.WHITE);
+		COLORS.put("Bleu", Color.BLUE);
+		COLORS.put("Jaune", Color.YELLOW);
+		COLORS.put("Orange", Color.ORANGE);
+		COLORS.put("Rose", Color.PINK);
+		COLORS.put("Rouge", Color.RED);
+		COLORS.put("Vert", Color.GREEN);
+	}
 
 }
