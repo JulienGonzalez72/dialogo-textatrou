@@ -60,10 +60,8 @@ public class Pilot {
 
 		System.out.println(0);
 		if(p.textHandler.motsParSegment.get(n).isEmpty()) {
-			System.out.println(1);
 			doNext();
 		} else {
-			System.out.println(2);
 			p.nextHole();
 		}
 	}

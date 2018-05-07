@@ -81,7 +81,7 @@ public class TextHandler {
 				i++;
 			}
 			if (dansCrochet) {
-				r += param.mysterCarac;
+				r += '_';
 			} else {
 				r += tab[i];
 			}
@@ -104,7 +104,7 @@ public class TextHandler {
 				i++;
 			}
 			if (dansCrochet) {
-				r += param.mysterCarac;
+				r += '_';
 			} else {
 				r += tab[i];
 			}

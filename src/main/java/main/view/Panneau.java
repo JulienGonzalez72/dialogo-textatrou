@@ -73,7 +73,7 @@ public class Panneau extends JDesktopPane {
 		editorPane = new TextPane(param);
 		editorPane.setEditable(false);
 		add(editorPane, BorderLayout.CENTER);
-		nbMotsDansLaPage = Panneau.stringOccur(editorPane.getText(), " "+param.mysterCarac);
+		nbMotsDansLaPage = Panneau.stringOccur(editorPane.getText(), " _");
 
 		progressBar = new JProgressBar(0, (textHandler.getPhrasesCount()-1));
 		progressBar.setStringPainted(true);
@@ -192,6 +192,7 @@ public class Panneau extends JDesktopPane {
 		while (lastPhrase < textHandler.getPhrasesCount()) {
 			List<Integer> phrases = new ArrayList<>();
 			editorPane.setText(text);
+			editorPane.texteReel = text;
 			int h = 0;
 			try {
 				Thread.sleep(10);
@@ -253,7 +254,7 @@ public class Panneau extends JDesktopPane {
 		// on recupere les segments a afficher dans la page
 		List<String> liste = new ArrayList<String>();
 		for (Integer i : segmentsEnFonctionDeLaPage.get(pageActuelle)) {
-			liste.add(textHandler.getPhrase(i).replaceAll("_", param.mysterCarac+""));
+			liste.add(textHandler.getPhrase(i));
 		}
 		for (String string : liste) {
 			texteAfficher += string;
@@ -365,8 +366,9 @@ public class Panneau extends JDesktopPane {
 						}
 					}
 					editorPane.setText(r);
-					String temp2 = textHandler.txt.substring(end).replaceAll("_", param.mysterCarac+"");
-					if (temp2.indexOf('/') < temp2.indexOf(" "+param.mysterCarac) || temp2.indexOf(" "+param.mysterCarac) == -1) {
+					editorPane.texteReel = r;
+					String temp2 = textHandler.txt.substring(end);
+					if (temp2.indexOf('/') < temp2.indexOf(" _") || temp2.indexOf(" _") == -1) {
 						pilot.doNext();
 					} else {
 						nextHole();
@@ -383,7 +385,7 @@ public class Panneau extends JDesktopPane {
 	}
 	
 	public void nextHole() {
-		int offset = textHandler.getAbsoluteOffset(getNumeroPremierSegmentAffiché(),editorPane.getText().indexOf(" "+param.mysterCarac)+1);
+		int offset = textHandler.getAbsoluteOffset(getNumeroPremierSegmentAffiché(),editorPane.getText().indexOf(" _")+1);
 		int start2 = textHandler.startWordPosition(offset);
 		int end2 = textHandler.endWordPosition(offset);
 		if ( start2 > end2) {
