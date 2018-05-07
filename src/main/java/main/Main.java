@@ -3,7 +3,8 @@ package main;
 import java.awt.*;
 import java.io.*;
 import javax.swing.*;
-import com.incors.plaf.kunststoff.KunststoffLookAndFeel;
+
+import com.alee.laf.WebLookAndFeel;
 import main.view.FenetreParametre;
 
 public class Main {
@@ -11,7 +12,7 @@ public class Main {
 	public static void main(String[] args) {
 
 		try {
-			UIManager.setLookAndFeel(new KunststoffLookAndFeel());
+			WebLookAndFeel.install();
 		} catch (Exception e1) {}
 
 		File rep = new File("ressources/fonts");

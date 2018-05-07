@@ -10,6 +10,14 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
+	
+	<!-- Inheritance -->
+  <parent>
+  	<groupId>org.lexidia.dialogo</groupId>
+	<artifactId>dialogo-parent</artifactId>
+	<version>1.0</version>
+	<relativePath>../dialogo-parent/pom.xml</relativePath>
+  </parent>
 
     <!-- =============================================================== -->
     <!-- Build -->
@@ -42,6 +50,32 @@
         </plugins>
     </build>
     <dependencies>
+	    <!-- Dépendances de Dialogo -->
+	  	 <dependency>
+	  		<groupId>org.lexidia.dialogo</groupId>
+			<artifactId>dialogo-common</artifactId>
+			<version>2.7</version>
+		</dependency> 
+		<dependency>
+			<groupId>org.lexidia.dialogo</groupId>
+			<artifactId>dialogo-rmi-interfaces</artifactId>
+			<version>2.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.lexidia.dialogo</groupId>
+			<artifactId>dialogo-samplecenter</artifactId>
+			<version>2.7</version>
+		</dependency>
+		
+		<!-- Look And Feel de Dialogo -->
+		<dependency>
+			<groupId>de.sciss</groupId>
+			<artifactId>weblaf-core</artifactId>
+	    </dependency>
+	    <dependency>
+		    <groupId>de.sciss</groupId>
+		    <artifactId>weblaf-ui</artifactId>
+	    </dependency>
     	<dependency>
     		<groupId>kunststoff</groupId>
     		<artifactId>kunststoff</artifactId>
