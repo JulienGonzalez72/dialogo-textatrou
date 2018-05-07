@@ -26,8 +26,8 @@ public class Main {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				Point p = new Point(50, 0);
-				new FenetreParametre(Constants.titreFenetreParam, Constants.largeurFenetreParam,
-						Constants.hauteurFenetreParam).setLocation(p);
+				new FenetreParametre(Constants.PARAM_FRAME_TITLE, Constants.PARAM_FRAME_WIDTH,
+						Constants.PARAM_FRAME_HEIGHT).setLocation(p);
 			}
 		});
 

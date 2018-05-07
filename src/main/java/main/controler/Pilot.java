@@ -35,8 +35,6 @@ public class Pilot {
 		p.fenetreParam.pan.champMysterCarac.setEditable(false);
 		/// désactive les boutons de contrôle pour éviter le spam ///
 		p.controlPanel.disableAll(Constants.DISABLE_TIME);
-		// vire le surlignagerouge
-		p.editorPane.enleverSurlignageRouge();
 
 		/// empêche le redimensionnement de la fenêtre lors de la première lecture ///
 		p.fenetre.setResizable(false);

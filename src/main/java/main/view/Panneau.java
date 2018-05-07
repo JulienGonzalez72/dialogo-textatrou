@@ -75,7 +75,7 @@ public class Panneau extends JDesktopPane {
 
 		progressBar = new JProgressBar(0, (textHandler.getPhrasesCount() - 1));
 		progressBar.setStringPainted(true);
-		progressBar.setForeground(Constants.RIGHT_COLOR);
+		progressBar.setForeground(Color.GREEN);
 		add(progressBar, BorderLayout.SOUTH);
 	}
 
@@ -146,7 +146,6 @@ public class Panneau extends JDesktopPane {
 	 */
 	public void afficherPageSuivante() {
 		showPage(pageActuelle + 1);
-		editorPane.désurlignerTout();
 	}
 
 	/**
@@ -167,7 +166,6 @@ public class Panneau extends JDesktopPane {
 	public void afficherPagePrecedente() {
 		if (pageActuelle > 0) {
 			showPage(pageActuelle - 1);
-			editorPane.désurlignerTout();
 		}
 	}
 
@@ -176,7 +174,6 @@ public class Panneau extends JDesktopPane {
 	 */
 	public void buildPages(int startPhrase) {
 		segmentsEnFonctionDeLaPage.clear();
-		editorPane.désurlignerTout();
 		String text = textHandler.getShowText();
 		int lastOffset = 0;
 		int page = 1;
@@ -283,17 +280,6 @@ public class Panneau extends JDesktopPane {
 		fenetreParam.pan.champMysterCarac.setEditable(true);
 		fenetre.setResizable(true);
 		fenetreParam.stopExercice();
-	}
-
-	/**
-	 * Colorie tout jusqu'au segment n en couleur c
-	 */
-	public void surlignerJusquaSegment(Color c, int n) {
-		if (textHandler.getPhrase(n) != null) {
-			int debutRelatifSegment = textHandler.getRelativeStartPhrasePosition(getNumeroPremierSegmentAffiché(), n);
-			int finRelativeSegment = debutRelatifSegment + textHandler.getPhrase(n).length();
-			editorPane.surlignerPhrase(0, finRelativeSegment, Constants.RIGHT_COLOR);
-		}
 	}
 
 	/**

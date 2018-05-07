@@ -30,20 +30,10 @@ public class ControleurParam implements ActionListener, ChangeListener {
 		if (arg0.getSource() instanceof JComboBox) {
 			jcb = (JComboBox<?>) arg0.getSource();
 		}
-		if (jcb == panneau.colorComboBox || jcb == panneau.wrongColorComboBox || jcb == panneau.rightColorComboBox
-				|| panneau.correctionColorComboBox == jcb) {
+		if (jcb == panneau.colorComboBox) {
 			String s = (String) jcb.getSelectedItem();
 			Color color = FenetreParametre.stringToColor(s);
 			((JComboBox<?>) jcb).setBackground(color);
-			if (jcb == panneau.wrongColorComboBox) {
-				Constants.WRONG_COLOR = color;
-			}
-			if (jcb == panneau.correctionColorComboBox) {
-				Constants.WRONG_PHRASE_COLOR = color;
-			}
-			if (jcb == panneau.rightColorComboBox) {
-				Constants.RIGHT_COLOR = color;
-			}
 			if (jcb == panneau.colorComboBox) {
 				if (fen.editorPane != null) {
 					fen.editorPane.setBackground(color);
@@ -81,7 +71,7 @@ public class ControleurParam implements ActionListener, ChangeListener {
 		if (arg0.getSource() == panneau.valider) {
 			fen.eMenuItem2.setEnabled(true);
 			// mise a jour de la couleur de la barre de progression
-			fen.fenetre.pan.progressBar.setForeground(Constants.RIGHT_COLOR);
+			fen.fenetre.pan.progressBar.setForeground(Color.GREEN);
 			if (verifierValiditeChamp()) {
 				try {
 					param.mysterCarac = panneau.champMysterCarac.getText().toCharArray()[0];
@@ -131,8 +121,8 @@ public class ControleurParam implements ActionListener, ChangeListener {
 
 	@Override
 	public void stateChanged(ChangeEvent arg0) {
-		if (arg0.getSource() == panneau.sliderAttente) {
-			param.tempsPauseEnPourcentageDuTempsDeLecture = panneau.sliderAttente.getValue();
+		if (arg0.getSource() == panneau.waitSlider) {
+			param.tempsPauseEnPourcentageDuTempsDeLecture = panneau.waitSlider.getValue();
 		}
 	}
 
@@ -190,19 +180,7 @@ public class ControleurParam implements ActionListener, ChangeListener {
 	private boolean couleursUniques() {
 		boolean r = true;
 		List<Color> couleursUtilisées = new ArrayList<Color>();
-		couleursUtilisées.add(Constants.RIGHT_COLOR);
-		couleursUtilisées.add(Constants.WRONG_COLOR);
-		couleursUtilisées.add(Constants.WRONG_PHRASE_COLOR);
 		couleursUtilisées.add(param.couleurFond);
-		if (occurence(Constants.RIGHT_COLOR, couleursUtilisées) != 1) {
-			r = false;
-		}
-		if (occurence(Constants.WRONG_COLOR, couleursUtilisées) != 1) {
-			r = false;
-		}
-		if (occurence(Constants.WRONG_PHRASE_COLOR, couleursUtilisées) != 1) {
-			r = false;
-		}
 		if (occurence(param.couleurFond, couleursUtilisées) != 1) {
 			r = false;
 		}
