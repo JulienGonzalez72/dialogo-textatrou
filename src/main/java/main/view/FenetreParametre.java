@@ -133,6 +133,7 @@ public class FenetreParametre extends JFrame {
 			listeTailles.setFont(new Font("OpenDyslexic", Font.PLAIN, 15));
 
 			listeCouleurs = fastComboBox(controleur, couleurs);
+			listeCouleurs.setRenderer(new ColorCellRenderer());
 			listeBonnesCouleurs = fastComboBox(controleur, couleurs);
 			listeMauvaisesCouleurs = fastComboBox(controleur, couleurs);
 			listeCorrectionCouleurs = fastComboBox(controleur, couleurs);
@@ -355,6 +356,30 @@ public class FenetreParametre extends JFrame {
 			}
 			if (color.equals(Color.GREEN)) {
 				listeCouleurs.setSelectedItem(couleurs[6]);
+			}
+		}
+		
+		private Color stringToColor(String name) {
+			if (name.equalsIgnoreCase("blanc")) return Color.WHITE;
+			if (name.equalsIgnoreCase("bleu")) return Color.BLUE;
+			if (name.equalsIgnoreCase("cyan")) return Color.CYAN;
+			if (name.equalsIgnoreCase("jaune")) return Color.YELLOW;
+			if (name.equalsIgnoreCase("orange")) return Color.ORANGE;
+			if (name.equalsIgnoreCase("rose")) return Color.PINK;
+			if (name.equalsIgnoreCase("rouge")) return Color.RED;
+			if (name.equalsIgnoreCase("vert")) return Color.GREEN;
+			return null;
+		}
+		
+		private class ColorCellRenderer implements ListCellRenderer<Object> {
+			private DefaultListCellRenderer renderer = new DefaultListCellRenderer();
+
+			public Component getListCellRendererComponent(JList<? extends Object> list, Object value, int index,
+					boolean isSelected, boolean cellHasFocus) {
+				list.setFont(
+						ControleurParam.getFont((String) value, index, Font.BOLD, Constants.DEFAULT_FONT_SIZE));
+				renderer.setHorizontalAlignment(SwingConstants.CENTER);
+				return renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 			}
 		}
 
