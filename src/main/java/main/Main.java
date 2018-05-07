@@ -4,7 +4,7 @@ import java.awt.*;
 import java.io.*;
 import javax.swing.*;
 
-import com.alee.laf.WebLookAndFeel;
+//import com.alee.laf.WebLookAndFeel;
 import main.view.FenetreParametre;
 
 public class Main {
@@ -12,7 +12,7 @@ public class Main {
 	public static void main(String[] args) {
 
 		try {
-			WebLookAndFeel.install();
+			//WebLookAndFeel.install();
 		} catch (Exception e1) {}
 
 		File rep = new File("ressources/fonts");

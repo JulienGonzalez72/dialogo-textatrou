@@ -71,7 +71,7 @@ public class FenetreParametre extends JFrame {
 		public JTextField segmentDeDepart;
 		public JTextField champMysterCarac;
 		public JButton valider;
-		public JCheckBox rejouerSon;
+		public JCheckBox fixedField;
 		public JSlider sliderAttente;
 		public final Object[] fontFamilies;
 		public final Object[] fontSizes;
@@ -205,10 +205,10 @@ public class FenetreParametre extends JFrame {
 
 			JPanel panelSud = new JPanel(new GridLayout(8, 1));
 			panelSud.add(new JLabel());
-			rejouerSon = fastCheckBox("Rejouer les phrases si erreur", controleur);
-			rejouerSon.setSelected(true);
+			fixedField = fastCheckBox("Champs de saisie fixe", controleur);
+			fixedField.setSelected(true);
 			JPanel temp = new JPanel();
-			temp.add(rejouerSon);
+			temp.add(fixedField);
 			panelSud.add(temp);
 
 			panelSud.add(new JLabel());
@@ -297,7 +297,7 @@ public class FenetreParametre extends JFrame {
 			param.tempsPauseEnPourcentageDuTempsDeLecture = temp;
 			sliderAttente.setValue(temp);
 
-			rejouerSon.setSelected(Boolean.valueOf(pro.getProperty("rejouerSon")));
+			fixedField.setSelected(Boolean.valueOf(pro.getProperty("rejouerSon")));
 		}
 
 		private void appliquerCouleur(Color color, JComboBox<Object> listeCouleurs) {
@@ -438,16 +438,6 @@ public class FenetreParametre extends JFrame {
 	}
 
 	public static Color stringToColor(String name) {
-		/*
-		 * if (name.equalsIgnoreCase("blanc")) return Color.WHITE; if
-		 * (name.equalsIgnoreCase("bleu")) return Color.BLUE; if
-		 * (name.equalsIgnoreCase("cyan")) return Color.CYAN; if
-		 * (name.equalsIgnoreCase("jaune")) return Color.YELLOW; if
-		 * (name.equalsIgnoreCase("orange")) return Color.ORANGE; if
-		 * (name.equalsIgnoreCase("rose")) return Color.PINK; if
-		 * (name.equalsIgnoreCase("rouge")) return Color.RED; if
-		 * (name.equalsIgnoreCase("vert")) return Color.GREEN;
-		 */
 		return Constants.COLORS.get(name);
 	}
 

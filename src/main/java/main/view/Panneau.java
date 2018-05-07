@@ -73,11 +73,22 @@ public class Panneau extends JDesktopPane {
 
 		nbMotsDansLaPage = Panneau.stringOccur(textHandler.txt, " _");
 
+		JPanel panelSud = new JPanel(new GridLayout(2, 1));
+
 		progressBar = new JProgressBar(0, (textHandler.getPhrasesCount() - 1));
 		progressBar.setStringPainted(true);
 		progressBar.setForeground(Constants.RIGHT_COLOR);
-		add(progressBar, BorderLayout.SOUTH);
+
+		panelFenetreFixe = new JDesktopPane();
+
+		panelSud.add(panelFenetreFixe,BorderLayout.CENTER);
+		panelSud.add(progressBar, BorderLayout.SOUTH);
+		
+		add(panelSud, BorderLayout.SOUTH);
+
 	}
+
+	JDesktopPane panelFenetreFixe = null;
 
 	/**
 	 * S'exécute lorsque le panneau s'est bien intégré à la fenêtre.
@@ -318,10 +329,16 @@ public class Panneau extends JDesktopPane {
 		frame = new JInternalFrame();
 		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
 		frame.setBorder(null);
-		fenetre.pan.add(frame);
 		fenetre.pan.setLayout(null);
-		Rectangle r = editorPane.modelToView(start).union(editorPane.modelToView(end));
-		frame.setBounds(r.x, r.y, r.width, r.height / 2);
+
+		if (param.fixedField) {
+			panelFenetreFixe.add(frame);
+			frame.setBounds(0, 0, panelFenetreFixe.getWidth(), panelFenetreFixe.getHeight());
+		} else {
+			Rectangle r = editorPane.modelToView(start).union(editorPane.modelToView(end));
+			frame.setBounds(r.x, r.y, r.width, r.height / 2);
+			fenetre.pan.add(frame);
+		}
 
 		JTextField jtf = new JTextField();
 		Font f = new Font(editorPane.getFont().getFontName(), editorPane.getFont().getStyle(),
@@ -337,7 +354,6 @@ public class Panneau extends JDesktopPane {
 				String bonMot = textHandler.mots.get(numeroCourant);
 				// Si juste
 				if (jtf.getText().equalsIgnoreCase(bonMot)) {
-					System.out.println("Bravo !!!!");
 					frame.dispose();
 					editorPane.setEnabled(true);
 					numeroCourant++;

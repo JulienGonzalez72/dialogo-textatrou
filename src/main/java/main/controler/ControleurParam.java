@@ -72,8 +72,8 @@ public class ControleurParam implements ActionListener, ChangeListener {
 				fen.editorPane.setFont(param.police);
 			}
 		}
-		if (arg0.getSource() == panneau.rejouerSon) {
-			param.rejouerSon = panneau.rejouerSon.isSelected();
+		if (arg0.getSource() == panneau.fixedField) {
+			param.fixedField = panneau.fixedField.isSelected();
 		}
 		if (arg0.getSource() == panneau.champMysterCarac) {
 			param.mysterCarac = panneau.champMysterCarac.getText().toCharArray()[0];
@@ -95,7 +95,7 @@ public class ControleurParam implements ActionListener, ChangeListener {
 					param.premierSegment = 0;
 					panneau.segmentDeDepart.setText("0");
 				}
-				param.rejouerSon = panneau.rejouerSon.isSelected();
+				param.fixedField = panneau.fixedField.isSelected();
 				fen.lancerExercice();
 			}
 		}
