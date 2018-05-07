@@ -1,6 +1,8 @@
 package main;
 
 import java.awt.Color;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class Constants {
 
@@ -25,6 +27,12 @@ public final class Constants {
 	 * Couleur de fond du TextPane
 	 */
 	public static Color BG_COLOR = new Color(255, 255, 150);
+	
+	/**
+	 * Couleur de clignotement du fond lorsque l'utilisateur s'est trompé
+	 */
+	public static final Color ALERT_COLOR = new Color(255, 150, 150);
+	
 	/**
 	 * Nom de l'eleve courant
 	 */
@@ -102,5 +110,22 @@ public final class Constants {
 	 * Temps de chargement après chaque pression sur un bouton de contrôle suivant/précédent.
 	 */
 	public static final long DISABLE_TIME = 200;
+	
+	/**
+	 * Hauteur des cellules des listes déroulantes de la fenêtre des paramètres.
+	 */
+	public static final int COMBOBOX_CELL_HEIGHT = 30;
+	
+	public static final Map<String, Color> COLORS = new HashMap<>();
+	static {
+		COLORS.put("Blanc", Color.WHITE);
+		COLORS.put("Bleu", Color.BLUE);
+		COLORS.put("Cyan", Color.CYAN);
+		COLORS.put("Jaune", new Color(255, 255, 150));
+		COLORS.put("Orange", Color.ORANGE);
+		COLORS.put("Rose", Color.PINK);
+		COLORS.put("Rouge", Color.RED);
+		COLORS.put("Vert", Color.GREEN);
+	}
 
 }

@@ -93,7 +93,7 @@ public class Parametres {
 			index = 2;
 		}
 		police = ControleurParam.getFont(p, index, Font.BOLD, taillePolice);
-		fen.pan.listeCouleurs.setBackground(couleurFond = fromStringToColor(pro.getProperty("couleurFond")));
+		fen.pan.colorComboBox.setBackground(couleurFond = fromStringToColor(pro.getProperty("couleurFond")));
 		pan.editorPane.setFont(police);
 		pan.editorPane.setBackground(couleurFond);
 		Constants.RIGHT_COLOR = fromStringToColor(pro.getProperty("couleurBonne"));

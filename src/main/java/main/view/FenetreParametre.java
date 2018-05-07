@@ -3,7 +3,9 @@ package main.view;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.Iterator;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -60,20 +62,24 @@ public class FenetreParametre extends JFrame {
 		private static final long serialVersionUID = 1L;
 
 		public JPanel panelModes;
-		public JComboBox<Object> listePolices;
-		public JComboBox<Object> listeTailles;
-		public JComboBox<Object> listeCouleurs;
-		public JComboBox<Object> listeBonnesCouleurs;
-		public JComboBox<Object> listeMauvaisesCouleurs;
-		public JComboBox<Object> listeCorrectionCouleurs;
+		public JComboBox<Object> fontFamilyComboBox;
+		public JComboBox<Object> fontSizeComboBox;
+		public JComboBox<Object> colorComboBox;
+		public JComboBox<Object> rightColorComboBox;
+		public JComboBox<Object> wrongColorComboBox;
+		public JComboBox<Object> correctionColorComboBox;
 		public JTextField segmentDeDepart;
 		public JTextField champMysterCarac;
 		public JButton valider;
 		public JCheckBox rejouerSon;
+<<<<<<< HEAD
+=======
+		public JRadioButton highlightMode, guidedMode, segmentedMode, anticipatedMode;
+		public ButtonGroup modes;
+>>>>>>> 507f00d9b69b9e6cce05ccb608fe85950fe1e402
 		public JSlider sliderAttente;
-		public final Object[] polices;
-		public final Object[] tailles;
-		public final Object[] couleurs;
+		public final Object[] fontFamilies;
+		public final Object[] fontSizes;
 		public FenetreParametre fen;
 
 		public PanneauParam(FenetreParametre fen) throws NumberFormatException, IOException {
@@ -93,15 +99,14 @@ public class FenetreParametre extends JFrame {
 			JLabel segments = fastLabel("Segment de départ ");
 			JLabel attente = fastLabel("Temps d'attente en % du temps de lecture");
 
-			polices = new Object[] { "OpenDyslexic", "Andika", "Lexia", "Arial", "Times New Roman" };
-			tailles = new Object[] { "12", "16", "18", "20", "22", "24", "30", "36", "42" };
-			couleurs = new Object[] { "Jaune", "Blanc", "Orange", "Rose", "Bleu", "Rouge", "Vert" };
+			fontFamilies = new Object[] { "OpenDyslexic", "Andika", "Lexia", "Arial", "Times New Roman" };
+			fontSizes = new Object[] { "12", "16", "18", "20", "22", "24", "30", "36", "42" };
 
 			ControleurParam controleur = new ControleurParam(fen, this);
 			valider.addActionListener(controleur);
 
-			listePolices = new JComboBox<Object>(polices);
-			listePolices.setRenderer(new ListCellRenderer<Object>() {
+			fontFamilyComboBox = new JComboBox<Object>(fontFamilies);
+			fontFamilyComboBox.setRenderer(new ListCellRenderer<Object>() {
 				private DefaultListCellRenderer renderer = new DefaultListCellRenderer();
 
 				public Component getListCellRendererComponent(JList<? extends Object> list, Object value, int index,
@@ -112,12 +117,12 @@ public class FenetreParametre extends JFrame {
 					return renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				}
 			});
-			listePolices.setFont(ControleurParam.getFont((String) listePolices.getSelectedItem(), 0, Font.BOLD,
+			fontFamilyComboBox.setFont(ControleurParam.getFont((String) fontFamilyComboBox.getSelectedItem(), 0, Font.BOLD,
 					Constants.DEFAULT_FONT_SIZE));
-			listePolices.addActionListener(controleur);
+			fontFamilyComboBox.addActionListener(controleur);
 
-			listeTailles = new JComboBox<Object>(tailles);
-			listeTailles.setRenderer(new ListCellRenderer<Object>() {
+			fontSizeComboBox = new JComboBox<Object>(fontSizes);
+			fontSizeComboBox.setRenderer(new ListCellRenderer<Object>() {
 				private DefaultListCellRenderer renderer = new DefaultListCellRenderer();
 
 				public Component getListCellRendererComponent(JList<? extends Object> list, Object value, int index,
@@ -127,6 +132,7 @@ public class FenetreParametre extends JFrame {
 					return renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				}
 			});
+<<<<<<< HEAD
 			listeTailles.addActionListener(controleur);
 			listeTailles.setFont(new Font("OpenDyslexic", Font.PLAIN, 15));
 
@@ -134,6 +140,19 @@ public class FenetreParametre extends JFrame {
 			listeBonnesCouleurs = fastComboBox(controleur, couleurs);
 			listeMauvaisesCouleurs = fastComboBox(controleur, couleurs);
 			listeCorrectionCouleurs = fastComboBox(controleur, couleurs);
+=======
+			fontSizeComboBox.addActionListener(controleur);
+			fontSizeComboBox.setFont(new Font("OpenDyslexic", Font.PLAIN, 15));
+
+			colorComboBox = fastComboBox(controleur, getColorNames());
+			colorComboBox.setRenderer(new ColorCellRenderer());
+			rightColorComboBox = fastComboBox(controleur, getColorNames());
+			rightColorComboBox.setRenderer(new ColorCellRenderer());
+			wrongColorComboBox = fastComboBox(controleur, getColorNames());
+			wrongColorComboBox.setRenderer(new ColorCellRenderer());
+			correctionColorComboBox = fastComboBox(controleur, getColorNames());
+			correctionColorComboBox.setRenderer(new ColorCellRenderer());
+>>>>>>> 507f00d9b69b9e6cce05ccb608fe85950fe1e402
 
 			segmentDeDepart = fastTextField(String.valueOf(param.premierSegment),
 					new Font("OpenDyslexic", Font.PLAIN, 15), "1");
@@ -147,8 +166,8 @@ public class FenetreParametre extends JFrame {
 
 			midPanel.add(police);
 			midPanel.add(taillePolice);
-			fastCentering(listePolices, midPanel, "   ");
-			fastCentering(listeTailles, midPanel, "   ");
+			fastCentering(fontFamilyComboBox, midPanel, "   ");
+			fastCentering(fontSizeComboBox, midPanel, "   ");
 
 			midPanel.add(segments);
 			midPanel.add(mysterCarac);
@@ -157,13 +176,13 @@ public class FenetreParametre extends JFrame {
 
 			midPanel.add(couleurDeFond);
 			midPanel.add(couleurJuste);
-			fastCentering(listeCouleurs, midPanel, "   ");
-			fastCentering(listeBonnesCouleurs, midPanel, "   ");
+			fastCentering(colorComboBox, midPanel, "   ");
+			fastCentering(rightColorComboBox, midPanel, "   ");
 
 			midPanel.add(couleurFausse);
 			midPanel.add(couleurCorrection);
-			fastCentering(listeMauvaisesCouleurs, midPanel, "   ");
-			fastCentering(listeCorrectionCouleurs, midPanel, "   ");
+			fastCentering(wrongColorComboBox, midPanel, "   ");
+			fastCentering(correctionColorComboBox, midPanel, "   ");
 
 			LookAndFeelInfo[] lfs = UIManager.getInstalledLookAndFeels();
 			JComboBox<Object> lfBox = fastComboBox(controleur, new Object[0]);
@@ -189,6 +208,25 @@ public class FenetreParametre extends JFrame {
 			midPanel.add(new JLabel());
 			fastCentering(lfBox, midPanel, "   ");
 
+<<<<<<< HEAD
+=======
+			anticipatedMode = fastRadio("Anticipé", controleur);
+			anticipatedMode.setToolTipText("Mode Anticipé");
+			highlightMode = fastRadio("Suivi", controleur);
+			highlightMode.setToolTipText("Mode de lecture segmentée : version surlignage");
+			guidedMode = fastRadio("Guidé", controleur);
+			guidedMode.setToolTipText("Mode guidé");
+			segmentedMode = fastRadio("Segmenté", controleur);
+			segmentedMode.setToolTipText("Mode de lecture segmentée");
+			segmentedMode.setSelected(true);
+
+			modes = new ButtonGroup();
+			modes.add(highlightMode);
+			modes.add(guidedMode);
+			modes.add(segmentedMode);
+			modes.add(anticipatedMode);
+
+>>>>>>> 507f00d9b69b9e6cce05ccb608fe85950fe1e402
 			sliderAttente = new JSlider();
 			sliderAttente.setMaximum(Constants.MAX_WAIT_TIME_PERCENT);
 			sliderAttente.setMinimum(Constants.MIN_WAIT_TIME_PERCENT);
@@ -207,6 +245,14 @@ public class FenetreParametre extends JFrame {
 			temp.add(rejouerSon);
 			panelSud.add(temp);
 
+<<<<<<< HEAD
+=======
+			panelModes = new JPanel(new GridLayout(1, 4));
+			panelModes.add(guidedMode);
+			panelModes.add(highlightMode);
+			panelModes.add(segmentedMode);
+			panelModes.add(anticipatedMode);
+>>>>>>> 507f00d9b69b9e6cce05ccb608fe85950fe1e402
 			panelSud.add(new JLabel());
 			panelSud.add(new JLabel());
 			panelSud.add(add(attente));
@@ -238,31 +284,31 @@ public class FenetreParametre extends JFrame {
 
 			int t = Integer.valueOf(pro.getProperty("taillePolice"));
 			if (t == 12) {
-				listeTailles.setSelectedItem(tailles[0]);
+				fontSizeComboBox.setSelectedItem(fontSizes[0]);
 			}
 			if (t == 16) {
-				listeTailles.setSelectedItem(tailles[1]);
+				fontSizeComboBox.setSelectedItem(fontSizes[1]);
 			}
 			if (t == 18) {
-				listeTailles.setSelectedItem(tailles[2]);
+				fontSizeComboBox.setSelectedItem(fontSizes[2]);
 			}
 			if (t == 20) {
-				listeTailles.setSelectedItem(tailles[3]);
+				fontSizeComboBox.setSelectedItem(fontSizes[3]);
 			}
 			if (t == 22) {
-				listeTailles.setSelectedItem(tailles[4]);
+				fontSizeComboBox.setSelectedItem(fontSizes[4]);
 			}
 			if (t == 24) {
-				listeTailles.setSelectedItem(tailles[5]);
+				fontSizeComboBox.setSelectedItem(fontSizes[5]);
 			}
 			if (t == 30) {
-				listeTailles.setSelectedItem(tailles[6]);
+				fontSizeComboBox.setSelectedItem(fontSizes[6]);
 			}
 			if (t == 36) {
-				listeTailles.setSelectedItem(tailles[7]);
+				fontSizeComboBox.setSelectedItem(fontSizes[7]);
 			}
 			if (t == 42) {
-				listeTailles.setSelectedItem(tailles[8]);
+				fontSizeComboBox.setSelectedItem(fontSizes[8]);
 			}
 
 			int index = -1;
@@ -282,12 +328,33 @@ public class FenetreParametre extends JFrame {
 			if (p.equals("Times New Roman") || p.equals("Times New Roman Gras")) {
 				index = 4;
 			}
-			listePolices.setSelectedItem(polices[index]);
+			fontFamilyComboBox.setSelectedItem(fontFamilies[index]);
 
+<<<<<<< HEAD
 			appliquerCouleur(param.fromStringToColor(pro.getProperty("couleurFond")), listeCouleurs);
 			appliquerCouleur(param.fromStringToColor(pro.getProperty("couleurBonne")), listeBonnesCouleurs);
 			appliquerCouleur(param.fromStringToColor(pro.getProperty("couleurFausse")), listeMauvaisesCouleurs);
 			appliquerCouleur(param.fromStringToColor(pro.getProperty("couleurCorrection")), listeCorrectionCouleurs);
+=======
+			appliquerCouleur(param.fromStringToColor(pro.getProperty("couleurFond")), colorComboBox);
+			appliquerCouleur(param.fromStringToColor(pro.getProperty("couleurBonne")), rightColorComboBox);
+			appliquerCouleur(param.fromStringToColor(pro.getProperty("couleurFausse")), wrongColorComboBox);
+			appliquerCouleur(param.fromStringToColor(pro.getProperty("couleurCorrection")), correctionColorComboBox);
+			switch (param.readMode) {
+			case SEGMENTE:
+				segmentedMode.setSelected(true);
+				break;
+			case SUIVI:
+				highlightMode.setSelected(true);
+				break;
+			case GUIDEE:
+				guidedMode.setSelected(true);
+				break;
+			case ANTICIPE:
+				anticipatedMode.setSelected(true);
+				break;
+			}
+>>>>>>> 507f00d9b69b9e6cce05ccb608fe85950fe1e402
 
 			int temp = Integer.valueOf(pro.getProperty("tempsAttente"));
 			param.tempsPauseEnPourcentageDuTempsDeLecture = temp;
@@ -297,6 +364,7 @@ public class FenetreParametre extends JFrame {
 		}
 
 		private void appliquerCouleur(Color color, JComboBox<Object> listeCouleurs) {
+<<<<<<< HEAD
 			if (color.equals(Constants.BG_COLOR)) {
 				listeCouleurs.setSelectedItem(couleurs[0]);
 			}
@@ -317,6 +385,20 @@ public class FenetreParametre extends JFrame {
 			}
 			if (color.equals(Color.GREEN)) {
 				listeCouleurs.setSelectedItem(couleurs[6]);
+=======
+			listeCouleurs.setSelectedItem(colorToString(color));
+		}
+		
+		private class ColorCellRenderer implements ListCellRenderer<Object> {
+			private DefaultListCellRenderer renderer = new DefaultListCellRenderer();
+
+			public Component getListCellRendererComponent(JList<? extends Object> list, Object value, int index,
+					boolean isSelected, boolean cellHasFocus) {
+				list.setBackground(stringToColor((String) value));
+				list.setFixedCellHeight(Constants.COMBOBOX_CELL_HEIGHT);
+				renderer.setHorizontalAlignment(SwingConstants.CENTER);
+				return renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+>>>>>>> 507f00d9b69b9e6cce05ccb608fe85950fe1e402
 			}
 		}
 
@@ -417,8 +499,8 @@ public class FenetreParametre extends JFrame {
 		eMenuItem2.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.ALT_MASK));
 		eMenuItem2.addActionListener((ActionEvent event) -> {
 			/// réactive la taille et la police et le segment de départ
-			pan.listePolices.setEnabled(true);
-			pan.listeTailles.setEnabled(true);
+			pan.fontFamilyComboBox.setEnabled(true);
+			pan.fontSizeComboBox.setEnabled(true);
 			pan.segmentDeDepart.setEnabled(true);
 			pan.fen.fenetre.setResizable(true);
 			stopExercice();
@@ -438,6 +520,34 @@ public class FenetreParametre extends JFrame {
 		fenetre.setVisible(false);
 		controlPanel.disableAll();
 		fenetre.pan.pilot.doStop();
+	}
+	
+	public static Color stringToColor(String name) {
+		/*if (name.equalsIgnoreCase("blanc")) return Color.WHITE;
+		if (name.equalsIgnoreCase("bleu")) return Color.BLUE;
+		if (name.equalsIgnoreCase("cyan")) return Color.CYAN;
+		if (name.equalsIgnoreCase("jaune")) return Color.YELLOW;
+		if (name.equalsIgnoreCase("orange")) return Color.ORANGE;
+		if (name.equalsIgnoreCase("rose")) return Color.PINK;
+		if (name.equalsIgnoreCase("rouge")) return Color.RED;
+		if (name.equalsIgnoreCase("vert")) return Color.GREEN;*/
+		return Constants.COLORS.get(name);
+	}
+	
+	public static String colorToString(Color color) {
+		Set<String> keys = Constants.COLORS.keySet();
+		Iterator<String> it = keys.iterator();
+		while (it.hasNext()) {
+			String key = it.next();
+			if (stringToColor(key).equals(color)) {
+				return key;
+			}
+		}
+		return null;
+	}
+	
+	public static String[] getColorNames() {
+		return Constants.COLORS.keySet().toArray(new String[0]);
 	}
 
 }
