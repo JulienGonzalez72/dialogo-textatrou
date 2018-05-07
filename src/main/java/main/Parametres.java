@@ -4,7 +4,6 @@ import java.awt.*;
 import java.io.*;
 import java.util.Properties;
 import main.controler.ControleurParam;
-import main.reading.ReadMode;
 import main.view.*;
 
 public class Parametres {
@@ -18,7 +17,6 @@ public class Parametres {
 	public int premierSegment;
 	public char mysterCarac;
 	public int tempsPauseEnPourcentageDuTempsDeLecture;
-	public ReadMode readMode = ReadMode.SEGMENTE;
 	public boolean rejouerSon = true;
 	public int panWidth, panHeight, panX, panY;
 
@@ -49,7 +47,7 @@ public class Parametres {
 		prop.put("couleurCorrection", fromColorToString(Constants.WRONG_PHRASE_COLOR));
 		prop.put("tempsAttente", String.valueOf(tempsPauseEnPourcentageDuTempsDeLecture));
 		prop.put("rejouerSon", String.valueOf(rejouerSon));
-		String fichier = "./ressources/preferences/preference_" + Constants.NOM_ELEVE + "_" + readMode + ".txt";
+		String fichier = "./ressources/preferences/preference_" + Constants.NOM_ELEVE + ".txt";
 		OutputStream ops = null;
 		try {
 			ops = new FileOutputStream(fichier);
@@ -68,7 +66,7 @@ public class Parametres {
 	 * Applique toutes les preferences sauf la position et les dimentions de pan
 	 */
 	public void appliquerPreference(FenetreParametre fen, Panneau pan) {
-		String fichier = "./ressources/preferences/preference_" + Constants.NOM_ELEVE + "_" + readMode + ".txt";
+		String fichier = "./ressources/preferences/preference_" + Constants.NOM_ELEVE + ".txt";
 		InputStream ips = null;
 		try {
 			ips = new FileInputStream(fichier);
@@ -109,7 +107,7 @@ public class Parametres {
 	 * Applique les preferences de taille et position uniquement
 	 */
 	public void appliquerPreferenceTaillePosition(FenetreParametre fenetreParam, Fenetre fen) {
-		String fichier = "./ressources/preferences/preference_" + Constants.NOM_ELEVE + "_" + readMode + ".txt";
+		String fichier = "./ressources/preferences/preference_" + Constants.NOM_ELEVE + "_.txt";
 		InputStream ips = null;
 		try {
 			ips = new FileInputStream(fichier);

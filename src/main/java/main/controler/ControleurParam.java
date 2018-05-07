@@ -10,7 +10,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import main.Constants;
 import main.Parametres;
-import main.reading.ReadMode;
 import main.view.FenetreParametre;
 import main.view.Panneau;
 
@@ -71,38 +70,6 @@ public class ControleurParam implements ActionListener, ChangeListener {
 					Math.min(20, param.police.getSize())));
 			if (fen.editorPane != null) {
 				fen.editorPane.setFont(param.police);
-			}
-		}
-		if (arg0.getSource() == panneau.highlightMode) {
-			if (((JRadioButton) arg0.getSource()).isSelected()) {
-				param.readMode = ReadMode.SUIVI;
-				try {
-					fen.pan.chargerPreferences();
-				} catch (NumberFormatException | IOException e) {}
-			}
-		}
-		if (arg0.getSource() == panneau.guidedMode) {
-			if (panneau.guidedMode.isSelected()) {
-				param.readMode = ReadMode.GUIDEE;
-				try {
-					fen.pan.chargerPreferences();
-				} catch (NumberFormatException | IOException e) {}
-			}
-		}
-		if (arg0.getSource() == panneau.segmentedMode) {
-			if (panneau.segmentedMode.isSelected()) {
-				param.readMode = ReadMode.SEGMENTE;
-				try {
-					fen.pan.chargerPreferences();
-				} catch (NumberFormatException | IOException e) {}
-			}
-		}
-		if (arg0.getSource() == panneau.anticipatedMode) {
-			if (panneau.anticipatedMode.isSelected()) {
-				param.readMode = ReadMode.ANTICIPE;
-				try {
-					fen.pan.chargerPreferences();
-				} catch (NumberFormatException | IOException e) {}
 			}
 		}
 		if (arg0.getSource() == panneau.rejouerSon) {
