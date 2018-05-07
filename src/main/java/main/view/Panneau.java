@@ -347,7 +347,7 @@ public class Panneau extends JDesktopPane {
 				JTextField jtf = (JTextField) arg0.getSource();
 				String bonMot = textHandler.mots.get(numeroCourant);
 				//Si juste
-				if (jtf.getText().equals(bonMot)) {
+				if (jtf.getText().equalsIgnoreCase(bonMot)) {
 					System.out.println("Bravo !!!!");
 					frame.dispose();
 					editorPane.setEnabled(true);
