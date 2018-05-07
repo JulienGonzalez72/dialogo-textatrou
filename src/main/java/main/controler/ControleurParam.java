@@ -137,8 +137,6 @@ public class ControleurParam implements ActionListener, ChangeListener {
 			// mise a jour de la couleur de la barre de progression
 			fen.fenetre.pan.progressBar.setForeground(Constants.RIGHT_COLOR);
 			if (verifierValiditeChamp()) {
-				fen.fenetre.pan.textHandler.txt = fen.fenetre.pan.textHandler.txt.replace('_', param.mysterCarac);
-				fen.fenetre.pan.editorPane.setText(fen.fenetre.pan.editorPane.getText().replace('_', param.mysterCarac));
 				try {
 					param.mysterCarac = panneau.champMysterCarac.getText().toCharArray()[0];
 				} catch (Exception e) {

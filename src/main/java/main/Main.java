@@ -12,7 +12,7 @@ public class Main {
 	public static void main(String[] args) {
 
 		try {
-			WebLookAndFeel.install();
+			//WebLookAndFeel.install();
 		} catch (Exception e1) {}
 
 		File rep = new File("ressources/fonts");

@@ -102,44 +102,6 @@ public class ControlerText {
 	}
 
 	/**
-	 * Attente d’un clic de la souris sur le dernier mot du segment.
-	 * <ul>
-	 * <li>Paramètre d’entrée 1: Numéro de segment</li>
-	 * <li>Paramètre de sortie : True ou False (réussite)</li>
-	 * <li>On sort de cette fonction lorsqu’un clic a été réalisé. Si le clic a été
-	 * réalisé sur le bon mot on sort avec true, et si le clic a été réalisé sur une
-	 * partie erronée, on surligne cette partie avec une couleur qui indique une
-	 * erreur, Rouge ? En paramètre ? Et on sort avec False.
-	 * </ul>
-	 */
-	public boolean waitForClick(int n) {
-		p.controlerMouse.clicking = false;
-		while (true) {
-			Thread.yield();
-			if (p.controlerMouse.clicking) {
-				/// cherche la position exacte dans le texte ///
-				int offset = p.textHandler.getAbsoluteOffset(p.getNumeroPremierSegmentAffiché(),
-						p.editorPane.getCaretPosition());
-				/// si le clic est juste ///
-				if (p.textHandler.wordPause(offset)
-						&& p.textHandler.getPhraseIndex(offset) == p.player.getCurrentPhraseIndex()) {
-					return true;
-				}
-				/// si le clic est faux ///
-				else {
-					/// indique l'erreur en rouge ///
-					p.indiquerErreur(
-							p.textHandler.getRelativeOffset(p.getNumeroPremierSegmentAffiché(),
-									p.textHandler.startWordPosition(offset) + 1),
-							p.textHandler.getRelativeOffset(p.getNumeroPremierSegmentAffiché(),
-									p.textHandler.endWordPosition(offset)));
-					return false;
-				}
-			}
-		}
-	}
-
-	/**
 	 * Colorie le segment numero n en couleur c
 	 */
 	public void highlightPhrase(Color c, int n) {
@@ -206,8 +168,5 @@ public class ControlerText {
 		p.surlignerJusquaSegment(c, n);
 	}
 
-	public void incrementerErreurSegment() {
-		p.nbErreursParSegment++;
-	}
 
 }
