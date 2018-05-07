@@ -1,0 +1,26 @@
+#Sauvegarde
+<<<<<<< HEAD
+#Wed May 02 14:45:02 CEST 2018
+=======
+#Wed May 02 14:41:52 CEST 2018
+>>>>>>> 88460d2e13f766abb1e373d521ad448bb6dc2575
+taillePolice=22
+couleurCorrection=0/255/255
+couleurBonne=0/255/0
+typePolice=Lexia
+couleurFausse=255/0/0
+h=400
+<<<<<<< HEAD
+mode=GUIDEE
+tempsAttente=49
+y=129
+x=627
+=======
+mode=SUIVI
+tempsAttente=25
+y=88
+x=669
+>>>>>>> 88460d2e13f766abb1e373d521ad448bb6dc2575
+w=909
+rejouerSon=true
+couleurFond=255/255/150

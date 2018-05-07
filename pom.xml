@@ -1,0 +1,61 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.lexidia</groupId>
+    <artifactId>dialogo-segmentation</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>Dialogo Segmentation</name>
+    <description>Module de lecture par segmentation pour le logiciel Dialogo</description>
+    <packaging>jar</packaging>
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+
+    <!-- =============================================================== -->
+    <!-- Build -->
+    <!-- =============================================================== -->
+    <build>
+        <!-- Gestion des plugins (version) -->
+        <pluginManagement>
+            <plugins>
+                <!-- Plugin responsable de la génération du fichier JAR -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.0.2</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <!-- Création du Manifest pour la définition de la classe Main -->
+                        <manifest>
+                            <mainClass>main.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencies>
+    	<dependency>
+    		<groupId>kunststoff</groupId>
+    		<artifactId>kunststoff</artifactId>
+    		<scope>system</scope>
+    		<systemPath>${pom.basedir}/src/kunststoff.jar</systemPath>
+    	</dependency>
+    </dependencies>
+    <dependencyManagement>
+    	<dependencies>
+    		<dependency>
+    			<groupId>kunststoff</groupId>
+    			<artifactId>kunststoff</artifactId>
+    			<version>2.0.2</version>
+    		</dependency>
+    	</dependencies>
+    </dependencyManagement>
+</project>

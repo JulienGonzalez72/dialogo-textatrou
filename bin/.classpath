@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path=""/>
+<<<<<<< HEAD
+	<classpathentry kind="lib" path="jarExternes/kunststoff.jar"/>
+=======
+>>>>>>> 03be7ff91805d03a227ad02cc16035813911894e
+	<classpathentry kind="output" path="bin"/>
+</classpath>
