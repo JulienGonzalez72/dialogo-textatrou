@@ -3,18 +3,10 @@ package main.controler;
 import javax.swing.text.BadLocationException;
 
 import main.Constants;
-import main.reading.AnticipatedThread;
-import main.reading.GuidedThread;
-import main.reading.ReadThread;
-import main.reading.SegmentedThread;
 import main.view.Panneau;
 
 public class Pilot {
 
-	/**
-	 * Thread de lecture actif
-	 */
-	private ReadThread activeThread;
 	private Panneau p;
 	private ControlerText controler;
 	/**
@@ -96,9 +88,6 @@ public class Pilot {
 	 */
 	public void doStop() {
 		p.player.stop();
-		if (activeThread != null) {
-			activeThread.doStop();
-		}
 	}
 
 	/**
@@ -107,29 +96,6 @@ public class Pilot {
 	 */
 	public void doPlay() {
 		goTo(p.player.getCurrentPhraseIndex());
-	}
-
-	/**
-	 * Créé un processus associé à la lecture d'un seul segment dans le mode de
-	 * lecture actuel.
-	 */
-	public ReadThread getReadThread(int n) {
-		ReadThread t;
-		switch (p.param.readMode) {
-		case ANTICIPE:
-			t = new AnticipatedThread(controler, n);
-			break;
-		case GUIDEE:
-			t = new GuidedThread(controler, n);
-			break;
-		case SEGMENTE:
-			t = new SegmentedThread(controler, n);
-			break;
-		default:
-			t = null;
-			break;
-		}
-		return t;
 	}
 
 	public int getCurrentPhraseIndex() {

@@ -17,12 +17,8 @@ import main.controler.ControlerKey;
 import main.controler.ControlerMouse;
 import main.model.Player;
 import main.model.TextHandler;
-import main.reading.ReadMode;
-import main.reading.ReadThread;
 
 public class Panneau extends JDesktopPane {
-	
-	//bite
 	
 	private static final long serialVersionUID = 1L;
 	public static int premierSegment;
@@ -42,7 +38,6 @@ public class Panneau extends JDesktopPane {
 	public ControlerKey controlerKey;
 	public ControlerMouse controlerMouse;
 	public Pilot pilot;
-	public ReadThread task;
 	public Map<Integer, List<Integer>> segmentsEnFonctionDeLaPage = new HashMap<Integer, List<Integer>>();
 	public Player player;
 	public FenetreParametre fenetreParam;
@@ -152,10 +147,6 @@ public class Panneau extends JDesktopPane {
 	public void afficherPageSuivante() {
 		showPage(pageActuelle + 1);
 		editorPane.désurlignerTout();
-		if ((param.readMode == ReadMode.GUIDEE || param.readMode == ReadMode.ANTICIPE)
-				&& (controlerGlobal != null && player != null)) {
-			controlerGlobal.highlightPhrase(Constants.RIGHT_COLOR, player.getCurrentPhraseIndex());
-		}
 	}
 
 	/**
@@ -244,13 +235,8 @@ public class Panneau extends JDesktopPane {
 			return;
 		}
 		pageActuelle = page;
-		//on met a jour le titre de la fenetre
-		String temp = param.readMode+"";
-		temp = temp.toLowerCase();
-		char[] c = temp.toCharArray();
-		c[0] = Character.toUpperCase(c[0]);
-		temp = String.copyValueOf(c);
-		fenetre.setTitle("Lexidia - "+temp+" - Page " + page);
+		//misea jour du titre de la fenêtre
+		fenetre.setTitle("Lexidia - Texte à Trou - Page " + page);
 		String texteAfficher = "";
 		// on recupere les segments a afficher dans la page
 		List<String> liste = new ArrayList<String>();
@@ -323,6 +309,9 @@ public class Panneau extends JDesktopPane {
 	
 	public JInternalFrame frame;
 	
+	/**
+	 * Affiche une fenetre correspondant au mot délimité par start et end, d'indice numeroCourant
+	 */
 	public void afficherFrame(int start, int end) throws BadLocationException {
 
 		editorPane.setEnabled(false);
@@ -377,7 +366,7 @@ public class Panneau extends JDesktopPane {
 						pilot.doNext();
 					} else {
 						pilot.nextHole();
-					}		
+					}	
 				} else {
 					System.out.println("Erreur !");
 					nbErreurs++;
