@@ -36,7 +36,6 @@ public class Panneau extends JDesktopPane {
 	public int nbEssaisParSegment = defautNBEssaisParSegment;
 	public int nbEssaisRestantPourLeSegmentCourant = defautNBEssaisParSegment;
 	public int nbErreurs;
-	public int nbErreursParSegment;
 	public Fenetre fenetre;
 	public ControlPanel controlPanel;
 	public ControlerText controlerGlobal;
@@ -48,6 +47,8 @@ public class Panneau extends JDesktopPane {
 	public Player player;
 	public FenetreParametre fenetreParam;
 	public Parametres param;
+	public int numeroCourant = 0;
+	int nbMotsDansLaPage;
 	
 	/**
 	 *  Barre de progression
@@ -69,12 +70,12 @@ public class Panneau extends JDesktopPane {
 		textHandler = new TextHandler(texteCesures,param);
 		
 		this.setLayout(new BorderLayout());
-		
 		editorPane = new TextPane(param);
 		editorPane.setEditable(false);
 		add(editorPane, BorderLayout.CENTER);
-		nbMotsDansLaPage = Panneau.stringOccur(editorPane.getText(), " _");
-
+		
+		nbMotsDansLaPage = Panneau.stringOccur(textHandler.txt, " _");
+		
 		progressBar = new JProgressBar(0, (textHandler.getPhrasesCount()-1));
 		progressBar.setStringPainted(true);
 		progressBar.setForeground(Constants.RIGHT_COLOR);
@@ -189,10 +190,10 @@ public class Panneau extends JDesktopPane {
 		int lastOffset = 0;
 		int page = 1;
 		int lastPhrase = startPhrase - 1;
+		editorPane.texteReel = text;
 		while (lastPhrase < textHandler.getPhrasesCount()) {
 			List<Integer> phrases = new ArrayList<>();
 			editorPane.setText(text);
-			editorPane.texteReel = text;
 			int h = 0;
 			try {
 				Thread.sleep(10);
@@ -259,8 +260,7 @@ public class Panneau extends JDesktopPane {
 		for (String string : liste) {
 			texteAfficher += string;
 		}
-		editorPane.setText(texteAfficher);
-
+		editorPane.setText(texteAfficher.replaceAll("_", param.mysterCarac+""));
 	}
 
 	public boolean pageFinis() {
@@ -269,11 +269,7 @@ public class Panneau extends JDesktopPane {
 				|| player.getCurrentPhraseIndex() + 2 == textHandler.getPhrasesCount();
 	}
 
-	public void indiquerErreur(int debut, int fin) {
-		nbErreurs++;
-		editorPane.enleverSurlignageRouge();
-		editorPane.surlignerPhrase(debut, fin, Constants.WRONG_COLOR);
-	}
+
 
 	public int getNumeroPremierSegmentAffiché() {
 		return segmentsEnFonctionDeLaPage.get(pageActuelle).get(0);
@@ -300,6 +296,7 @@ public class Panneau extends JDesktopPane {
 		fenetreParam.pan.listePolices.setEnabled(true);
 		fenetreParam.pan.listeTailles.setEnabled(true);
 		fenetreParam.pan.segmentDeDepart.setEnabled(true);
+		fenetreParam.pan.champMysterCarac.setEditable(true);
 		fenetre.setResizable(true);
 		fenetreParam.stopExercice();
 	}
@@ -326,7 +323,7 @@ public class Panneau extends JDesktopPane {
 	
 	public JInternalFrame frame;
 	
-	private void afficherFrame(int start, int end) throws BadLocationException {
+	public void afficherFrame(int start, int end) throws BadLocationException {
 
 		editorPane.setEnabled(false);
 
@@ -340,6 +337,9 @@ public class Panneau extends JDesktopPane {
 		frame.setBounds(r.x,r.y,r.width,r.height/2);
 
 		JTextField jtf = new JTextField();
+		Font f = new Font(editorPane.getFont().getFontName(),editorPane.getFont().getStyle(),editorPane.getFont().getSize()/2);
+		jtf.setFont(f);
+		
 		jtf.setHorizontalAlignment(JTextField.CENTER);
 		jtf.addActionListener(new ActionListener() {
 
@@ -354,27 +354,33 @@ public class Panneau extends JDesktopPane {
 					editorPane.setEnabled(true);
 					numeroCourant++;
 					String temp = editorPane.getText();
+					String temp2 = editorPane.texteReel;
 					String r = "";
+					String r2 = "";
 					char[] tab = temp.toCharArray();
+					char[] tab2 = temp2.toCharArray();
 					int j = 0;
 					for (int i = 0; i < temp.length(); i++) {
 						if (i >= start && i < end) {
 							r += bonMot.toCharArray()[j];
+							r2 += bonMot.toCharArray()[j];
 							j++;
 						} else {
 							r += tab[i];
+							r2 += tab2[i];
 						}
 					}
 					editorPane.setText(r);
-					editorPane.texteReel = r;
-					String temp2 = textHandler.txt.substring(end);
-					if (temp2.indexOf('/') < temp2.indexOf(" _") || temp2.indexOf(" _") == -1) {
+					editorPane.texteReel = r2;
+					String temp3 = textHandler.txt.substring(end);
+					if (temp3.indexOf('/') < temp3.indexOf(" _") || temp3.indexOf(" _") == -1) {
 						pilot.doNext();
 					} else {
-						nextHole();
+						pilot.nextHole();
 					}		
 				} else {
 					System.out.println("Erreur !");
+					nbErreurs++;
 				}
 			}
 		});
@@ -382,20 +388,6 @@ public class Panneau extends JDesktopPane {
 		frame.add(jtf);
 		frame.setVisible(true);
 
-	}
-	
-	public void nextHole() {
-		int offset = textHandler.getAbsoluteOffset(getNumeroPremierSegmentAffiché(),editorPane.getText().indexOf(" _")+1);
-		int start2 = textHandler.startWordPosition(offset);
-		int end2 = textHandler.endWordPosition(offset);
-		if ( start2 > end2) {
-			afficherCompteRendu();
-		}
-		try {
-			afficherFrame(start2,end2);
-		} catch (BadLocationException e) {
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -423,7 +415,6 @@ public class Panneau extends JDesktopPane {
 	    return occur;
 	}
 	 
-	public int numeroCourant = 0;
-	int nbMotsDansLaPage;
+
 
 }
