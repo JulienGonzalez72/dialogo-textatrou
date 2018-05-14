@@ -296,7 +296,7 @@ public class Panneau extends JDesktopPane {
 	 * Affiche une fenetre correspondant au mot délimité par start et end, d'indice
 	 * numeroCourant
 	 */
-	public void afficherFrame(int start, int end) throws BadLocationException {
+	public void afficherFrame(int start, int end, JInternalFrame masque) throws BadLocationException {
 
 		frame = new JInternalFrame();
 		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
@@ -342,8 +342,16 @@ public class Panneau extends JDesktopPane {
 						}
 					}
 					editorPane.setText(r);
-					String temp3 = textHandler.txt.substring(end);
-					if (temp3.indexOf('/') < temp3.indexOf(" _") || temp3.indexOf(" _") == -1) {
+
+					if (fenetreMasque.indexOf(masque) + 1 < fenetreMasque.size()) {
+						try {
+							replacerMasque(fenetreMasque.get(fenetreMasque.indexOf(masque) + 1));
+						} catch (BadLocationException e) {
+							e.printStackTrace();
+						}
+					}
+
+					if (bonMot == textHandler.motsParSegment.get(pilot.getCurrentPhraseIndex()).get(textHandler.motsParSegment.get(pilot.getCurrentPhraseIndex()).size()-1)) {
 						pilot.doNext();
 					} else {
 						pilot.nextHole();
@@ -418,6 +426,8 @@ public class Panneau extends JDesktopPane {
 	}
 
 	public List<JInternalFrame> fenetreMasque = new ArrayList<>();
+	public List<Integer> fenetreMasqueStart = new ArrayList<>();
+	public List<Integer> fenetreMasqueEnd = new ArrayList<>();
 
 	public void afficherFrameVide(int start, int end) throws BadLocationException {
 		JInternalFrame frame = new JInternalFrame();
@@ -438,7 +448,20 @@ public class Panneau extends JDesktopPane {
 		fenetre.pan.add(frame);
 		frame.setVisible(true);
 		fenetreMasque.add(frame);
+		fenetreMasqueStart.add(start);
+		fenetreMasqueEnd.add(end);
 
+	}
+
+	/*
+	 * replace une fenetre invisible
+	 */
+	private void replacerMasque(JInternalFrame frame) throws BadLocationException {
+		int start = fenetreMasqueStart.get(fenetreMasque.indexOf(frame));
+		int end = fenetreMasqueEnd.get(fenetreMasque.indexOf(frame));
+		Rectangle r = editorPane.modelToView(start).union(editorPane.modelToView(end));
+		frame.setBounds(r.x, r.y, r.width, r.height / 2);
+		frame.setVisible(true);
 	}
 
 }

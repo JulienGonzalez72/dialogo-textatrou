@@ -69,8 +69,7 @@ public class TextHandler {
 
 	private String format(String str) {
 		String r = "";
-		String temp = str.replace(" /", "/").replaceAll("]/", "] /");
-		temp.replace("["," [");
+		String temp = str.replace(" /", "/");
 		char[] tab = temp.toCharArray();
 		boolean dansCrochet = false;
 		for (int i = 0; i < tab.length; i++) {

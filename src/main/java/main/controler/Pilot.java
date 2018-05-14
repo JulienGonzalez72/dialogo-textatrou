@@ -125,10 +125,13 @@ public class Pilot {
 
 	public void showHole(int n) {
 
+		JInternalFrame masque = null;
+		
 		// desactivation de la prochaine fenetre de masque
 		for (JInternalFrame f : p.fenetreMasque) {
 			if (f.isVisible()) {
 				f.setVisible(false);
+				masque = f;
 				break;
 			}
 		}
@@ -143,7 +146,7 @@ public class Pilot {
 
 		if (start2 < end2) {
 			try {
-				p.afficherFrame(start2, end2);
+				p.afficherFrame(start2, end2,masque);
 			} catch (BadLocationException e) {
 				e.printStackTrace();
 			}
