@@ -53,6 +53,7 @@ public class Pilot {
 
 			@Override
 			public void run() {
+						
 				/// play du son correspondant au segment N ///
 				controler.play(n);
 				/// attente de la fin du temps de pause ///
@@ -155,8 +156,6 @@ public class Pilot {
 		showHole(p.numeroCourant);
 	}
 
-	
-	//met les masques sur les mots
 	public void showAllHoleInPages(int pageActuelle) {
 		String text = p.editorPane.getText();
 		int oldIndex = 0;

@@ -105,7 +105,8 @@ public class TextHandler {
 				i++;
 			}
 			if (dansCrochet) {
-				r += '_';
+				//r += '_';
+				r += tab[i];
 			} else {
 				r += tab[i];
 			}

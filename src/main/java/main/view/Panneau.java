@@ -104,13 +104,10 @@ public class Panneau extends JDesktopPane {
 
 		controlPanel = fenetreParam.controlPanel;
 		fenetreParam.controlPanel.init();
-		// this.pilot = new Pilot(this);
 
 		controlerKey = new ControlerKey(pilot);
 		editorPane.addKeyListener(controlerKey);
 		editorPane.requestFocus();
-		
-		System.out.println(segmentsEnFonctionDeLaPage.toString());
 
 	}
 
