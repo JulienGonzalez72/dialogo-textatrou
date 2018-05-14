@@ -16,13 +16,6 @@ public class ControlerText {
 	}
 
 	/**
-	 * Construit les pages à partir du segment de numero spécifié.
-	 */
-	public void buildPages(int startPhrase) {
-		p.buildPages(startPhrase);
-	}
-
-	/**
 	 * Affiche la page indiquée.
 	 */
 	public void showPage(int page) {
@@ -48,22 +41,6 @@ public class ControlerText {
 				p.setCursor(Constants.CURSOR_LISTEN);
 			}
 		}
-	}
-
-	/**
-	 * Retourne le nombre de segments total du texte.
-	 */
-	public int getPhrasesCount() {
-		return p.textHandler.getPhrasesCount();
-	}
-
-	/**
-	 * Retourne la durée en millisecondes de l'enregistrement qui correspond au
-	 * segment de phrase indiqué.
-	 */
-	public long getPhraseDuration(int phrase) {
-		p.player.load(phrase);
-		return p.player.getDuration();
 	}
 
 	/**
@@ -98,22 +75,6 @@ public class ControlerText {
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		}
-	}
-
-	/**
-	 * Arrête l'enregistrement courant et enlève tout le surlignage.
-	 */
-	public void stopAll() {
-		p.player.stop();
-	}
-
-	/**
-	 * Charge un segment de phrase dans le lecteur sans le démarrer.<br>
-	 * Pas nécessaire si on démarre le lecteur directement avec la méthode
-	 * {@link #play}.
-	 */
-	public void loadSound(int phrase) {
-		p.player.load(phrase);
 	}
 
 	/**

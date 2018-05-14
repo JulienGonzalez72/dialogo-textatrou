@@ -12,8 +12,6 @@ import main.Parametres;
 
 public class Fenetre extends JFrame {
 
-	private static final long serialVersionUID = 1L;
-
 	public Panneau pan;
 
 	public Fenetre(String titre, int tailleX, int tailleY, FenetreParametre fenetreParam, Parametres param) {

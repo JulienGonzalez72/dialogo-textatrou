@@ -66,13 +66,8 @@ public class FenetreParametre extends JFrame {
 		public JTextField segmentDeDepart;
 		public JTextField champMysterCarac;
 		public JButton valider;
-<<<<<<< HEAD
 		public JCheckBox fixedField;
-		public JSlider sliderAttente;
-=======
-		public JCheckBox rejouerSon;
 		public JSlider waitSlider;
->>>>>>> 0f389c87bcc08ad50d8c236367a85431ac84249d
 		public final Object[] fontFamilies;
 		public final Object[] fontSizes;
 		public FenetreParametre fen;
@@ -153,53 +148,6 @@ public class FenetreParametre extends JFrame {
 			midPanel.add(couleurDeFond);
 			midPanel.add(fastLabel(""));
 			fastCentering(colorComboBox, midPanel, "   ");
-<<<<<<< HEAD
-			fastCentering(rightColorComboBox, midPanel, "   ");
-
-			midPanel.add(couleurFausse);
-			midPanel.add(couleurCorrection);
-			fastCentering(wrongColorComboBox, midPanel, "   ");
-			fastCentering(correctionColorComboBox, midPanel, "   ");
-
-			LookAndFeelInfo[] lfs = UIManager.getInstalledLookAndFeels();
-			JComboBox<Object> lfBox = fastComboBox(controleur, new Object[0]);
-			for (int i = 0; i < lfs.length; i++) {
-				lfBox.addItem(lfs[i].getName());
-				if (UIManager.getLookAndFeel().getName().equals(lfs[i].getName())) {
-					lfBox.setSelectedIndex(i);
-				}
-			}
-			lfBox.addItemListener(new ItemListener() {
-				@Override
-				public void itemStateChanged(ItemEvent e) {
-					try {
-						UIManager.setLookAndFeel(lfs[lfBox.getSelectedIndex()].getClassName());
-						SwingUtilities.updateComponentTreeUI(FenetreParametre.this);
-					} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-							| UnsupportedLookAndFeelException ex) {
-						ex.printStackTrace();
-					}
-				}
-			});
-			midPanel.add(fastLabel("Look And Feel"));
-			midPanel.add(new JLabel());
-			fastCentering(lfBox, midPanel, "   ");
-
-			sliderAttente = new JSlider();
-			sliderAttente.setMaximum(Constants.MAX_WAIT_TIME_PERCENT);
-			sliderAttente.setMinimum(Constants.MIN_WAIT_TIME_PERCENT);
-			sliderAttente.setValue(Constants.DEFAULT_WAIT_TIME_PERCENT);
-			sliderAttente.setPaintTicks(true);
-			sliderAttente.setPaintLabels(true);
-			sliderAttente.setMinorTickSpacing(10);
-			sliderAttente.setMajorTickSpacing(50);
-			sliderAttente.addChangeListener(controleur);
-
-			JPanel panelSud = new JPanel(new GridLayout(8, 1));
-			panelSud.add(new JLabel());
-			fixedField = fastCheckBox("Champs de saisie fixe", controleur);
-			fixedField.setSelected(true);
-=======
 
 			waitSlider = new JSlider();
 			waitSlider.setMaximum(Constants.MAX_WAIT_TIME_PERCENT);
@@ -213,9 +161,8 @@ public class FenetreParametre extends JFrame {
 
 			JPanel panelSud = new JPanel(new GridLayout(6, 1));
 			//panelSud.add(new JLabel());
-			rejouerSon = fastCheckBox("Rejouer les phrases si erreur", controleur);
-			rejouerSon.setSelected(true);
->>>>>>> 0f389c87bcc08ad50d8c236367a85431ac84249d
+			fixedField = fastCheckBox("Fenêtre de saisie fixe", controleur);
+			fixedField.setSelected(true);
 			JPanel temp = new JPanel();
 			temp.add(fixedField);
 			panelSud.add(temp);
@@ -449,17 +396,6 @@ public class FenetreParametre extends JFrame {
 	}
 	
 	public static Color stringToColor(String name) {
-<<<<<<< HEAD
-=======
-		/*if (name.equalsIgnoreCase("blanc")) return Color.WHITE;
-		if (name.equalsIgnoreCase("bleu")) return Color.BLUE;
-		if (name.equalsIgnoreCase("cyan")) return Color.CYAN;
-		if (name.equalsIgnoreCase("jaune")) return Color.YELLOW;
-		if (name.equalsIgnoreCase("orange")) return Color.ORANGE;
-		if (name.equalsIgnoreCase("rose")) return Color.PINK;
-		if (name.equalsIgnoreCase("rouge")) return Color.RED;
-		if (name.equalsIgnoreCase("vert")) return Color.GREEN;*/
->>>>>>> 0f389c87bcc08ad50d8c236367a85431ac84249d
 		return Constants.COLORS.get(name);
 	}
 	

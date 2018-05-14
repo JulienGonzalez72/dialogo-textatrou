@@ -124,10 +124,6 @@ public class TextHandler {
 		return list.toArray(new String[0]);
 	}
 
-	public String[] getPhrases() {
-		return getPhrases(0, getPhrasesCount());
-	}
-
 	public String getPhrase(int index) {
 		return phrases.get(index);
 	}
@@ -145,28 +141,6 @@ public class TextHandler {
 	public boolean correctPause(int offset) {
 		String b = getTextWithCutPauses(offset);
 		return b.charAt(offset) == '/';
-	}
-
-	/**
-	 * Retourne l'indice de la pause à la position indiquée.
-	 */
-	public int getPauseIndex(int offset) {
-		if (!correctPause(offset))
-			return -1;
-		int index = 0;
-		for (int i = 0; i < offset; i++) {
-			if (txt.charAt(i) == '/') {
-				index++;
-			}
-		}
-		return index;
-	}
-
-	/**
-	 * Retourne la position absolue du segment indiqué en paramètre.
-	 */
-	public int getPauseOffset(int phrase) {
-		return getPhrasesLength(0, phrase);
 	}
 
 	/**
@@ -237,34 +211,6 @@ public class TextHandler {
 
 	private static boolean isPunctuation(char c) {
 		return c == ',' || c == '.' || c == ';' || c == ':' || c == '!' || c == '?';
-	}
-
-	/**
-	 * Indique si le mot sur lequel a cliqué l'utilisateur correspond bien à une
-	 * césure.
-	 */
-	public boolean wordPause(int offset) {
-		int err = 0;
-		String txt = getShowText();
-		for (int i = offset; i < txt.length(); i++) {
-			if (correctPause(i)) {
-				return true;
-			}
-			/// évite le problème de la ponctuation avec des espaces avant ///
-			if (i < txt.length() - 2 && isPunctuation(txt.charAt(i + 1))) {
-				err--;
-			}
-			if (Character.isWhitespace(txt.charAt(i)) || isPunctuation(txt.charAt(i))) {
-				err++;
-				if (err >= 2) {
-					return false;
-				}
-			}
-			if (Character.isAlphabetic(txt.charAt(i)) && err == 1) {
-				return false;
-			}
-		}
-		return false;
 	}
 
 	/**

@@ -22,7 +22,6 @@ import main.model.TextHandler;
 
 public class Panneau extends JDesktopPane {
 
-	private static final long serialVersionUID = 1L;
 	public static int premierSegment;
 	public static int defautNBEssaisParSegment;
 
@@ -77,20 +76,13 @@ public class Panneau extends JDesktopPane {
 
 		progressBar = new JProgressBar(0, (textHandler.getPhrasesCount() - 1));
 		progressBar.setStringPainted(true);
-<<<<<<< HEAD
-		progressBar.setForeground(Constants.RIGHT_COLOR);
-
-		panelFenetreFixe = new JDesktopPane();
-
-		panelSud.add(panelFenetreFixe,BorderLayout.CENTER);
-		panelSud.add(progressBar, BorderLayout.SOUTH);
 		
+		progressBar.setForeground(Color.GREEN);
+		panelFenetreFixe = new JDesktopPane();
+		panelSud.add(panelFenetreFixe,BorderLayout.CENTER);
+		panelSud.add(progressBar, BorderLayout.SOUTH);		
 		add(panelSud, BorderLayout.SOUTH);
 
-=======
-		progressBar.setForeground(Color.GREEN);
-		add(progressBar, BorderLayout.SOUTH);
->>>>>>> 0f389c87bcc08ad50d8c236367a85431ac84249d
 	}
 
 	JDesktopPane panelFenetreFixe = null;
@@ -296,15 +288,6 @@ public class Panneau extends JDesktopPane {
 		fenetreParam.pan.champMysterCarac.setEditable(true);
 		fenetre.setResizable(true);
 		fenetreParam.stopExercice();
-	}
-
-	/**
-	 * Retourne la longueur du segment n
-	 */
-	public int getPagesLength(int n) {
-		int start = segmentsEnFonctionDeLaPage.get(n).get(0);
-		int fin = segmentsEnFonctionDeLaPage.get(n).get(segmentsEnFonctionDeLaPage.get(n).size() - 1);
-		return textHandler.getPhrasesLength(start, fin);
 	}
 
 	public JInternalFrame frame;
