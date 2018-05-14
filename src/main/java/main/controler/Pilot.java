@@ -1,5 +1,8 @@
 package main.controler;
 
+import java.util.List;
+
+import javax.swing.JInternalFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 
@@ -28,10 +31,10 @@ public class Pilot {
 		if (n < p.param.premierSegment - 1 || n >= p.textHandler.getPhrasesCount() - 1) {
 			throw new IllegalArgumentException("Numéro de segment invalide : " + n);
 		}
-		
+
 		p.param.stockerPreference();
 		phrase = n;
-		///désacive la taille et la police et le segment de départ
+		/// désacive la taille et la police et le segment de départ
 		p.fenetreParam.pan.fontFamilyComboBox.setEnabled(false);
 		p.fenetreParam.pan.fontSizeComboBox.setEnabled(false);
 		p.fenetreParam.pan.segmentDeDepart.setEnabled(false);
@@ -45,10 +48,10 @@ public class Pilot {
 		// met a jour la barre de progression
 		updateBar();
 
-		controler.showPage(controler.getPageOfPhrase(n));	
-		
+		controler.showPage(controler.getPageOfPhrase(n));
+
 		SwingUtilities.invokeLater(new Runnable() {
-	
+
 			@Override
 			public void run() {
 				/// play du son correspondant au segment N ///
@@ -63,7 +66,7 @@ public class Pilot {
 				}
 			}
 		});
-	
+
 	}
 
 	private void updateBar() {
@@ -118,24 +121,66 @@ public class Pilot {
 	public boolean hasPreviousPhrase() {
 		return p.player.hasPreviousPhrase();
 	}
-	
-	public void nextHole() {
-		String bonMot = p.textHandler.mots.get(p.numeroCourant);
-		
-		int start2 = p.editorPane.getText().indexOf(" "+p.param.mysterCarac)+1;
+
+	public void showHole(int n) {
+
+		// desactivation de la prochaine fenetre de masque
+		for (JInternalFrame f : p.fenetreMasque) {
+			if (f.isVisible()) {
+				f.setVisible(false);
+				break;
+			}
+		}
+
+		String bonMot = p.textHandler.mots.get(n);
+
+		int start2 = p.editorPane.getText().indexOf(" " + p.param.mysterCarac) + 1;
 		int end2 = -1;
-		if ( bonMot != null) {
+		if (bonMot != null) {
 			end2 = start2 + bonMot.length();
 		}
-		
-		if ( start2 < end2) {
+
+		if (start2 < end2) {
 			try {
-				p.afficherFrame(start2,end2);
+				p.afficherFrame(start2, end2);
 			} catch (BadLocationException e) {
 				e.printStackTrace();
 			}
 		} else {
 			doNext();
+		}
+	}
+
+	public void nextHole() {
+		showHole(p.numeroCourant);
+	}
+
+	public void showAllHoleInPages(int pageActuelle) {
+		String text = p.editorPane.getText();
+		int oldIndex = 0;
+		for (int i = 0; i < p.textHandler.mots.size() - 1; i++) {
+
+			String bonMot = p.textHandler.mots.get(i);
+			List<Integer> numerosSegments = p.segmentsEnFonctionDeLaPage.get(p.pageActuelle);
+			for (Integer integer : numerosSegments) {
+				if (p.textHandler.motsParSegment.get(integer) != null) {
+					for (String s : p.textHandler.motsParSegment.get(integer)) {
+						if (s.equals(bonMot)) {
+
+							int start2 = text.indexOf(" " + p.param.mysterCarac, oldIndex) + 1;
+							int end2 = start2 + bonMot.length();
+							oldIndex = end2;
+							try {
+								p.afficherFrameVide(start2, end2);
+							} catch (BadLocationException e) {
+								e.printStackTrace();
+							}
+
+						}
+					}
+				}
+			}
+
 		}
 	}
 

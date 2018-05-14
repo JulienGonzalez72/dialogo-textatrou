@@ -59,6 +59,7 @@ public class Panneau extends JDesktopPane {
 		this.fenetreParam = fenetreParam;
 		this.controlerGlobal = new ControlerText(this);
 		this.fenetre = fenetre;
+		this.pilot = new Pilot(this);
 		String texteCesures = getTextFromFile("ressources/textes/" + Constants.TEXT_FILE_NAME);
 		/// enlève la consigne ///
 		if (Constants.HAS_INSTRUCTIONS) {
@@ -104,7 +105,7 @@ public class Panneau extends JDesktopPane {
 
 		controlPanel = fenetreParam.controlPanel;
 		fenetreParam.controlPanel.init();
-		this.pilot = new Pilot(this);
+		//this.pilot = new Pilot(this);
 
 		controlerKey = new ControlerKey(pilot);
 		editorPane.addKeyListener(controlerKey);
@@ -240,7 +241,7 @@ public class Panneau extends JDesktopPane {
 			return;
 		}
 		pageActuelle = page;
-		// misea jour du titre de la fenêtre
+		// mise a jour du titre de la fenêtre
 		fenetre.setTitle("Lexidia - Texte à Trou - Page " + page);
 		String texteAfficher = "";
 		// on recupere les segments a afficher dans la page
@@ -252,6 +253,7 @@ public class Panneau extends JDesktopPane {
 			texteAfficher += string;
 		}
 		editorPane.setText(texteAfficher.replaceAll("_", param.mysterCarac + ""));
+		pilot.showAllHoleInPages(pageActuelle);	
 	}
 
 	public boolean pageFinis() {
@@ -415,6 +417,30 @@ public class Panneau extends JDesktopPane {
 			occur++;
 		}
 		return occur;
+	}
+
+	public List<JInternalFrame> fenetreMasque = new ArrayList<>();
+	
+	public void afficherFrameVide(int start, int end) throws BadLocationException {
+		JInternalFrame frame = new JInternalFrame();
+		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
+		frame.setBorder(null);
+		fenetre.pan.setLayout(null);
+		Rectangle r = editorPane.modelToView(start).union(editorPane.modelToView(end));
+		frame.setBounds(r.x, r.y, r.width, r.height / 2);
+		
+		JTextField jtf = new JTextField();
+		Font f = new Font(editorPane.getFont().getFontName(), editorPane.getFont().getStyle(),
+				editorPane.getFont().getSize() / 2);
+		jtf.setFont(f);
+		jtf.setHorizontalAlignment(JTextField.CENTER);	
+		jtf.setEnabled(false);
+		frame.add(jtf);
+		
+		fenetre.pan.add(frame);
+		frame.setVisible(true);
+		fenetreMasque.add(frame);
+		
 	}
 
 }
