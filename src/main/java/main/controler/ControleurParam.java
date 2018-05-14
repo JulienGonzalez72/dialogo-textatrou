@@ -76,8 +76,8 @@ public class ControleurParam implements ActionListener, ChangeListener {
 				try {
 					param.mysterCarac = panneau.champMysterCarac.getText().toCharArray()[0];
 				} catch (Exception e) {
-					param.mysterCarac = '_';
-					panneau.champMysterCarac.setText("_");
+					param.mysterCarac = ' ';
+					panneau.champMysterCarac.setText(" ");
 				}
 				try {
 					param.premierSegment = Math.max(0, Integer.valueOf(panneau.segmentDeDepart.getText()));
@@ -163,12 +163,12 @@ public class ControleurParam implements ActionListener, ChangeListener {
 			if (panneau.champMysterCarac.getText().length() > 1) {
 				JOptionPane.showMessageDialog(panneau, "Entrez un seul caractere",
 						"Erreur", JOptionPane.ERROR_MESSAGE);
-				panneau.champMysterCarac.setText("_");
+				panneau.champMysterCarac.setText(" ");
 				valide = false;
 			}
 		} catch (Exception e) {
-			panneau.champMysterCarac.setText("_");
-			param.mysterCarac = '_';
+			panneau.champMysterCarac.setText(" ");
+			param.mysterCarac = ' ';
 			valide = false;
 		}
 		return valide;

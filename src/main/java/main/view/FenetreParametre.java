@@ -31,7 +31,7 @@ public class FenetreParametre extends JFrame {
 		param.titre = titre;
 		param.tailleX = tailleX;
 		param.tailleY = tailleY;
-		param.mysterCarac = '_';
+		param.mysterCarac = 'â–’';
 		setTitle(titre);
 		setSize(tailleX, tailleY);
 		setLocationRelativeTo(null);
@@ -48,8 +48,8 @@ public class FenetreParametre extends JFrame {
 		controlPanel = new ControlPanel(fenetre.pan, this, param);
 
 		JTabbedPane generalTab = new JTabbedPane();
-		generalTab.addTab("Paramètres", pan);
-		generalTab.addTab("Contrôle", controlPanel);
+		generalTab.addTab("ParamÃ¨tres", pan);
+		generalTab.addTab("ContrÃ´le", controlPanel);
 		setContentPane(generalTab);
 		addMenu();
 		setVisible(true);
@@ -83,7 +83,7 @@ public class FenetreParametre extends JFrame {
 			JLabel police = fastLabel("Police : ");
 			JLabel taillePolice = fastLabel("Taille de la police : ");
 			JLabel couleurDeFond = fastLabel("Couleur de fond : ");
-			JLabel segments = fastLabel("Segment de départ ");
+			JLabel segments = fastLabel("Segment de dÃ©part ");
 			JLabel attente = fastLabel("Temps d'attente en % du temps de lecture");
 
 			fontFamilies = new Object[] { "OpenDyslexic", "Andika", "Lexia", "Arial", "Times New Roman" };
@@ -129,7 +129,7 @@ public class FenetreParametre extends JFrame {
 					new Font("OpenDyslexic", Font.PLAIN, 15), "1");
 			segmentDeDepart.addActionListener(controleur);
 
-			JLabel mysterCarac = fastLabel("Caractere à trouver");
+			JLabel mysterCarac = fastLabel("Caractere Ã  trouver");
 			champMysterCarac = fastTextField("", new Font("OpenDyslexic", Font.PLAIN, 15), "_");
 			champMysterCarac.addActionListener(controleur);
 
@@ -161,7 +161,7 @@ public class FenetreParametre extends JFrame {
 
 			JPanel panelSud = new JPanel(new GridLayout(6, 1));
 
-			fixedField = fastCheckBox("Fenêtre de saisie fixe", controleur);
+			fixedField = fastCheckBox("FenÃªtre de saisie fixe", controleur);
 			fixedField.setSelected(true);
 
 			JPanel temp = new JPanel();
@@ -384,11 +384,11 @@ public class FenetreParametre extends JFrame {
 		eMenuItem.addActionListener((ActionEvent event) -> {
 			System.exit(0);
 		});
-		eMenuItem2 = new JMenuItem("Arrêter l'exercice");
+		eMenuItem2 = new JMenuItem("ArrÃªter l'exercice");
 		eMenuItem2.setMnemonic(KeyEvent.VK_R);
 		eMenuItem2.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.ALT_MASK));
 		eMenuItem2.addActionListener((ActionEvent event) -> {
-			/// réactive la taille et la police et le segment de départ
+			/// rÃ©active la taille et la police et le segment de dÃ©part
 			pan.fontFamilyComboBox.setEnabled(true);
 			pan.fontSizeComboBox.setEnabled(true);
 			pan.segmentDeDepart.setEnabled(true);

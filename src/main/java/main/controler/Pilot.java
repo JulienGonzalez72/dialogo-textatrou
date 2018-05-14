@@ -7,7 +7,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 
 import main.Constants;
-import main.model.TextHandler;
 import main.view.Panneau;
 
 public class Pilot {
@@ -107,6 +106,7 @@ public class Pilot {
 	 * le début.
 	 */
 	public void doPlay() {
+		showAllHoleInPages(p.pageActuelle);
 		goTo(p.player.getCurrentPhraseIndex());
 	}
 
@@ -155,18 +155,24 @@ public class Pilot {
 		showHole(p.numeroCourant);
 	}
 
+	
+	//met les masques sur les mots
 	public void showAllHoleInPages(int pageActuelle) {
 		String text = p.editorPane.getText();
 		int oldIndex = 0;
-		for (int i = 0; i < p.textHandler.mots.size() - 1; i++) {
-
+		//pour tous les mots à trouver
+		for (int i = 0; i < p.textHandler.mots.size(); i++) {
+			
 			String bonMot = p.textHandler.mots.get(i);
 			List<Integer> numerosSegments = p.segmentsEnFonctionDeLaPage.get(p.pageActuelle);
+			//pour tous les segments de la page actuelle
 			for (Integer integer : numerosSegments) {
+				//si le segment contient des mots a trouver
 				if (p.textHandler.motsParSegment.get(integer) != null) {
+					//pour chacun de ces mots
 					for (String s : p.textHandler.motsParSegment.get(integer)) {
+						//si ce mot est egale a un bon mot
 						if (s.equals(bonMot)) {
-
 							int start2 = text.indexOf(" " + p.param.mysterCarac, oldIndex) + 1;
 							int end2 = start2 + bonMot.length();
 							oldIndex = end2;

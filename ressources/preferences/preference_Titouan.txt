@@ -1,11 +1,11 @@
 #Sauvegarde
-#Mon May 14 14:09:59 CEST 2018
+#Mon May 14 15:15:05 CEST 2018
 taillePolice=42
 typePolice=Andika Basic
 h=700
 tempsAttente=0
-y=82
-x=696
+y=113
+x=611
 w=1000
 rejouerSon=false
 couleurFond=255/255/150

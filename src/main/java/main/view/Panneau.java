@@ -48,8 +48,7 @@ public class Panneau extends JDesktopPane {
 	 * Barre de progression
 	 */
 	public JProgressBar progressBar;
-	
-	
+
 	public JPanel panelSud;
 
 	public Panneau(Fenetre fenetre, FenetreParametre fenetreParam, Parametres param) throws IOException {
@@ -79,7 +78,7 @@ public class Panneau extends JDesktopPane {
 		progressBar = new JProgressBar(0, (textHandler.getPhrasesCount() - 1));
 		progressBar.setStringPainted(true);
 		progressBar.setForeground(Color.GREEN);
-		
+
 	}
 
 	JDesktopPane panelFenetreFixe = null;
@@ -105,11 +104,13 @@ public class Panneau extends JDesktopPane {
 
 		controlPanel = fenetreParam.controlPanel;
 		fenetreParam.controlPanel.init();
-		//this.pilot = new Pilot(this);
+		// this.pilot = new Pilot(this);
 
 		controlerKey = new ControlerKey(pilot);
 		editorPane.addKeyListener(controlerKey);
 		editorPane.requestFocus();
+		
+		System.out.println(segmentsEnFonctionDeLaPage.toString());
 
 	}
 
@@ -227,8 +228,6 @@ public class Panneau extends JDesktopPane {
 			}
 		}
 	}
-	
-	
 
 	/**
 	 * Va a la page numero page
@@ -253,7 +252,9 @@ public class Panneau extends JDesktopPane {
 			texteAfficher += string;
 		}
 		editorPane.setText(texteAfficher.replaceAll("_", param.mysterCarac + ""));
-		pilot.showAllHoleInPages(pageActuelle);	
+		if (!fenetre.isResizable()) {
+			pilot.showAllHoleInPages(pageActuelle);
+		}
 	}
 
 	public boolean pageFinis() {
@@ -420,7 +421,7 @@ public class Panneau extends JDesktopPane {
 	}
 
 	public List<JInternalFrame> fenetreMasque = new ArrayList<>();
-	
+
 	public void afficherFrameVide(int start, int end) throws BadLocationException {
 		JInternalFrame frame = new JInternalFrame();
 		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
@@ -428,19 +429,19 @@ public class Panneau extends JDesktopPane {
 		fenetre.pan.setLayout(null);
 		Rectangle r = editorPane.modelToView(start).union(editorPane.modelToView(end));
 		frame.setBounds(r.x, r.y, r.width, r.height / 2);
-		
+
 		JTextField jtf = new JTextField();
 		Font f = new Font(editorPane.getFont().getFontName(), editorPane.getFont().getStyle(),
 				editorPane.getFont().getSize() / 2);
 		jtf.setFont(f);
-		jtf.setHorizontalAlignment(JTextField.CENTER);	
+		jtf.setHorizontalAlignment(JTextField.CENTER);
 		jtf.setEnabled(false);
 		frame.add(jtf);
-		
+
 		fenetre.pan.add(frame);
 		frame.setVisible(true);
 		fenetreMasque.add(frame);
-		
+
 	}
 
 }
