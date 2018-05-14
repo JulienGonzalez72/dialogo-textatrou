@@ -66,7 +66,7 @@ public class FenetreParametre extends JFrame {
 		public JTextField segmentDeDepart;
 		public JTextField champMysterCarac;
 		public JButton valider;
-		public JCheckBox rejouerSon;
+		public JCheckBox fixedField;
 		public JSlider waitSlider;
 		public final Object[] fontFamilies;
 		public final Object[] fontSizes;
@@ -160,10 +160,16 @@ public class FenetreParametre extends JFrame {
 			waitSlider.addChangeListener(controleur);
 
 			JPanel panelSud = new JPanel(new GridLayout(6, 1));
+<<<<<<< HEAD
 			rejouerSon = fastCheckBox("Rejouer les phrases si erreur", controleur);
 			rejouerSon.setSelected(true);
+=======
+			//panelSud.add(new JLabel());
+			fixedField = fastCheckBox("Fenêtre de saisie fixe", controleur);
+			fixedField.setSelected(true);
+>>>>>>> 29287af35bcb5159c3013a010bd9ceb1032dc64b
 			JPanel temp = new JPanel();
-			temp.add(rejouerSon);
+			temp.add(fixedField);
 			panelSud.add(temp);
 			
 			panelSud.add(new JLabel());
@@ -248,7 +254,7 @@ public class FenetreParametre extends JFrame {
 			param.tempsPauseEnPourcentageDuTempsDeLecture = temp;
 			waitSlider.setValue(temp);
 
-			rejouerSon.setSelected(Boolean.valueOf(pro.getProperty("rejouerSon")));
+			fixedField.setSelected(Boolean.valueOf(pro.getProperty("rejouerSon")));
 		}
 
 		private void appliquerCouleur(Color color, JComboBox<Object> listeCouleurs) {

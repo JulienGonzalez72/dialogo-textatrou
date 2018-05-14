@@ -16,13 +16,11 @@ import main.controler.ControlerText;
 import main.controler.Pilot;
 import main.Parametres;
 import main.controler.ControlerKey;
-import main.controler.ControlerMouse;
 import main.model.Player;
 import main.model.TextHandler;
 
 public class Panneau extends JDesktopPane {
 
-	private static final long serialVersionUID = 1L;
 	public static int premierSegment;
 	public static int defautNBEssaisParSegment;
 
@@ -38,7 +36,6 @@ public class Panneau extends JDesktopPane {
 	public ControlPanel controlPanel;
 	public ControlerText controlerGlobal;
 	public ControlerKey controlerKey;
-	public ControlerMouse controlerMouse;
 	public Pilot pilot;
 	public Map<Integer, List<Integer>> segmentsEnFonctionDeLaPage = new HashMap<Integer, List<Integer>>();
 	public Player player;
@@ -73,11 +70,20 @@ public class Panneau extends JDesktopPane {
 
 		nbMotsDansLaPage = Panneau.stringOccur(textHandler.txt, " _");
 
+		JPanel panelSud = new JPanel(new GridLayout(2, 1));
+
 		progressBar = new JProgressBar(0, (textHandler.getPhrasesCount() - 1));
 		progressBar.setStringPainted(true);
+		
 		progressBar.setForeground(Color.GREEN);
-		add(progressBar, BorderLayout.SOUTH);
+		panelFenetreFixe = new JDesktopPane();
+		panelSud.add(panelFenetreFixe,BorderLayout.CENTER);
+		panelSud.add(progressBar, BorderLayout.SOUTH);		
+		add(panelSud, BorderLayout.SOUTH);
+
 	}
+
+	JDesktopPane panelFenetreFixe = null;
 
 	/**
 	 * S'exécute lorsque le panneau s'est bien intégré à la fenêtre.
@@ -104,8 +110,6 @@ public class Panneau extends JDesktopPane {
 
 		controlerKey = new ControlerKey(pilot);
 		editorPane.addKeyListener(controlerKey);
-		controlerMouse = new ControlerMouse(this, textHandler);
-		editorPane.addMouseListener(controlerMouse);
 		editorPane.requestFocus();
 
 	}
@@ -226,6 +230,11 @@ public class Panneau extends JDesktopPane {
 		}
 	}
 
+	/**
+	 * Va a la page numero page
+	 * 
+	 * @param page
+	 */
 	public void showPage(int page) {
 		/// on ne fait rien si on est déjà sur cette page ///
 		if (pageActuelle == page) {
@@ -244,6 +253,7 @@ public class Panneau extends JDesktopPane {
 			texteAfficher += string;
 		}
 		editorPane.setText(texteAfficher.replaceAll("_", param.mysterCarac + ""));
+		editorPane.texteReel = texteAfficher.replaceAll("_", param.mysterCarac + "");
 	}
 
 	public boolean pageFinis() {
@@ -282,15 +292,6 @@ public class Panneau extends JDesktopPane {
 		fenetreParam.stopExercice();
 	}
 
-	/**
-	 * Retourne la longueur du segment n
-	 */
-	public int getPagesLength(int n) {
-		int start = segmentsEnFonctionDeLaPage.get(n).get(0);
-		int fin = segmentsEnFonctionDeLaPage.get(n).get(segmentsEnFonctionDeLaPage.get(n).size() - 1);
-		return textHandler.getPhrasesLength(start, fin);
-	}
-
 	public JInternalFrame frame;
 
 	/**
@@ -304,10 +305,16 @@ public class Panneau extends JDesktopPane {
 		frame = new JInternalFrame();
 		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
 		frame.setBorder(null);
-		fenetre.pan.add(frame);
 		fenetre.pan.setLayout(null);
-		Rectangle r = editorPane.modelToView(start).union(editorPane.modelToView(end));
-		frame.setBounds(r.x, r.y, r.width, r.height / 2);
+
+		if (param.fixedField) {
+			panelFenetreFixe.add(frame);
+			frame.setBounds(0, 0, panelFenetreFixe.getWidth(), panelFenetreFixe.getHeight());
+		} else {
+			Rectangle r = editorPane.modelToView(start).union(editorPane.modelToView(end));
+			frame.setBounds(r.x, r.y, r.width, r.height / 2);
+			fenetre.pan.add(frame);
+		}
 
 		JTextField jtf = new JTextField();
 		Font f = new Font(editorPane.getFont().getFontName(), editorPane.getFont().getStyle(),
@@ -323,7 +330,6 @@ public class Panneau extends JDesktopPane {
 				String bonMot = textHandler.mots.get(numeroCourant);
 				// Si juste
 				if (jtf.getText().equalsIgnoreCase(bonMot)) {
-					System.out.println("Bravo !!!!");
 					frame.dispose();
 					editorPane.setEnabled(true);
 					numeroCourant++;

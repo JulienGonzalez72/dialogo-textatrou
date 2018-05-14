@@ -17,7 +17,7 @@ public class Parametres {
 	public int premierSegment;
 	public char mysterCarac;
 	public int tempsPauseEnPourcentageDuTempsDeLecture;
-	public boolean rejouerSon = true;
+	public boolean fixedField = true;
 	public int panWidth, panHeight, panX, panY;
 
 	public Parametres() {
@@ -43,7 +43,7 @@ public class Parametres {
 		prop.put("typePolice", police.getFontName());
 		prop.put("couleurFond", fromColorToString(couleurFond));
 		prop.put("tempsAttente", String.valueOf(tempsPauseEnPourcentageDuTempsDeLecture));
-		prop.put("rejouerSon", String.valueOf(rejouerSon));
+		prop.put("rejouerSon", String.valueOf(fixedField));
 		String fichier = "./ressources/preferences/preference_" + Constants.NOM_ELEVE + ".txt";
 		OutputStream ops = null;
 		try {
