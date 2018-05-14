@@ -1,8 +1,10 @@
 package main.controler;
 
+import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 
 import main.Constants;
+import main.model.TextHandler;
 import main.view.Panneau;
 
 public class Pilot {
@@ -43,18 +45,25 @@ public class Pilot {
 		// met a jour la barre de progression
 		updateBar();
 
-		controler.showPage(controler.getPageOfPhrase(n));
+		controler.showPage(controler.getPageOfPhrase(n));	
 		
-		/// play du son correspondant au segment N ///
-		controler.play(n);
-		/// attente de la fin du temps de pause ///
-		controler.doWait(controler.getCurrentWaitTime(), Constants.CURSOR_SPEAK);
+		SwingUtilities.invokeLater(new Runnable() {
+	
+			@Override
+			public void run() {
+				/// play du son correspondant au segment N ///
+				controler.play(n);
+				/// attente de la fin du temps de pause ///
+				controler.doWait(controler.getCurrentWaitTime(), Constants.CURSOR_SPEAK);
 
-		if (p.textHandler.motsParSegment.get(n).isEmpty()) {
-			doNext();
-		} else {
-			nextHole();
-		}
+				if (p.textHandler.motsParSegment.get(n).isEmpty()) {
+					doNext();
+				} else {
+					nextHole();
+				}
+			}
+		});
+	
 	}
 
 	private void updateBar() {
@@ -111,17 +120,22 @@ public class Pilot {
 	}
 	
 	public void nextHole() {
-		int offset = p.textHandler.getAbsoluteOffset(p.getNumeroPremierSegmentAffiché(),p.editorPane.getText().indexOf(" _")+1);
-		int start2 = p.textHandler.startWordPosition(offset);
-		int end2 = p.textHandler.endWordPosition(offset);
-		if ( start2 > end2) {
-			System.out.println("start2 > end2"); 
-			return;
+		String bonMot = p.textHandler.mots.get(p.numeroCourant);
+		
+		int start2 = p.editorPane.getText().indexOf(" "+p.param.mysterCarac)+1;
+		int end2 = -1;
+		if ( bonMot != null) {
+			end2 = start2 + bonMot.length();
 		}
-		try {
-			p.afficherFrame(start2,end2);
-		} catch (BadLocationException e) {
-			e.printStackTrace();
+		
+		if ( start2 < end2) {
+			try {
+				p.afficherFrame(start2,end2);
+			} catch (BadLocationException e) {
+				e.printStackTrace();
+			}
+		} else {
+			doNext();
 		}
 	}
 

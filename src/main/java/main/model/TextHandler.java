@@ -84,7 +84,7 @@ public class TextHandler {
 				r += '_';
 			} else {
 				r += tab[i];
-			}
+			}	
 		}
 		return r;
 	}

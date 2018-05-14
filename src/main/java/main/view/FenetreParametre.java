@@ -348,9 +348,23 @@ public class FenetreParametre extends JFrame {
 	}
 
 	public void lancerExercice() {
+		
 		Panneau.premierSegment = param.premierSegment;
 		Panneau.defautNBEssaisParSegment = param.mysterCarac;
+		
+		if ( param.fixedField) {
+			fenetre.pan.panelSud.setLayout(new GridLayout(2, 1));
+			fenetre.pan.panelFenetreFixe = new JDesktopPane();
+			fenetre.pan.panelSud.add(fenetre.pan.panelFenetreFixe);
+			fenetre.pan.panelSud.add(fenetre.pan.progressBar);	
+		} else {
+			fenetre.pan.panelSud.setLayout(new GridLayout(1, 1));
+			fenetre.pan.panelSud.add(fenetre.pan.progressBar);	
+		}
+		
+		fenetre.pan.add(fenetre.pan.panelSud, BorderLayout.SOUTH);
 		fenetre.start();
+		
 	}
 
 	public JMenuItem eMenuItem2;

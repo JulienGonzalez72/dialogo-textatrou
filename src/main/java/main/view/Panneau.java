@@ -48,6 +48,9 @@ public class Panneau extends JDesktopPane {
 	 * Barre de progression
 	 */
 	public JProgressBar progressBar;
+	
+	
+	public JPanel panelSud;
 
 	public Panneau(Fenetre fenetre, FenetreParametre fenetreParam, Parametres param) throws IOException {
 		this.fenetre = fenetre;
@@ -70,17 +73,12 @@ public class Panneau extends JDesktopPane {
 
 		nbMotsDansLaPage = Panneau.stringOccur(textHandler.txt, " _");
 
-		JPanel panelSud = new JPanel(new GridLayout(2, 1));
+		panelSud = new JPanel();
 
 		progressBar = new JProgressBar(0, (textHandler.getPhrasesCount() - 1));
 		progressBar.setStringPainted(true);
-		
 		progressBar.setForeground(Color.GREEN);
-		panelFenetreFixe = new JDesktopPane();
-		panelSud.add(panelFenetreFixe,BorderLayout.CENTER);
-		panelSud.add(progressBar, BorderLayout.SOUTH);		
-		add(panelSud, BorderLayout.SOUTH);
-
+		
 	}
 
 	JDesktopPane panelFenetreFixe = null;
@@ -182,7 +180,6 @@ public class Panneau extends JDesktopPane {
 		int lastOffset = 0;
 		int page = 1;
 		int lastPhrase = startPhrase - 1;
-		editorPane.texteReel = text;
 		while (lastPhrase < textHandler.getPhrasesCount()) {
 			List<Integer> phrases = new ArrayList<>();
 			editorPane.setText(text);
@@ -229,6 +226,8 @@ public class Panneau extends JDesktopPane {
 			}
 		}
 	}
+	
+	
 
 	/**
 	 * Va a la page numero page
@@ -253,7 +252,6 @@ public class Panneau extends JDesktopPane {
 			texteAfficher += string;
 		}
 		editorPane.setText(texteAfficher.replaceAll("_", param.mysterCarac + ""));
-		editorPane.texteReel = texteAfficher.replaceAll("_", param.mysterCarac + "");
 	}
 
 	public boolean pageFinis() {
@@ -300,8 +298,6 @@ public class Panneau extends JDesktopPane {
 	 */
 	public void afficherFrame(int start, int end) throws BadLocationException {
 
-		editorPane.setEnabled(false);
-
 		frame = new JInternalFrame();
 		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
 		frame.setBorder(null);
@@ -334,24 +330,18 @@ public class Panneau extends JDesktopPane {
 					editorPane.setEnabled(true);
 					numeroCourant++;
 					String temp = editorPane.getText();
-					String temp2 = editorPane.texteReel;
 					String r = "";
-					String r2 = "";
 					char[] tab = temp.toCharArray();
-					char[] tab2 = temp2.toCharArray();
 					int j = 0;
 					for (int i = 0; i < temp.length(); i++) {
 						if (i >= start && i < end) {
-							r += bonMot.toCharArray()[j];
-							r2 += bonMot.toCharArray()[j];
+							r += bonMot.charAt(j);
 							j++;
 						} else {
 							r += tab[i];
-							r2 += tab2[i];
 						}
 					}
 					editorPane.setText(r);
-					editorPane.texteReel = r2;
 					String temp3 = textHandler.txt.substring(end);
 					if (temp3.indexOf('/') < temp3.indexOf(" _") || temp3.indexOf(" _") == -1) {
 						pilot.doNext();

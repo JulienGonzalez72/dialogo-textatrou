@@ -1,11 +1,11 @@
 #Sauvegarde
-#Mon May 14 10:13:26 CEST 2018
+#Mon May 14 13:13:46 CEST 2018
 taillePolice=42
-typePolice=OpenDyslexic Bold
-h=400
+typePolice=Andika Basic
+h=700
 tempsAttente=0
-y=149
-x=704
-w=800
-rejouerSon=false
+y=120
+x=847
+w=1000
+rejouerSon=true
 couleurFond=255/255/150

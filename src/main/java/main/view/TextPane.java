@@ -12,8 +12,6 @@ public class TextPane extends JTextPane {
 
 	private static final long serialVersionUID = 1L;
 	
-	public String texteReel;
-	
 	public TextPane(Parametres param) {
 
 		setFont(param.police);
