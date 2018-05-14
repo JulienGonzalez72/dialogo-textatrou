@@ -160,14 +160,12 @@ public class FenetreParametre extends JFrame {
 			waitSlider.addChangeListener(controleur);
 
 			JPanel panelSud = new JPanel(new GridLayout(6, 1));
-			//panelSud.add(new JLabel());
 			rejouerSon = fastCheckBox("Rejouer les phrases si erreur", controleur);
 			rejouerSon.setSelected(true);
 			JPanel temp = new JPanel();
 			temp.add(rejouerSon);
 			panelSud.add(temp);
 			
-			//panelSud.add(new JLabel());
 			panelSud.add(new JLabel());
 			panelSud.add(add(attente));
 			panelSud.add(waitSlider);
@@ -259,12 +257,15 @@ public class FenetreParametre extends JFrame {
 		
 		private class ColorCellRenderer implements ListCellRenderer<Object> {
 			private DefaultListCellRenderer renderer = new DefaultListCellRenderer();
-
+			private static final float NORMAL_FONT_SIZE = 15;
+			private static final float SELECTED_FONT_SIZE = 25;
 			public Component getListCellRendererComponent(JList<? extends Object> list, Object value, int index,
 					boolean isSelected, boolean cellHasFocus) {
 				list.setBackground(stringToColor((String) value));
-				list.setFixedCellHeight(Constants.COMBOBOX_CELL_HEIGHT);
+				list.setSelectionBackground(stringToColor((String) value));
+				list.setFont(list.getFont().deriveFont(isSelected ? SELECTED_FONT_SIZE : NORMAL_FONT_SIZE));
 				renderer.setHorizontalAlignment(SwingConstants.CENTER);
+				renderer.setPreferredSize(new Dimension(0, Constants.COMBOBOX_CELL_HEIGHT));
 				return renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 			}
 		}
@@ -396,14 +397,6 @@ public class FenetreParametre extends JFrame {
 	}
 	
 	public static Color stringToColor(String name) {
-		/*if (name.equalsIgnoreCase("blanc")) return Color.WHITE;
-		if (name.equalsIgnoreCase("bleu")) return Color.BLUE;
-		if (name.equalsIgnoreCase("cyan")) return Color.CYAN;
-		if (name.equalsIgnoreCase("jaune")) return Color.YELLOW;
-		if (name.equalsIgnoreCase("orange")) return Color.ORANGE;
-		if (name.equalsIgnoreCase("rose")) return Color.PINK;
-		if (name.equalsIgnoreCase("rouge")) return Color.RED;
-		if (name.equalsIgnoreCase("vert")) return Color.GREEN;*/
 		return Constants.COLORS.get(name);
 	}
 	
