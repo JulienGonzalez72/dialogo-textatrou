@@ -16,7 +16,6 @@ import main.controler.ControlerText;
 import main.controler.Pilot;
 import main.Parametres;
 import main.controler.ControlerKey;
-import main.controler.ControlerMouse;
 import main.model.Player;
 import main.model.TextHandler;
 
@@ -37,7 +36,6 @@ public class Panneau extends JDesktopPane {
 	public ControlPanel controlPanel;
 	public ControlerText controlerGlobal;
 	public ControlerKey controlerKey;
-	public ControlerMouse controlerMouse;
 	public Pilot pilot;
 	public Map<Integer, List<Integer>> segmentsEnFonctionDeLaPage = new HashMap<Integer, List<Integer>>();
 	public Player player;
@@ -112,8 +110,6 @@ public class Panneau extends JDesktopPane {
 
 		controlerKey = new ControlerKey(pilot);
 		editorPane.addKeyListener(controlerKey);
-		controlerMouse = new ControlerMouse(this, textHandler);
-		editorPane.addMouseListener(controlerMouse);
 		editorPane.requestFocus();
 
 	}
@@ -234,6 +230,11 @@ public class Panneau extends JDesktopPane {
 		}
 	}
 
+	/**
+	 * Va a la page numero page
+	 * 
+	 * @param page
+	 */
 	public void showPage(int page) {
 		/// on ne fait rien si on est déjà sur cette page ///
 		if (pageActuelle == page) {
@@ -252,6 +253,7 @@ public class Panneau extends JDesktopPane {
 			texteAfficher += string;
 		}
 		editorPane.setText(texteAfficher.replaceAll("_", param.mysterCarac + ""));
+		editorPane.texteReel = texteAfficher.replaceAll("_", param.mysterCarac + "");
 	}
 
 	public boolean pageFinis() {

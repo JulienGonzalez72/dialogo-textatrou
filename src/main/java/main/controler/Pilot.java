@@ -26,6 +26,7 @@ public class Pilot {
 		if (n < p.param.premierSegment - 1 || n >= p.textHandler.getPhrasesCount() - 1) {
 			throw new IllegalArgumentException("Numéro de segment invalide : " + n);
 		}
+		
 		p.param.stockerPreference();
 		phrase = n;
 		///désacive la taille et la police et le segment de départ
@@ -43,6 +44,7 @@ public class Pilot {
 		updateBar();
 
 		controler.showPage(controler.getPageOfPhrase(n));
+		
 		/// play du son correspondant au segment N ///
 		controler.play(n);
 		/// attente de la fin du temps de pause ///
@@ -109,11 +111,11 @@ public class Pilot {
 	}
 	
 	public void nextHole() {
-		int offset = p.textHandler.getAbsoluteOffset(p.getNumeroPremierSegmentAffiché(),p.editorPane.texteReel.indexOf(" _")+1);
+		int offset = p.textHandler.getAbsoluteOffset(p.getNumeroPremierSegmentAffiché(),p.editorPane.getText().indexOf(" _")+1);
 		int start2 = p.textHandler.startWordPosition(offset);
 		int end2 = p.textHandler.endWordPosition(offset);
 		if ( start2 > end2) {
-			p.afficherCompteRendu();
+			System.out.println("start2 > end2"); 
 			return;
 		}
 		try {
