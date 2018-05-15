@@ -92,7 +92,7 @@ public class Pilot {
 	 * Essaye de passer au segment précédent. Déclenche une erreur si on était au
 	 * premier segment du texte.
 	 */
-	public void doPrevious() {
+	public void doPrevious() {	
 		goTo(p.player.getCurrentPhraseIndex() - 1);
 	}
 

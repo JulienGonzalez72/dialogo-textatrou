@@ -7,11 +7,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
-
 import main.Constants;
 import main.Parametres;
 
@@ -116,36 +114,39 @@ public class ControlPanel extends JPanel {
 		nextButton.setEnabled(false);
 		nextButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				
+				if(pan.fenetre.isResizable()) {
+					pan.pilot.doPlay();
+					return;
+				}
+				
 				if (param.fixedField) {
 					String bonMot = pan.textHandler.mots.get(pan.numeroCourant);
 					// pour tous les masques
 					for (Mask m : pan.fenetreMasque) {
 						// si le masque est visible
 						if (m.isVisible()) {
-							System.out.println(m.start + "/" + m.end);
 							// si le segment actuel contient le mot actuel
 							if (pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex())
 									.contains(bonMot)) {
 								// faire le traitement comme si on avait rentré le bon mot
-								pan.saisieCorrecte(m, m.start, m.end, bonMot, m);
+								pan.saisieCorrecte(m, m.start, m.end, bonMot);
 								// passer au bonMot suivant
 								bonMot = pan.textHandler.mots.get(pan.numeroCourant);
 							}
 						}
 					}
 				} else {
-
 					String bonMot = pan.textHandler.mots.get(pan.numeroCourant);
 					int oldNumero = pan.numeroCourant;
 					// pour tous les masques
 					for (Mask m : pan.fenetreMasque) {
 						// si le segment actuel contient le mot actuel
 						if (pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex()).contains(bonMot)
-								&& pan.fenetreMasque.indexOf(m) >= oldNumero) {
+								&& pan.fenetreMasque.indexOf(m) >= oldNumero ) {
 							// faire le traitement comme si on avait rentré le bon mot
 							m.setVisible(false);
-							pan.saisieCorrecte(m, m.start, m.end, bonMot, m);
+							pan.saisieCorrecte(m, m.start, m.end, bonMot);
 							// passer au bonMot suivant
 							bonMot = pan.textHandler.mots.get(pan.numeroCourant++);
 						}
@@ -153,16 +154,6 @@ public class ControlPanel extends JPanel {
 					}
 					pan.numeroCourant = oldNumero
 							+ pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex()).size();
-				}
-
-				for (Mask m : pan.fenetreMasque) {
-					if (m.isVisible()) {
-						try {
-							pan.replacerMasque(m);
-						} catch (BadLocationException e1) {
-							e1.printStackTrace();
-						}
-					}
 				}
 
 				pan.pilot.doNext();

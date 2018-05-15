@@ -327,7 +327,7 @@ public class Panneau extends JDesktopPane {
 				String bonMot = textHandler.mots.get(numeroCourant);
 				// Si juste
 				if (jtf.getText().equalsIgnoreCase(bonMot)) {
-					saisieCorrecte(f2,start,end,bonMot,masque);
+					saisieCorrecte(f2,start,end,bonMot);
 					if (bonMot == textHandler.motsParSegment.get(pilot.getCurrentPhraseIndex())
 							.get(textHandler.motsParSegment.get(pilot.getCurrentPhraseIndex()).size() - 1)) {
 						pilot.doNext();
@@ -348,13 +348,12 @@ public class Panneau extends JDesktopPane {
 	
 	
 	//traitement lors d'une bonne saisie de mot
-	public void saisieCorrecte(JInternalFrame f2, int start, int end, String bonMot, JInternalFrame masque) {
+	public void saisieCorrecte(JInternalFrame f2, int start, int end, String bonMot) {
 		// desactivation de la prochaine fenetre de masque
 		if (param.fixedField) {
 			for (JInternalFrame f : fenetreMasque) {
 				if (f.isVisible()) {
 					f.setVisible(false);
-					f2 = f;
 					break;
 				}
 			}
@@ -375,19 +374,13 @@ public class Panneau extends JDesktopPane {
 			}
 		}
 		editorPane.setText(r);
-
-		if (fenetreMasque.indexOf(masque) + 1 < fenetreMasque.size() && !param.fixedField) {
-			try {
-				replacerMasque(fenetreMasque.get(fenetreMasque.indexOf(masque) + 1));
-			} catch (BadLocationException e) {
-				e.printStackTrace();
-			}
-		}
-		if( fenetreMasque.indexOf(f2) + 1 < fenetreMasque.size() && param.fixedField) {
-			try {
-				replacerMasque(fenetreMasque.get(fenetreMasque.indexOf(f2)+1));
-			} catch (BadLocationException e) {
-				e.printStackTrace();
+		for (Mask m : fenetreMasque) {
+			if (m.isVisible()) {
+				try {
+					replacerMasque(m);
+				} catch (BadLocationException e1) {
+					e1.printStackTrace();
+				}
 			}
 		}
 			
@@ -479,7 +472,7 @@ public class Panneau extends JDesktopPane {
 	}
 
 	/*
-	 * replace une fenetre invisible
+	 * replace une fenetre invisible, la rendnat visible
 	 */
 	public void replacerMasque(Mask frame) throws BadLocationException {
 		int start = frame.start;
