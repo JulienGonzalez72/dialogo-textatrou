@@ -236,6 +236,7 @@ public class Panneau extends JDesktopPane {
 		if (pageActuelle == page) {
 			return;
 		}
+		boolean onNeRevientPasEnArriere = page >= pageActuelle;
 		pageActuelle = page;
 		// mise a jour du titre de la fenêtre
 		fenetre.setTitle("Lexidia - Texte à Trou - Page " + page);
@@ -249,7 +250,7 @@ public class Panneau extends JDesktopPane {
 			texteAfficher += string;
 		}
 		editorPane.setText(texteAfficher.replaceAll("_", param.mysterCarac + ""));
-		if (!fenetre.isResizable()) {
+		if (!fenetre.isResizable() && onNeRevientPasEnArriere) {
 			pilot.showAllHoleInPages(pageActuelle);
 		}
 	}
@@ -382,8 +383,7 @@ public class Panneau extends JDesktopPane {
 					e1.printStackTrace();
 				}
 			}
-		}
-			
+		}		
 	}
 
 	public void blink() {

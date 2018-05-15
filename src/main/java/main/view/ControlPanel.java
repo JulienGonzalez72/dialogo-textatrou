@@ -47,6 +47,17 @@ public class ControlPanel extends JPanel {
 					}
 				}
 
+				boolean onVaChangerDePage;
+				int premierSegmentPage = pan.segmentsEnFonctionDeLaPage.get(pan.pageActuelle).get(0);
+				onVaChangerDePage = (premierSegmentPage == pan.pilot.getCurrentPhraseIndex());
+				if (onVaChangerDePage) {
+					for (Mask m : pan.fenetreMasque) {
+						if (m.isVisible() || pan.fenetreMasque.indexOf(m) == pan.numeroCourant) {
+							m.setVisible(false);
+						}
+					}
+				}
+
 				// on decremente le numeroCourant du nombre de mot a decouvrir
 				String bonMot = pan.textHandler.mots.get(pan.numeroCourant -= pan.textHandler.motsParSegment
 						.get(pan.pilot.getCurrentPhraseIndex() - 1).size());
@@ -57,8 +68,8 @@ public class ControlPanel extends JPanel {
 
 				for (Mask m : pan.fenetreMasque) {
 					if (!m.isVisible()) {
-						if (pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex() - 1)
-								.contains(bonMot)) {
+						if (pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex() - 1).contains(bonMot)
+								&& pan.fenetreMasque.indexOf(m) >= oldNumero) {
 							m.setVisible(true);
 
 							toShow.add(new Stock<Integer, Integer, Mask>(m.start, m.end, m));
@@ -82,11 +93,19 @@ public class ControlPanel extends JPanel {
 
 				for (Stock<Integer, Integer, Mask> stock : toShow) {
 					try {
-						System.out.println(stock.a + "/" + stock.b);
 						pan.afficherFrame(stock.a, stock.b, stock.c);
-						pan.replacerMasque(stock.c);
 					} catch (BadLocationException e1) {
 						e1.printStackTrace();
+					}
+				}
+
+				for (Mask m : pan.fenetreMasque) {
+					if (m.isVisible()) {
+						try {
+							pan.replacerMasque(m);
+						} catch (BadLocationException e1) {
+							e1.printStackTrace();
+						}
 					}
 				}
 
@@ -114,12 +133,12 @@ public class ControlPanel extends JPanel {
 		nextButton.setEnabled(false);
 		nextButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				if(pan.fenetre.isResizable()) {
+
+				if (pan.fenetre.isResizable()) {
 					pan.pilot.doPlay();
 					return;
 				}
-				
+
 				if (param.fixedField) {
 					String bonMot = pan.textHandler.mots.get(pan.numeroCourant);
 					// pour tous les masques
@@ -143,7 +162,7 @@ public class ControlPanel extends JPanel {
 					for (Mask m : pan.fenetreMasque) {
 						// si le segment actuel contient le mot actuel
 						if (pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex()).contains(bonMot)
-								&& pan.fenetreMasque.indexOf(m) >= oldNumero ) {
+								&& pan.fenetreMasque.indexOf(m) >= oldNumero) {
 							// faire le traitement comme si on avait rentré le bon mot
 							m.setVisible(false);
 							pan.saisieCorrecte(m, m.start, m.end, bonMot);
