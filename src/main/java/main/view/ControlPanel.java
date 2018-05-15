@@ -5,8 +5,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
+
 import main.Constants;
 import main.Parametres;
 
@@ -37,6 +42,56 @@ public class ControlPanel extends JPanel {
 		previousButton.setEnabled(false);
 		previousButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
+				for (Mask m : pan.fenetreMasque) {
+					if (m.jtf.getBackground().equals(Color.cyan)) {
+						m.jtf.setBackground(Color.white);
+					}
+				}
+
+				// on decremente le numeroCourant du nombre de mot a decouvrir
+				String bonMot = pan.textHandler.mots.get(pan.numeroCourant -= pan.textHandler.motsParSegment
+						.get(pan.pilot.getCurrentPhraseIndex() - 1).size());
+
+				int oldNumero = pan.numeroCourant;
+
+				List<Stock<Integer, Integer, Mask>> toShow = new ArrayList<Stock<Integer, Integer, Mask>>();
+
+				for (Mask m : pan.fenetreMasque) {
+					if (!m.isVisible()) {
+						if (pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex() - 1)
+								.contains(bonMot)) {
+							m.setVisible(true);
+
+							toShow.add(new Stock<Integer, Integer, Mask>(m.start, m.end, m));
+
+							String temp = "";
+							for (int i = 0; i < pan.editorPane.getText().length(); i++) {
+								if (i >= m.start && i < m.end) {
+									temp += param.mysterCarac;
+								} else {
+									temp += pan.editorPane.getText().charAt(i);
+								}
+							}
+							pan.editorPane.setText(temp);
+
+							pan.numeroCourant++;
+							bonMot = pan.textHandler.mots.get(pan.numeroCourant);
+						}
+					}
+				}
+				pan.numeroCourant = oldNumero;
+
+				for (Stock<Integer, Integer, Mask> stock : toShow) {
+					try {
+						System.out.println(stock.a + "/" + stock.b);
+						pan.afficherFrame(stock.a, stock.b, stock.c);
+						pan.replacerMasque(stock.c);
+					} catch (BadLocationException e1) {
+						e1.printStackTrace();
+					}
+				}
+
 				pan.pilot.doPrevious();
 				updateButtons();
 			}
@@ -62,12 +117,50 @@ public class ControlPanel extends JPanel {
 		nextButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				String bonMot = pan.textHandler.mots.get(pan.numeroCourant);
+				if (param.fixedField) {
+					String bonMot = pan.textHandler.mots.get(pan.numeroCourant);
+					// pour tous les masques
+					for (Mask m : pan.fenetreMasque) {
+						// si le masque est visible
+						if (m.isVisible()) {
+							System.out.println(m.start + "/" + m.end);
+							// si le segment actuel contient le mot actuel
+							if (pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex())
+									.contains(bonMot)) {
+								// faire le traitement comme si on avait rentré le bon mot
+								pan.saisieCorrecte(m, m.start, m.end, bonMot, m);
+								// passer au bonMot suivant
+								bonMot = pan.textHandler.mots.get(pan.numeroCourant);
+							}
+						}
+					}
+				} else {
+
+					String bonMot = pan.textHandler.mots.get(pan.numeroCourant);
+					int oldNumero = pan.numeroCourant;
+					// pour tous les masques
+					for (Mask m : pan.fenetreMasque) {
+						// si le segment actuel contient le mot actuel
+						if (pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex()).contains(bonMot)
+								&& pan.fenetreMasque.indexOf(m) >= oldNumero) {
+							// faire le traitement comme si on avait rentré le bon mot
+							m.setVisible(false);
+							pan.saisieCorrecte(m, m.start, m.end, bonMot, m);
+							// passer au bonMot suivant
+							bonMot = pan.textHandler.mots.get(pan.numeroCourant++);
+						}
+
+					}
+					pan.numeroCourant = oldNumero
+							+ pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex()).size();
+				}
+
 				for (Mask m : pan.fenetreMasque) {
 					if (m.isVisible()) {
-						if (pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex()).contains(bonMot)) {
-							pan.saisieCorrecte(m, m.start, m.end, bonMot, m);
-							bonMot = pan.textHandler.mots.get(pan.numeroCourant);
+						try {
+							pan.replacerMasque(m);
+						} catch (BadLocationException e1) {
+							e1.printStackTrace();
 						}
 					}
 				}

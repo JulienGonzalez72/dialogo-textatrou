@@ -297,7 +297,7 @@ public class Panneau extends JDesktopPane {
 	 * numeroCourant
 	 */
 	public void afficherFrame(int start, int end, JInternalFrame masque) throws BadLocationException {
-
+		
 		frame = new JInternalFrame();
 		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
 		frame.setBorder(null);
@@ -481,7 +481,7 @@ public class Panneau extends JDesktopPane {
 	/*
 	 * replace une fenetre invisible
 	 */
-	private void replacerMasque(Mask frame) throws BadLocationException {
+	public void replacerMasque(Mask frame) throws BadLocationException {
 		int start = frame.start;
 		int end = frame.end;
 		Rectangle r = editorPane.modelToView(start).union(editorPane.modelToView(end));
