@@ -1,5 +1,6 @@
 package main.controler;
 
+import java.awt.Color;
 import java.util.List;
 
 import javax.swing.JInternalFrame;
@@ -53,7 +54,7 @@ public class Pilot {
 
 			@Override
 			public void run() {
-						
+
 				/// play du son correspondant au segment N ///
 				controler.play(n);
 				/// attente de la fin du temps de pause ///
@@ -126,13 +127,15 @@ public class Pilot {
 	public void showHole(int n) {
 
 		JInternalFrame masque = null;
-		
+
 		// desactivation de la prochaine fenetre de masque
-		for (JInternalFrame f : p.fenetreMasque) {
-			if (f.isVisible()) {
-				f.setVisible(false);
-				masque = f;
-				break;
+		if (!p.param.fixedField) {
+			for (JInternalFrame f : p.fenetreMasque) {
+				if (f.isVisible()) {
+					f.setVisible(false);
+					masque = f;
+					break;
+				}
 			}
 		}
 
@@ -145,8 +148,17 @@ public class Pilot {
 		}
 
 		if (start2 < end2) {
+			//si la fenetre est fixe on indique quel mot on doit remplir
+			if ( p.param.fixedField) {
+				for (JInternalFrame f : p.fenetreMasque) {
+					if (f.isVisible()) {
+						p.fenetreMasque.get(p.fenetreMasque.indexOf(f)).jtf.setBackground(Color.cyan);
+						break;
+					}
+				}		
+			}
 			try {
-				p.afficherFrame(start2, end2,masque);
+				p.afficherFrame(start2, end2, masque);
 			} catch (BadLocationException e) {
 				e.printStackTrace();
 			}
@@ -162,18 +174,18 @@ public class Pilot {
 	public void showAllHoleInPages(int pageActuelle) {
 		String text = p.editorPane.getText();
 		int oldIndex = 0;
-		//pour tous les mots à trouver
+		// pour tous les mots à trouver
 		for (int i = 0; i < p.textHandler.mots.size(); i++) {
-			
+
 			String bonMot = p.textHandler.mots.get(i);
 			List<Integer> numerosSegments = p.segmentsEnFonctionDeLaPage.get(p.pageActuelle);
-			//pour tous les segments de la page actuelle
+			// pour tous les segments de la page actuelle
 			for (Integer integer : numerosSegments) {
-				//si le segment contient des mots a trouver
+				// si le segment contient des mots a trouver
 				if (p.textHandler.motsParSegment.get(integer) != null) {
-					//pour chacun de ces mots
+					// pour chacun de ces mots
 					for (String s : p.textHandler.motsParSegment.get(integer)) {
-						//si ce mot est egale a un bon mot
+						// si ce mot est egale a un bon mot
 						if (s.equals(bonMot)) {
 							int start2 = text.indexOf(" " + p.param.mysterCarac, oldIndex) + 1;
 							int end2 = start2 + bonMot.length();

@@ -322,10 +322,21 @@ public class Panneau extends JDesktopPane {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				JInternalFrame f2 = null;
 				JTextField jtf = (JTextField) arg0.getSource();
 				String bonMot = textHandler.mots.get(numeroCourant);
 				// Si juste
 				if (jtf.getText().equalsIgnoreCase(bonMot)) {
+					// desactivation de la prochaine fenetre de masque
+					if (param.fixedField) {
+						for (JInternalFrame f : fenetreMasque) {
+							if (f.isVisible()) {
+								f.setVisible(false);
+								f2 = f;
+								break;
+							}
+						}
+					}
 					frame.dispose();
 					editorPane.setEnabled(true);
 					numeroCourant++;
@@ -343,15 +354,24 @@ public class Panneau extends JDesktopPane {
 					}
 					editorPane.setText(r);
 
-					if (fenetreMasque.indexOf(masque) + 1 < fenetreMasque.size()) {
+					if (fenetreMasque.indexOf(masque) + 1 < fenetreMasque.size() && !param.fixedField) {
 						try {
 							replacerMasque(fenetreMasque.get(fenetreMasque.indexOf(masque) + 1));
 						} catch (BadLocationException e) {
 							e.printStackTrace();
 						}
 					}
+					if( fenetreMasque.indexOf(f2) + 1 < fenetreMasque.size() && param.fixedField) {
+						try {
+							replacerMasque(fenetreMasque.get(fenetreMasque.indexOf(f2)+1));
+						} catch (BadLocationException e) {
+							e.printStackTrace();
+						}
+					}
+						
 
-					if (bonMot == textHandler.motsParSegment.get(pilot.getCurrentPhraseIndex()).get(textHandler.motsParSegment.get(pilot.getCurrentPhraseIndex()).size()-1)) {
+					if (bonMot == textHandler.motsParSegment.get(pilot.getCurrentPhraseIndex())
+							.get(textHandler.motsParSegment.get(pilot.getCurrentPhraseIndex()).size() - 1)) {
 						pilot.doNext();
 					} else {
 						pilot.nextHole();
@@ -425,12 +445,10 @@ public class Panneau extends JDesktopPane {
 		return occur;
 	}
 
-	public List<JInternalFrame> fenetreMasque = new ArrayList<>();
-	public List<Integer> fenetreMasqueStart = new ArrayList<>();
-	public List<Integer> fenetreMasqueEnd = new ArrayList<>();
+	public List<Mask> fenetreMasque = new ArrayList<>();
 
 	public void afficherFrameVide(int start, int end) throws BadLocationException {
-		JInternalFrame frame = new JInternalFrame();
+		Mask frame = new Mask();
 		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
 		frame.setBorder(null);
 		fenetre.pan.setLayout(null);
@@ -443,22 +461,24 @@ public class Panneau extends JDesktopPane {
 		jtf.setFont(f);
 		jtf.setHorizontalAlignment(JTextField.CENTER);
 		jtf.setEnabled(false);
+		frame.jtf = jtf;
+		frame.start = start;
+		frame.end = end;
 		frame.add(jtf);
 
 		fenetre.pan.add(frame);
 		frame.setVisible(true);
 		fenetreMasque.add(frame);
-		fenetreMasqueStart.add(start);
-		fenetreMasqueEnd.add(end);
+
 
 	}
 
 	/*
 	 * replace une fenetre invisible
 	 */
-	private void replacerMasque(JInternalFrame frame) throws BadLocationException {
-		int start = fenetreMasqueStart.get(fenetreMasque.indexOf(frame));
-		int end = fenetreMasqueEnd.get(fenetreMasque.indexOf(frame));
+	private void replacerMasque(Mask frame) throws BadLocationException {
+		int start = frame.start;
+		int end = frame.end;
 		Rectangle r = editorPane.modelToView(start).union(editorPane.modelToView(end));
 		frame.setBounds(r.x, r.y, r.width, r.height / 2);
 		frame.setVisible(true);
