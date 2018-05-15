@@ -77,7 +77,7 @@ public class Pilot {
 
 	/**
 	 * Essaye de passer au segment suivant, passe à la page suivante si c'était le
-	 * dernier segment de la page. Déclenche une erreur si on était au dernier
+	 * dernier segment de la page. Affiche le compte rendu si on était au dernier
 	 * segment du texte.
 	 */
 	public void doNext() {

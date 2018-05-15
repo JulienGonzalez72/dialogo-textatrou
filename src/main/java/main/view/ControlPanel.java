@@ -31,7 +31,7 @@ public class ControlPanel extends JPanel {
 	public ControlPanel(Panneau pan, FenetreParametre fen, Parametres param) {
 
 		this.pan = pan;
-		
+
 		add(previousButton);
 		previousButton.setIcon(new ImageIcon(previousIcon));
 		previousButton.setEnabled(false);
@@ -41,7 +41,7 @@ public class ControlPanel extends JPanel {
 				updateButtons();
 			}
 		});
-		
+
 		add(playButton);
 		playButton.setIcon(new ImageIcon(playIcon));
 		playButton.setEnabled(false);
@@ -49,24 +49,34 @@ public class ControlPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (pan.player.isPlaying()) {
 					pan.pilot.doStop();
-				}
-				else {
+				} else {
 					pan.pilot.doPlay();
 				}
 				updateButtons();
 			}
 		});
-		
+
 		add(nextButton);
 		nextButton.setIcon(new ImageIcon(nextIcon));
 		nextButton.setEnabled(false);
 		nextButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
+				String bonMot = pan.textHandler.mots.get(pan.numeroCourant);
+				for (Mask m : pan.fenetreMasque) {
+					if (m.isVisible()) {
+						if (pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex()).contains(bonMot)) {
+							pan.saisieCorrecte(m, m.start, m.end, bonMot, m);
+							bonMot = pan.textHandler.mots.get(pan.numeroCourant);
+						}
+					}
+				}
+
 				pan.pilot.doNext();
 				updateButtons();
 			}
 		});
-		
+
 		add(repeatButton);
 		repeatButton.setIcon(new ImageIcon(repeatIcon));
 		repeatButton.setEnabled(false);
@@ -76,7 +86,7 @@ public class ControlPanel extends JPanel {
 				updateButtons();
 			}
 		});
-		
+
 		JLabel goToLabel = new JLabel("Passer au segment :");
 		goToLabel.setFont(goToLabel.getFont().deriveFont(Font.ITALIC));
 		add(goToLabel);
@@ -94,9 +104,9 @@ public class ControlPanel extends JPanel {
 			updateButtons();
 		});
 
-		//addMenu();
+		// addMenu();
 	}
-	
+
 	/**
 	 * Méthode qui s'exécute lorsque les contrôles sont prêts à être effectifs.
 	 */
@@ -135,9 +145,10 @@ public class ControlPanel extends JPanel {
 		usable = false;
 		updateButtons();
 	}
-	
+
 	/**
-	 * Désactive tous les boutons de la fenêtre de contrôle puis les ré-active après le temps duration.
+	 * Désactive tous les boutons de la fenêtre de contrôle puis les ré-active après
+	 * le temps duration.
 	 */
 	public void disableAll(long duration) {
 		disableAll();

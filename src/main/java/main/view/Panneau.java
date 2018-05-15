@@ -327,49 +327,7 @@ public class Panneau extends JDesktopPane {
 				String bonMot = textHandler.mots.get(numeroCourant);
 				// Si juste
 				if (jtf.getText().equalsIgnoreCase(bonMot)) {
-					// desactivation de la prochaine fenetre de masque
-					if (param.fixedField) {
-						for (JInternalFrame f : fenetreMasque) {
-							if (f.isVisible()) {
-								f.setVisible(false);
-								f2 = f;
-								break;
-							}
-						}
-					}
-					frame.dispose();
-					editorPane.setEnabled(true);
-					numeroCourant++;
-					String temp = editorPane.getText();
-					String r = "";
-					char[] tab = temp.toCharArray();
-					int j = 0;
-					for (int i = 0; i < temp.length(); i++) {
-						if (i >= start && i < end) {
-							r += bonMot.charAt(j);
-							j++;
-						} else {
-							r += tab[i];
-						}
-					}
-					editorPane.setText(r);
-
-					if (fenetreMasque.indexOf(masque) + 1 < fenetreMasque.size() && !param.fixedField) {
-						try {
-							replacerMasque(fenetreMasque.get(fenetreMasque.indexOf(masque) + 1));
-						} catch (BadLocationException e) {
-							e.printStackTrace();
-						}
-					}
-					if( fenetreMasque.indexOf(f2) + 1 < fenetreMasque.size() && param.fixedField) {
-						try {
-							replacerMasque(fenetreMasque.get(fenetreMasque.indexOf(f2)+1));
-						} catch (BadLocationException e) {
-							e.printStackTrace();
-						}
-					}
-						
-
+					saisieCorrecte(f2,start,end,bonMot,masque);
 					if (bonMot == textHandler.motsParSegment.get(pilot.getCurrentPhraseIndex())
 							.get(textHandler.motsParSegment.get(pilot.getCurrentPhraseIndex()).size() - 1)) {
 						pilot.doNext();
@@ -386,6 +344,53 @@ public class Panneau extends JDesktopPane {
 		frame.add(jtf);
 		frame.setVisible(true);
 
+	}
+	
+	
+	//traitement lors d'une bonne saisie de mot
+	public void saisieCorrecte(JInternalFrame f2, int start, int end, String bonMot, JInternalFrame masque) {
+		// desactivation de la prochaine fenetre de masque
+		if (param.fixedField) {
+			for (JInternalFrame f : fenetreMasque) {
+				if (f.isVisible()) {
+					f.setVisible(false);
+					f2 = f;
+					break;
+				}
+			}
+		}
+		frame.dispose();
+		editorPane.setEnabled(true);
+		numeroCourant++;
+		String temp = editorPane.getText();
+		String r = "";
+		char[] tab = temp.toCharArray();
+		int j = 0;
+		for (int i = 0; i < temp.length(); i++) {
+			if (i >= start && i < end) {
+				r += bonMot.charAt(j);
+				j++;
+			} else {
+				r += tab[i];
+			}
+		}
+		editorPane.setText(r);
+
+		if (fenetreMasque.indexOf(masque) + 1 < fenetreMasque.size() && !param.fixedField) {
+			try {
+				replacerMasque(fenetreMasque.get(fenetreMasque.indexOf(masque) + 1));
+			} catch (BadLocationException e) {
+				e.printStackTrace();
+			}
+		}
+		if( fenetreMasque.indexOf(f2) + 1 < fenetreMasque.size() && param.fixedField) {
+			try {
+				replacerMasque(fenetreMasque.get(fenetreMasque.indexOf(f2)+1));
+			} catch (BadLocationException e) {
+				e.printStackTrace();
+			}
+		}
+			
 	}
 
 	public void blink() {
