@@ -50,56 +50,7 @@ public class ControlPanel extends JPanel {
 				if (param.fixedField) {
 					fenetreFixeFlechePrecedente(pan, param);
 				} else {
-					
-					int indexMinimum = pan.fenetreMasque.indexOf(pan.fenetreMasque.get(pan.numeroCourant-pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex()-1).size()));
-					int indexMaximum = indexMinimum + pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex()-1).size();
-									
-					System.out.println(indexMinimum);
-					System.out.println(indexMaximum);
-					
-					for (Mask m : pan.fenetreMasque) {
-						if ( pan.fenetreMasque.indexOf(m) >= indexMinimum && pan.fenetreMasque.indexOf(m) < indexMaximum) {
-							
-							String temp = "";
-							for (int i = 0; i < pan.editorPane.getText().length(); i++) {
-								if (i >= m.start && i < m.end) {
-									temp += param.mysterCarac;
-								} else {
-									temp += pan.editorPane.getText().charAt(i);
-								}
-							}
-							pan.editorPane.setText(temp);
-						}
-						SwingUtilities.invokeLater(new Runnable() {
-							
-							@Override
-							public void run() {
-								try {
-									pan.afficherFrameVide(m.start, m.end, m.page, m.motCouvert);
-								} catch (BadLocationException e1) {
-									e1.printStackTrace();
-								}
-								
-							}
-						});
-					
-					}
-					
-					
-			
-					for (JInternalFrame f : pan.getAllFrames()) {
-						f.dispose();
-					}
-					
-					int reallyOldNumero = pan.numeroCourant;
-					
-					// on decremente le numeroCourant du nombre de mot a decouvrir
-					pan.numeroCourant -= pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex()-1).size();
-
-					pan.numeroCourant += pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex()).indexOf(pan.textHandler.mots.get(reallyOldNumero));
-
-					System.out.println(pan.numeroCourant);
-
+					fenetreNonFixeFlechePrecedente(pan, param);
 				}
 
 				for (Mask m : pan.fenetreMasque) {
@@ -114,6 +65,51 @@ public class ControlPanel extends JPanel {
 
 				pan.pilot.doPrevious();
 				updateButtons();
+			}
+
+			private void fenetreNonFixeFlechePrecedente(Panneau pan, Parametres param) {
+				for (JInternalFrame f : pan.getAllFrames()) {
+					f.dispose();
+				}
+				
+				int indexMinimum = pan.fenetreMasque.indexOf(pan.fenetreMasque.get(pan.numeroCourant
+						- pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex() - 1).size()));
+				int indexMaximum = indexMinimum
+						+ pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex() - 1).size();
+
+				int max = pan.fenetreMasque.size();
+				for (int k = 0; k < max; k++) {
+					if (pan.fenetreMasque.indexOf(pan.fenetreMasque.get(k)) >= indexMinimum
+							&& pan.fenetreMasque.indexOf(pan.fenetreMasque.get(k)) < indexMaximum) {
+
+						String temp = "";
+						for (int i = 0; i < pan.editorPane.getText().length(); i++) {
+							if (i >= pan.fenetreMasque.get(k).start && i < pan.fenetreMasque.get(k).end) {
+								temp += param.mysterCarac;
+							} else {
+								temp += pan.editorPane.getText().charAt(i);
+							}
+						}
+						pan.editorPane.setText(temp);
+					}
+
+					try {
+						pan.afficherFrameVide(pan.fenetreMasque.get(k).start, pan.fenetreMasque.get(k).end,
+								pan.fenetreMasque.get(k).page, pan.fenetreMasque.get(k).motCouvert);
+					} catch (BadLocationException e1) {
+						e1.printStackTrace();
+					}
+
+				}
+
+				int reallyOldNumero = pan.numeroCourant;
+
+				// on decremente le numeroCourant du nombre de mot a decouvrir
+				pan.numeroCourant -= pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex() - 1)
+						.size();
+
+				pan.numeroCourant += pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex())
+						.indexOf(pan.textHandler.mots.get(reallyOldNumero));
 			}
 
 			private void fenetreFixeFlechePrecedente(Panneau pan, Parametres param) {
