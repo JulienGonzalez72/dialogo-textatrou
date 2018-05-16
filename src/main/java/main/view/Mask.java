@@ -7,6 +7,8 @@ public class Mask extends JInternalFrame {
 	public int start;
 	public int end;
 	public JTextField jtf;
+	public int page;
+	public String motCouvert;
 
 	public Mask() {
 	}

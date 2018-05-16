@@ -236,7 +236,7 @@ public class Panneau extends JDesktopPane {
 		if (pageActuelle == page) {
 			return;
 		}
-		boolean onNeRevientPasEnArriere = page >= pageActuelle;
+
 		pageActuelle = page;
 		// mise a jour du titre de la fenêtre
 		fenetre.setTitle("Lexidia - Texte à Trou - Page " + page);
@@ -250,8 +250,22 @@ public class Panneau extends JDesktopPane {
 			texteAfficher += string;
 		}
 		editorPane.setText(texteAfficher.replaceAll("_", param.mysterCarac + ""));
-		if (!fenetre.isResizable() && onNeRevientPasEnArriere) {
-			pilot.showAllHoleInPages(pageActuelle);
+
+		if ( !fenetre.isResizable()) {
+			pilot.showAllHoleInPages();
+		}
+		
+		for (Mask m : fenetreMasque) {
+			if ( m.page == page) {
+				m.setVisible(true);
+				try {
+					replacerMasque(m);
+				} catch (BadLocationException e) {
+					e.printStackTrace();
+				}
+			} else {
+				m.setVisible(false);
+			}
 		}
 	}
 
@@ -335,6 +349,7 @@ public class Panneau extends JDesktopPane {
 					} else {
 						pilot.nextHole();
 					}
+					//frame.dispose();
 				} else {
 					blink();
 					nbErreurs++;
@@ -352,10 +367,9 @@ public class Panneau extends JDesktopPane {
 	public void saisieCorrecte(JInternalFrame f2, int start, int end, String bonMot) {
 		// desactivation de la prochaine fenetre de masque
 		if (param.fixedField) {
-			for (JInternalFrame f : fenetreMasque) {
-				if (f.isVisible()) {
+			for (Mask f : fenetreMasque) {
+				if (f.motCouvert.equals(bonMot)) {
 					f.setVisible(false);
-					break;
 				}
 			}
 		}
@@ -445,7 +459,7 @@ public class Panneau extends JDesktopPane {
 
 	public List<Mask> fenetreMasque = new ArrayList<>();
 
-	public void afficherFrameVide(int start, int end) throws BadLocationException {
+	public void afficherFrameVide(int start, int end,int page, String bonMot) throws BadLocationException {
 		Mask frame = new Mask();
 		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
 		frame.setBorder(null);
@@ -462,13 +476,13 @@ public class Panneau extends JDesktopPane {
 		frame.jtf = jtf;
 		frame.start = start;
 		frame.end = end;
+		frame.page = page;
+		frame.motCouvert = bonMot;
 		frame.add(jtf);
 
 		fenetre.pan.add(frame);
 		frame.setVisible(true);
 		fenetreMasque.add(frame);
-
-
 	}
 
 	/*

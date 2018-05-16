@@ -108,7 +108,7 @@ public class Pilot {
 	 * le début.
 	 */
 	public void doPlay() {
-		showAllHoleInPages(p.pageActuelle);
+		showAllHoleInPages();
 		goTo(p.player.getCurrentPhraseIndex());
 	}
 
@@ -171,13 +171,15 @@ public class Pilot {
 		showHole(p.numeroCourant);
 	}
 
-	public void showAllHoleInPages(int pageActuelle) {
+	//affiche les trous de la page courante
+	public void showAllHoleInPages() {
 		String text = p.editorPane.getText();
 		int oldIndex = 0;
 		// pour tous les mots à trouver
 		for (int i = 0; i < p.textHandler.mots.size(); i++) {
 
 			String bonMot = p.textHandler.mots.get(i);
+			
 			List<Integer> numerosSegments = p.segmentsEnFonctionDeLaPage.get(p.pageActuelle);
 			// pour tous les segments de la page actuelle
 			for (Integer integer : numerosSegments) {
@@ -191,7 +193,7 @@ public class Pilot {
 							int end2 = start2 + bonMot.length();
 							oldIndex = end2;
 							try {
-								p.afficherFrameVide(start2, end2);
+								p.afficherFrameVide(start2, end2,p.pageActuelle,bonMot);
 							} catch (BadLocationException e) {
 								e.printStackTrace();
 							}

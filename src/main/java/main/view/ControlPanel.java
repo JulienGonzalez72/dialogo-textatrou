@@ -47,33 +47,19 @@ public class ControlPanel extends JPanel {
 					}
 				}
 
-				boolean onVaChangerDePage;
-				int premierSegmentPage = pan.segmentsEnFonctionDeLaPage.get(pan.pageActuelle).get(0);
-				onVaChangerDePage = (premierSegmentPage == pan.pilot.getCurrentPhraseIndex());
-				if (onVaChangerDePage) {
+				if (param.fixedField) {
+					fenetreFixeFlechePrecedente(pan, param);
+				} else {
+					
+					int indexMinimum = pan.fenetreMasque.indexOf(pan.fenetreMasque.get(pan.numeroCourant-pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex()-1).size()));
+					int indexMaximum = indexMinimum + pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex()-1).size();
+									
+					System.out.println(indexMinimum);
+					System.out.println(indexMaximum);
+					
 					for (Mask m : pan.fenetreMasque) {
-						if (m.isVisible() || pan.fenetreMasque.indexOf(m) == pan.numeroCourant) {
-							m.setVisible(false);
-						}
-					}
-				}
-
-				// on decremente le numeroCourant du nombre de mot a decouvrir
-				String bonMot = pan.textHandler.mots.get(pan.numeroCourant -= pan.textHandler.motsParSegment
-						.get(pan.pilot.getCurrentPhraseIndex() - 1).size());
-
-				int oldNumero = pan.numeroCourant;
-
-				List<Stock<Integer, Integer, Mask>> toShow = new ArrayList<Stock<Integer, Integer, Mask>>();
-
-				for (Mask m : pan.fenetreMasque) {
-					if (!m.isVisible()) {
-						if (pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex() - 1).contains(bonMot)
-								&& pan.fenetreMasque.indexOf(m) >= oldNumero) {
-							m.setVisible(true);
-
-							toShow.add(new Stock<Integer, Integer, Mask>(m.start, m.end, m));
-
+						if ( pan.fenetreMasque.indexOf(m) >= indexMinimum && pan.fenetreMasque.indexOf(m) < indexMaximum) {
+							
 							String temp = "";
 							for (int i = 0; i < pan.editorPane.getText().length(); i++) {
 								if (i >= m.start && i < m.end) {
@@ -83,20 +69,37 @@ public class ControlPanel extends JPanel {
 								}
 							}
 							pan.editorPane.setText(temp);
-
-							pan.numeroCourant++;
-							bonMot = pan.textHandler.mots.get(pan.numeroCourant);
 						}
+						SwingUtilities.invokeLater(new Runnable() {
+							
+							@Override
+							public void run() {
+								try {
+									pan.afficherFrameVide(m.start, m.end, m.page, m.motCouvert);
+								} catch (BadLocationException e1) {
+									e1.printStackTrace();
+								}
+								
+							}
+						});
+					
 					}
-				}
-				pan.numeroCourant = oldNumero;
+					
+					
+			
+					for (JInternalFrame f : pan.getAllFrames()) {
+						f.dispose();
+					}
+					
+					int reallyOldNumero = pan.numeroCourant;
+					
+					// on decremente le numeroCourant du nombre de mot a decouvrir
+					pan.numeroCourant -= pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex()-1).size();
 
-				for (Stock<Integer, Integer, Mask> stock : toShow) {
-					try {
-						pan.afficherFrame(stock.a, stock.b, stock.c);
-					} catch (BadLocationException e1) {
-						e1.printStackTrace();
-					}
+					pan.numeroCourant += pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex()).indexOf(pan.textHandler.mots.get(reallyOldNumero));
+
+					System.out.println(pan.numeroCourant);
+
 				}
 
 				for (Mask m : pan.fenetreMasque) {
@@ -111,6 +114,46 @@ public class ControlPanel extends JPanel {
 
 				pan.pilot.doPrevious();
 				updateButtons();
+			}
+
+			private void fenetreFixeFlechePrecedente(Panneau pan, Parametres param) {
+				int reallyOldNumero = pan.numeroCourant;
+
+				// on decremente le numeroCourant du nombre de mot a decouvrir
+				String bonMot = pan.textHandler.mots.get(pan.numeroCourant -= pan.textHandler.motsParSegment
+						.get(pan.pilot.getCurrentPhraseIndex() - 1).size());
+
+				int oldNumero = pan.numeroCourant;
+
+				for (Mask m : pan.fenetreMasque) {
+
+					if (pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex() - 1).contains(bonMot)
+							&& pan.fenetreMasque.indexOf(m) >= oldNumero) {
+						m.setVisible(true);
+
+						try {
+							pan.afficherFrame(m.start, m.end, m);
+						} catch (BadLocationException e1) {
+							e1.printStackTrace();
+						}
+
+						String temp = "";
+						for (int i = 0; i < pan.editorPane.getText().length(); i++) {
+							if (i >= m.start && i < m.end) {
+								temp += param.mysterCarac;
+							} else {
+								temp += pan.editorPane.getText().charAt(i);
+							}
+						}
+						pan.editorPane.setText(temp);
+
+						pan.numeroCourant++;
+						bonMot = pan.textHandler.mots.get(pan.numeroCourant);
+					}
+
+				}
+				pan.numeroCourant = oldNumero - pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex())
+						.indexOf(pan.textHandler.mots.get(reallyOldNumero));
 			}
 		});
 
@@ -172,7 +215,9 @@ public class ControlPanel extends JPanel {
 
 					}
 					pan.numeroCourant = oldNumero
-							+ pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex()).size();
+							+ pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex()).size()
+							- pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex())
+									.indexOf(pan.textHandler.mots.get(oldNumero));
 				}
 
 				pan.pilot.doNext();
