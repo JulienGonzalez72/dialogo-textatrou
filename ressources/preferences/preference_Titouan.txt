@@ -1,8 +1,8 @@
 #Sauvegarde
-#Wed May 16 13:59:42 CEST 2018
+#Wed May 16 16:36:39 CEST 2018
 taillePolice=42
 typePolice=OpenDyslexic Bold
-h=400
+h=700
 tempsAttente=0
 y=165
 x=460

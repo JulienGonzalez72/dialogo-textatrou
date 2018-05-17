@@ -179,7 +179,7 @@ public class Pilot {
 		for (int i = 0; i < p.textHandler.mots.size(); i++) {
 
 			String bonMot = p.textHandler.mots.get(i);
-			
+	
 			List<Integer> numerosSegments = p.segmentsEnFonctionDeLaPage.get(p.pageActuelle);
 			// pour tous les segments de la page actuelle
 			for (Integer integer : numerosSegments) {

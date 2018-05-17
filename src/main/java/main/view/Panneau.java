@@ -256,7 +256,7 @@ public class Panneau extends JDesktopPane {
 		}
 		
 		for (Mask m : fenetreMasque) {
-			if ( m.page == page) {
+			if ( m.page == page && fenetreMasque.indexOf(m) >= numeroCourant) {
 				m.setVisible(true);
 				try {
 					replacerMasque(m);
@@ -373,7 +373,9 @@ public class Panneau extends JDesktopPane {
 				}
 			}
 		}
-		frame.dispose();
+		if ( frame != null) {
+			frame.dispose();
+		}
 		editorPane.setEnabled(true);
 		numeroCourant++;
 		String temp = editorPane.getText();

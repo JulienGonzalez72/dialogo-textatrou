@@ -10,6 +10,9 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
+
+import com.alee.extended.dock.DockingPaneLayout;
+
 import main.Constants;
 import main.Parametres;
 
@@ -240,7 +243,12 @@ public class ControlPanel extends JPanel {
 		goToField.addActionListener((ActionEvent e) -> {
 			int n;
 			try {
+				
 				n = Integer.parseInt(goToField.getText()) - 1;
+				if ( n == 0) {
+					pan.pilot.doPlay();
+				}			
+				
 				pan.pilot.goTo(n);
 			} catch (IllegalArgumentException ex) {
 				JOptionPane.showMessageDialog(null, "Numéro de segment incorrect : " + goToField.getText());
