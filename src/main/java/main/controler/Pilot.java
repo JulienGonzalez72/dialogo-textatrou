@@ -1,12 +1,5 @@
 package main.controler;
 
-import java.awt.Color;
-import java.util.List;
-
-import javax.swing.JInternalFrame;
-import javax.swing.SwingUtilities;
-import javax.swing.text.BadLocationException;
-
 import main.Constants;
 import main.model.ReadThread;
 import main.view.Panneau;

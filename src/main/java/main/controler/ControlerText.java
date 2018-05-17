@@ -110,7 +110,7 @@ public class ControlerText {
 					//	getPageOfPhrase(n), w);
 			}
 		}*/
-		p.showAllHoleInPage(page);
+		p.showAllHoleInPage(page, p.pilot.getCurrentPhraseIndex());
 	}
 	
 	public void nextHole() {

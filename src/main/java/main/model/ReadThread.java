@@ -24,7 +24,7 @@ public class ReadThread extends Thread {
 			controler.showHoles(controler.getPageOfPhrase(N));
 			controler.play(N);
 			controler.firstHole();
-			while (controler.hasNextHole()) {
+			while (controler.hasNextHole() && running) {
 				boolean right = controler.waitForFill();
 				if (right) {
 					controler.validCurrentHole();

@@ -512,7 +512,7 @@ public class Panneau extends JDesktopPane {
 		frame.setVisible(true);
 	}
 	
-	public void showAllHoleInPage(int page) {
+	public void showAllHoleInPage(int page, int firstPhrase) {
 		String text = editorPane.getText();
 		int oldIndex = 0;
 		// pour tous les mots à trouver
@@ -524,7 +524,7 @@ public class Panneau extends JDesktopPane {
 			// pour tous les segments de la page actuelle
 			for (Integer integer : numerosSegments) {
 				// si le segment contient des mots a trouver
-				if (textHandler.motsParSegment.get(integer) != null) {
+				if (textHandler.motsParSegment.get(integer) != null && integer >= firstPhrase) {
 					// pour chacun de ces mots
 					for (String s : textHandler.motsParSegment.get(integer)) {
 						// si ce mot est egale a un bon mot
@@ -560,14 +560,25 @@ public class Panneau extends JDesktopPane {
 	public void validHole(int phrase, int hole) {
 		Mask m = getHole(phrase, hole);
 		m.setVisible(false);
-		System.out.println(m.motCouvert);
 		saisieCorrecte(m.start, m.end, m.motCouvert);
+		activeMasks.remove(m);
+		replaceMasks();
+	}
+	
+	public void replaceMasks() {
+		for (Mask m : activeMasks) {
+			try {
+				replacerMasque(m);
+			} catch (BadLocationException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public Mask getHole(int phrase, int hole) {
 		List<Mask> masks = getMasks(phrase);
 		Collections.sort(masks, new Mask.PositionComparator());
-		return hole < masks.size() ? masks.get(hole) : null;
+		return 0 < masks.size() ? masks.get(0) : null;
 	}
 	
 	public List<Mask> getMasks(int phrase) {
