@@ -49,6 +49,8 @@ public class Panneau extends JDesktopPane {
 	 */
 	public JProgressBar progressBar;
 
+	public JPanel panelSud;
+
 	public Panneau(Fenetre fenetre, FenetreParametre fenetreParam, Parametres param) throws IOException {
 		this.fenetre = fenetre;
 		this.controlerGlobal = new ControlerText(this);
@@ -56,6 +58,7 @@ public class Panneau extends JDesktopPane {
 		this.fenetreParam = fenetreParam;
 		this.controlerGlobal = new ControlerText(this);
 		this.fenetre = fenetre;
+		this.pilot = new Pilot(this);
 		String texteCesures = getTextFromFile("ressources/textes/" + Constants.TEXT_FILE_NAME);
 		/// enlève la consigne ///
 		if (Constants.HAS_INSTRUCTIONS) {
@@ -70,16 +73,11 @@ public class Panneau extends JDesktopPane {
 
 		nbMotsDansLaPage = Panneau.stringOccur(textHandler.txt, " _");
 
-		JPanel panelSud = new JPanel(new GridLayout(2, 1));
+		panelSud = new JPanel();
 
 		progressBar = new JProgressBar(0, (textHandler.getPhrasesCount() - 1));
 		progressBar.setStringPainted(true);
-		
 		progressBar.setForeground(Color.GREEN);
-		panelFenetreFixe = new JDesktopPane();
-		panelSud.add(panelFenetreFixe,BorderLayout.CENTER);
-		panelSud.add(progressBar, BorderLayout.SOUTH);		
-		add(panelSud, BorderLayout.SOUTH);
 
 	}
 
@@ -106,7 +104,6 @@ public class Panneau extends JDesktopPane {
 
 		controlPanel = fenetreParam.controlPanel;
 		fenetreParam.controlPanel.init();
-		this.pilot = new Pilot(this);
 
 		controlerKey = new ControlerKey(pilot);
 		editorPane.addKeyListener(controlerKey);
@@ -182,7 +179,6 @@ public class Panneau extends JDesktopPane {
 		int lastOffset = 0;
 		int page = 1;
 		int lastPhrase = startPhrase - 1;
-		editorPane.texteReel = text;
 		while (lastPhrase < textHandler.getPhrasesCount()) {
 			List<Integer> phrases = new ArrayList<>();
 			editorPane.setText(text);
@@ -240,8 +236,9 @@ public class Panneau extends JDesktopPane {
 		if (pageActuelle == page) {
 			return;
 		}
+
 		pageActuelle = page;
-		// misea jour du titre de la fenêtre
+		// mise a jour du titre de la fenêtre
 		fenetre.setTitle("Lexidia - Texte à Trou - Page " + page);
 		String texteAfficher = "";
 		// on recupere les segments a afficher dans la page
@@ -253,7 +250,23 @@ public class Panneau extends JDesktopPane {
 			texteAfficher += string;
 		}
 		editorPane.setText(texteAfficher.replaceAll("_", param.mysterCarac + ""));
-		editorPane.texteReel = texteAfficher.replaceAll("_", param.mysterCarac + "");
+
+		if ( !fenetre.isResizable()) {
+			pilot.showAllHoleInPages();
+		}
+		
+		for (Mask m : fenetreMasque) {
+			if ( m.page == page && fenetreMasque.indexOf(m) >= numeroCourant) {
+				m.setVisible(true);
+				try {
+					replacerMasque(m);
+				} catch (BadLocationException e) {
+					e.printStackTrace();
+				}
+			} else {
+				m.setVisible(false);
+			}
+		}
 	}
 
 	public boolean pageFinis() {
@@ -298,10 +311,8 @@ public class Panneau extends JDesktopPane {
 	 * Affiche une fenetre correspondant au mot délimité par start et end, d'indice
 	 * numeroCourant
 	 */
-	public void afficherFrame(int start, int end) throws BadLocationException {
-
-		editorPane.setEnabled(false);
-
+	public void afficherFrame(int start, int end, JInternalFrame masque) throws BadLocationException {
+		
 		frame = new JInternalFrame();
 		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
 		frame.setBorder(null);
@@ -326,38 +337,19 @@ public class Panneau extends JDesktopPane {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				JInternalFrame f2 = null;
 				JTextField jtf = (JTextField) arg0.getSource();
 				String bonMot = textHandler.mots.get(numeroCourant);
 				// Si juste
 				if (jtf.getText().equalsIgnoreCase(bonMot)) {
-					frame.dispose();
-					editorPane.setEnabled(true);
-					numeroCourant++;
-					String temp = editorPane.getText();
-					String temp2 = editorPane.texteReel;
-					String r = "";
-					String r2 = "";
-					char[] tab = temp.toCharArray();
-					char[] tab2 = temp2.toCharArray();
-					int j = 0;
-					for (int i = 0; i < temp.length(); i++) {
-						if (i >= start && i < end) {
-							r += bonMot.toCharArray()[j];
-							r2 += bonMot.toCharArray()[j];
-							j++;
-						} else {
-							r += tab[i];
-							r2 += tab2[i];
-						}
-					}
-					editorPane.setText(r);
-					editorPane.texteReel = r2;
-					String temp3 = textHandler.txt.substring(end);
-					if (temp3.indexOf('/') < temp3.indexOf(" _") || temp3.indexOf(" _") == -1) {
+					saisieCorrecte(f2,start,end,bonMot);
+					if (bonMot == textHandler.motsParSegment.get(pilot.getCurrentPhraseIndex())
+							.get(textHandler.motsParSegment.get(pilot.getCurrentPhraseIndex()).size() - 1)) {
 						pilot.doNext();
 					} else {
 						pilot.nextHole();
 					}
+					//frame.dispose();
 				} else {
 					blink();
 					nbErreurs++;
@@ -368,6 +360,46 @@ public class Panneau extends JDesktopPane {
 		frame.add(jtf);
 		frame.setVisible(true);
 
+	}
+	
+	
+	//traitement lors d'une bonne saisie de mot
+	public void saisieCorrecte(JInternalFrame f2, int start, int end, String bonMot) {
+		// desactivation de la prochaine fenetre de masque
+		if (param.fixedField) {
+			for (Mask f : fenetreMasque) {
+				if (f.motCouvert.equals(bonMot)) {
+					f.setVisible(false);
+				}
+			}
+		}
+		if ( frame != null) {
+			frame.dispose();
+		}
+		editorPane.setEnabled(true);
+		numeroCourant++;
+		String temp = editorPane.getText();
+		String r = "";
+		char[] tab = temp.toCharArray();
+		int j = 0;
+		for (int i = 0; i < temp.length(); i++) {
+			if (i >= start && i < end) {
+				r += bonMot.charAt(j);
+				j++;
+			} else {
+				r += tab[i];
+			}
+		}
+		editorPane.setText(r);
+		for (Mask m : fenetreMasque) {
+			if (m.isVisible()) {
+				try {
+					replacerMasque(m);
+				} catch (BadLocationException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}		
 	}
 
 	public void blink() {
@@ -425,6 +457,45 @@ public class Panneau extends JDesktopPane {
 			occur++;
 		}
 		return occur;
+	}
+
+	public List<Mask> fenetreMasque = new ArrayList<>();
+
+	public void afficherFrameVide(int start, int end,int page, String bonMot) throws BadLocationException {
+		Mask frame = new Mask();
+		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
+		frame.setBorder(null);
+		fenetre.pan.setLayout(null);
+		Rectangle r = editorPane.modelToView(start).union(editorPane.modelToView(end));
+		frame.setBounds(r.x, r.y, r.width, r.height / 2);
+
+		JTextField jtf = new JTextField();
+		Font f = new Font(editorPane.getFont().getFontName(), editorPane.getFont().getStyle(),
+				editorPane.getFont().getSize() / 2);
+		jtf.setFont(f);
+		jtf.setHorizontalAlignment(JTextField.CENTER);
+		jtf.setEnabled(false);
+		frame.jtf = jtf;
+		frame.start = start;
+		frame.end = end;
+		frame.page = page;
+		frame.motCouvert = bonMot;
+		frame.add(jtf);
+
+		fenetre.pan.add(frame);
+		frame.setVisible(true);
+		fenetreMasque.add(frame);
+	}
+
+	/*
+	 * replace une fenetre invisible, la rendnat visible
+	 */
+	public void replacerMasque(Mask frame) throws BadLocationException {
+		int start = frame.start;
+		int end = frame.end;
+		Rectangle r = editorPane.modelToView(start).union(editorPane.modelToView(end));
+		frame.setBounds(r.x, r.y, r.width, r.height / 2);
+		frame.setVisible(true);
 	}
 
 }

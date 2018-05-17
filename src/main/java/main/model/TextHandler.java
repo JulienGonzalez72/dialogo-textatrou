@@ -32,6 +32,8 @@ public class TextHandler {
 		for (String phrase : txt.split(Constants.PAUSE)) {
 			phrases.put(phrases.size(), phrase);
 		}
+		System.out.println(mots.toString());
+		System.out.println(motsParSegment.toString());
 	}
 
 	private void remplirMots(String s) {
@@ -63,13 +65,11 @@ public class TextHandler {
 				numero++;
 			}
 		}	
-		System.out.println(mots.toString());
-		System.out.println(motsParSegment.toString());
 	}
 
 	private String format(String str) {
 		String r = "";
-		String temp = str.replace(" /", "/").replaceAll("]/", "] /");
+		String temp = str.replace(" /", "/");
 		char[] tab = temp.toCharArray();
 		boolean dansCrochet = false;
 		for (int i = 0; i < tab.length; i++) {
@@ -84,7 +84,7 @@ public class TextHandler {
 				r += '_';
 			} else {
 				r += tab[i];
-			}
+			}	
 		}
 		return r;
 	}
@@ -104,7 +104,8 @@ public class TextHandler {
 				i++;
 			}
 			if (dansCrochet) {
-				r += '_';
+				//r += '_';
+				r += tab[i];
 			} else {
 				r += tab[i];
 			}
