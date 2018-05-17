@@ -160,14 +160,10 @@ public class FenetreParametre extends JFrame {
 			waitSlider.addChangeListener(controleur);
 
 			JPanel panelSud = new JPanel(new GridLayout(6, 1));
-<<<<<<< HEAD
-			rejouerSon = fastCheckBox("Rejouer les phrases si erreur", controleur);
-			rejouerSon.setSelected(true);
-=======
 			//panelSud.add(new JLabel());
 			fixedField = fastCheckBox("Fenêtre de saisie fixe", controleur);
 			fixedField.setSelected(true);
->>>>>>> 29287af35bcb5159c3013a010bd9ceb1032dc64b
+			
 			JPanel temp = new JPanel();
 			temp.add(fixedField);
 			panelSud.add(temp);
@@ -269,7 +265,9 @@ public class FenetreParametre extends JFrame {
 					boolean isSelected, boolean cellHasFocus) {
 				list.setBackground(stringToColor((String) value));
 				list.setSelectionBackground(stringToColor((String) value));
-				list.setFont(list.getFont().deriveFont(isSelected ? SELECTED_FONT_SIZE : NORMAL_FONT_SIZE));
+				list.setFont(list.getFont()
+						.deriveFont(isSelected ? SELECTED_FONT_SIZE : NORMAL_FONT_SIZE)
+						.deriveFont(isSelected ? Font.BOLD : Font.PLAIN));
 				renderer.setHorizontalAlignment(SwingConstants.CENTER);
 				renderer.setPreferredSize(new Dimension(0, Constants.COMBOBOX_CELL_HEIGHT));
 				return renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
