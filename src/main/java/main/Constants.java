@@ -70,15 +70,15 @@ public final class Constants {
 	/**
 	 * Nom du texte de l'exercice courant
 	 */
-	public static final String TEXT_FILE_NAME = "Amélie la sorcière.txt";
+	public static final String TEXT_FILE_NAME = "Aha take on me.txt";
 	/**
 	 * Nom de l'audio de l'exercice courant
 	 */
-	public static final String AUDIO_FILE_NAME = "T Amélie la sorcière";
+	public static final String AUDIO_FILE_NAME = "Aha take on me";
 	/**
 	 * Indique si l'exercice courant à une consigne dans son texte
 	 */
-	public static final boolean HAS_INSTRUCTIONS = true;
+	public static final boolean HAS_INSTRUCTIONS = false;
 
 	/**
 	 * Intervalle de temps sans clic possible après un appuie sur la touche gauche

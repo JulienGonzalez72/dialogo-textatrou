@@ -31,7 +31,7 @@ public class FenetreParametre extends JFrame {
 		param.titre = titre;
 		param.tailleX = tailleX;
 		param.tailleY = tailleY;
-		param.mysterCarac = '▒';
+		param.mysterCarac = '_';
 		setTitle(titre);
 		setSize(tailleX, tailleY);
 		setLocationRelativeTo(null);
@@ -129,7 +129,7 @@ public class FenetreParametre extends JFrame {
 					new Font("OpenDyslexic", Font.PLAIN, 15), "1");
 			segmentDeDepart.addActionListener(controleur);
 
-			JLabel mysterCarac = fastLabel("Caractere à trouver");
+			JLabel mysterCarac = fastLabel("Caractère à trouver :");
 			champMysterCarac = fastTextField("", new Font("OpenDyslexic", Font.PLAIN, 15), "_");
 			champMysterCarac.addActionListener(controleur);
 
@@ -160,17 +160,10 @@ public class FenetreParametre extends JFrame {
 			waitSlider.addChangeListener(controleur);
 
 			JPanel panelSud = new JPanel(new GridLayout(6, 1));
-<<<<<<< HEAD
-			//panelSud.add(new JLabel());
-			fixedField = fastCheckBox("Fen�tre de saisie fixe", controleur);
-			fixedField.setSelected(true);
 			
-=======
-
 			fixedField = fastCheckBox("Fenêtre de saisie fixe", controleur);
 			fixedField.setSelected(true);
-
->>>>>>> 61daa1220b7d6d9a80b6b5184b86c0fdbfd4b66c
+			
 			JPanel temp = new JPanel();
 			temp.add(fixedField);
 			panelSud.add(temp);

@@ -44,7 +44,7 @@ public class ControlPanel extends JPanel {
 		previousButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				for (Mask m : pan.fenetreMasque) {
+				/*for (Mask m : pan.fenetreMasque) {
 					if (m.jtf.getBackground().equals(Color.cyan)) {
 						m.jtf.setBackground(Color.white);
 					}
@@ -64,13 +64,13 @@ public class ControlPanel extends JPanel {
 							e1.printStackTrace();
 						}
 					}
-				}
+				}*/
 
 				pan.pilot.doPrevious();
 				updateButtons();
 			}
 
-			private void fenetreNonFixeFlechePrecedente(Panneau pan, Parametres param) {
+			/*private void fenetreNonFixeFlechePrecedente(Panneau pan, Parametres param) {
 				for (JInternalFrame f : pan.getAllFrames()) {
 					f.dispose();
 				}
@@ -153,7 +153,7 @@ public class ControlPanel extends JPanel {
 				}
 				pan.numeroCourant = oldNumero - pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex())
 						.indexOf(pan.textHandler.mots.get(reallyOldNumero));
-			}
+			}*/
 		});
 
 		add(playButton);
@@ -176,7 +176,7 @@ public class ControlPanel extends JPanel {
 		nextButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				if (pan.fenetre.isResizable()) {
+				/*if (pan.fenetre.isResizable()) {
 					pan.pilot.doPlay();
 					return;
 				}
@@ -217,7 +217,7 @@ public class ControlPanel extends JPanel {
 							+ pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex()).size()
 							- pan.textHandler.motsParSegment.get(pan.pilot.getCurrentPhraseIndex())
 									.indexOf(pan.textHandler.mots.get(oldNumero));
-				}
+				}*/
 
 				pan.pilot.doNext();
 				updateButtons();
@@ -245,9 +245,9 @@ public class ControlPanel extends JPanel {
 			try {
 				
 				n = Integer.parseInt(goToField.getText()) - 1;
-				if ( n == 0) {
+				/*if ( n == 0) {
 					pan.pilot.doPlay();
-				}			
+				}*/
 				
 				pan.pilot.goTo(n);
 			} catch (IllegalArgumentException ex) {

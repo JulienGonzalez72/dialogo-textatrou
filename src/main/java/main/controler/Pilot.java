@@ -8,10 +8,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 
 import main.Constants;
+import main.model.ReadThread;
 import main.view.Panneau;
 
 public class Pilot {
 
+	private ReadThread activeThread;
 	private Panneau p;
 	private ControlerText controler;
 	/**
@@ -34,7 +36,7 @@ public class Pilot {
 
 		p.param.stockerPreference();
 		phrase = n;
-		/// désacive la taille et la police et le segment de départ
+		/// désactive la taille et la police et le segment de départ ///
 		p.fenetreParam.pan.fontFamilyComboBox.setEnabled(false);
 		p.fenetreParam.pan.fontSizeComboBox.setEnabled(false);
 		p.fenetreParam.pan.segmentDeDepart.setEnabled(false);
@@ -47,9 +49,28 @@ public class Pilot {
 
 		// met a jour la barre de progression
 		updateBar();
-
-		controler.showPage(controler.getPageOfPhrase(n));
-
+		
+		if (activeThread != null) {
+			activeThread.doStop();
+		}
+		activeThread = new ReadThread(controler, n);
+		activeThread.onPhraseEnd.add(new Runnable() {
+			public void run() {
+				phrase = activeThread.N;
+				/// fin du dernier segment du texte ///
+				if (phrase == p.textHandler.getPhrasesCount() - 1) {
+					p.afficherCompteRendu();
+				}
+				/// met à jour la barre de progression ///
+				/*else {
+					updateBar();
+				}*/
+			}
+		});
+		activeThread.start();
+		
+		/*controler.showPage(controler.getPageOfPhrase(n));
+		
 		SwingUtilities.invokeLater(new Runnable() {
 
 			@Override
@@ -66,7 +87,7 @@ public class Pilot {
 					nextHole();
 				}
 			}
-		});
+		});*/
 
 	}
 
@@ -108,7 +129,7 @@ public class Pilot {
 	 * le début.
 	 */
 	public void doPlay() {
-		showAllHoleInPages();
+		//showAllHoleInPages();
 		goTo(p.player.getCurrentPhraseIndex());
 	}
 
@@ -124,13 +145,13 @@ public class Pilot {
 		return p.player.hasPreviousPhrase();
 	}
 
-	public void showHole(int n) {
+	/*public void showHole(int n) {
 
 		JInternalFrame masque = null;
 
 		// desactivation de la prochaine fenetre de masque
 		if (!p.param.fixedField) {
-			for (JInternalFrame f : p.fenetreMasque) {
+			for (JInternalFrame f : p.activeMasks) {
 				if (f.isVisible()) {
 					f.setVisible(false);
 					masque = f;
@@ -150,9 +171,9 @@ public class Pilot {
 		if (start2 < end2) {
 			//si la fenetre est fixe on indique quel mot on doit remplir
 			if ( p.param.fixedField) {
-				for (JInternalFrame f : p.fenetreMasque) {
+				for (JInternalFrame f : p.activeMasks) {
 					if (f.isVisible()) {
-						p.fenetreMasque.get(p.fenetreMasque.indexOf(f)).jtf.setBackground(Color.cyan);
+						p.activeMasks.get(p.activeMasks.indexOf(f)).jtf.setBackground(Color.cyan);
 						break;
 					}
 				}		
@@ -169,10 +190,10 @@ public class Pilot {
 
 	public void nextHole() {
 		showHole(p.numeroCourant);
-	}
+	}*/
 
 	//affiche les trous de la page courante
-	public void showAllHoleInPages() {
+	/*public void showAllHoleInPages() {
 		String text = p.editorPane.getText();
 		int oldIndex = 0;
 		// pour tous les mots à trouver
@@ -192,11 +213,7 @@ public class Pilot {
 							int start2 = text.indexOf(" " + p.param.mysterCarac, oldIndex) + 1;
 							int end2 = start2 + bonMot.length();
 							oldIndex = end2;
-							try {
-								p.afficherFrameVide(start2, end2,p.pageActuelle,bonMot);
-							} catch (BadLocationException e) {
-								e.printStackTrace();
-							}
+							p.afficherFrameVide(start2, end2,p.pageActuelle,bonMot);
 
 						}
 					}
@@ -204,6 +221,6 @@ public class Pilot {
 			}
 
 		}
-	}
+	}*/
 
 }
