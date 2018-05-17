@@ -9,6 +9,7 @@ public class Mask extends JInternalFrame {
 	public JTextField jtf;
 	public int page;
 	public String motCouvert;
+	
 
 	public Mask() {
 	}
@@ -18,5 +19,7 @@ public class Mask extends JInternalFrame {
 		this.end = end;
 		this.jtf = jtf;
 	}
+	
+
 
 }

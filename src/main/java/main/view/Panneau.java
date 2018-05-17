@@ -16,6 +16,7 @@ import main.controler.ControlerText;
 import main.controler.Pilot;
 import main.Parametres;
 import main.controler.ControlerKey;
+import main.model.Lecteur;
 import main.model.Player;
 import main.model.TextHandler;
 
@@ -41,6 +42,7 @@ public class Panneau extends JDesktopPane {
 	public Player player;
 	public FenetreParametre fenetreParam;
 	public Parametres param;
+	public Lecteur lecteur = new Lecteur(this,0);
 	public int numeroCourant = 0;
 	int nbMotsDansLaPage;
 
@@ -53,7 +55,6 @@ public class Panneau extends JDesktopPane {
 
 	public Panneau(Fenetre fenetre, FenetreParametre fenetreParam, Parametres param) throws IOException {
 		this.fenetre = fenetre;
-		this.controlerGlobal = new ControlerText(this);
 		this.param = param;
 		this.fenetreParam = fenetreParam;
 		this.controlerGlobal = new ControlerText(this);
@@ -343,13 +344,6 @@ public class Panneau extends JDesktopPane {
 				// Si juste
 				if (jtf.getText().equalsIgnoreCase(bonMot)) {
 					saisieCorrecte(f2,start,end,bonMot);
-					if (bonMot == textHandler.motsParSegment.get(pilot.getCurrentPhraseIndex())
-							.get(textHandler.motsParSegment.get(pilot.getCurrentPhraseIndex()).size() - 1)) {
-						pilot.doNext();
-					} else {
-						pilot.nextHole();
-					}
-					//frame.dispose();
 				} else {
 					blink();
 					nbErreurs++;
@@ -378,6 +372,12 @@ public class Panneau extends JDesktopPane {
 		}
 		editorPane.setEnabled(true);
 		numeroCourant++;
+		
+		//on passe au segment suivant si on change de segment
+		if ( changementSegment()) {
+			pilot.phrase++;
+		}
+		
 		String temp = editorPane.getText();
 		String r = "";
 		char[] tab = temp.toCharArray();
@@ -399,7 +399,35 @@ public class Panneau extends JDesktopPane {
 					e1.printStackTrace();
 				}
 			}
-		}		
+		}	
+		
+		//on reprend le lecteur
+		synchronized (lecteur.lock) {
+			lecteur.lock.notify();
+			lecteur.notified = true;
+		}
+	}
+
+	public boolean changementSegment() {
+
+		int segmentMotPrecedent = -1;
+		for (int i =0;i < textHandler.motsParSegment.size();i++) {
+			if ( textHandler.motsParSegment.get(i).contains(textHandler.mots.get(numeroCourant-1))) {
+				segmentMotPrecedent = i;
+				break;
+			}
+		}
+		
+		
+		int segmentMotActuel = -1;
+		for (int i =0;i < textHandler.motsParSegment.size();i++) {
+			if ( textHandler.motsParSegment.get(i).contains(textHandler.mots.get(numeroCourant))) {
+				segmentMotActuel = i;
+				break;
+			}
+		}
+		
+		return segmentMotPrecedent != segmentMotActuel;
 	}
 
 	public void blink() {
@@ -496,6 +524,17 @@ public class Panneau extends JDesktopPane {
 		Rectangle r = editorPane.modelToView(start).union(editorPane.modelToView(end));
 		frame.setBounds(r.x, r.y, r.width, r.height / 2);
 		frame.setVisible(true);
+	}
+	
+	//donne le numeor d'un masque
+	public int getNumero(Mask m) {
+		int i = -1;
+		for (int j =0; j < textHandler.mots.size();j++) {
+			if (textHandler.mots.get(j) == m.motCouvert) {
+				i = j;
+			}
+		}
+		return i;
 	}
 
 }

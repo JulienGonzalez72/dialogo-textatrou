@@ -2,22 +2,22 @@ package main.controler;
 
 import java.awt.Color;
 import java.util.List;
-
-import javax.swing.JInternalFrame;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.text.BadLocationException;
-
 import main.Constants;
+import main.model.Lecteur;
+import main.model.TextHandler;
+import main.view.Mask;
 import main.view.Panneau;
 
 public class Pilot {
 
 	private Panneau p;
-	private ControlerText controler;
+	public ControlerText controler;
 	/**
 	 * Segment actuel
 	 */
-	private int phrase;
+	public int phrase;
 
 	public Pilot(Panneau p) {
 		this.p = p;
@@ -50,23 +50,10 @@ public class Pilot {
 
 		controler.showPage(controler.getPageOfPhrase(n));
 
-		SwingUtilities.invokeLater(new Runnable() {
-
-			@Override
-			public void run() {
-
-				/// play du son correspondant au segment N ///
-				controler.play(n);
-				/// attente de la fin du temps de pause ///
-				controler.doWait(controler.getCurrentWaitTime(), Constants.CURSOR_SPEAK);
-
-				if (p.textHandler.motsParSegment.get(n).isEmpty()) {
-					doNext();
-				} else {
-					nextHole();
-				}
-			}
-		});
+		/// play du son correspondant au segment N ///
+		controler.play(n);
+		/// attente de la fin du temps de pause ///
+		controler.doWait(controler.getCurrentWaitTime(), Constants.CURSOR_SPEAK);
 
 	}
 
@@ -81,18 +68,17 @@ public class Pilot {
 	 * segment du texte.
 	 */
 	public void doNext() {
-		try {
-			goTo(p.player.getCurrentPhraseIndex() + 1);
-		} catch (IllegalArgumentException e) {
-			p.afficherCompteRendu();
-		}
+	
+		  try { goTo(p.player.getCurrentPhraseIndex() + 1); } catch
+		  (IllegalArgumentException e) { p.afficherCompteRendu(); }
+		 
 	}
 
 	/**
 	 * Essaye de passer au segment précédent. Déclenche une erreur si on était au
 	 * premier segment du texte.
 	 */
-	public void doPrevious() {	
+	public void doPrevious() {
 		goTo(p.player.getCurrentPhraseIndex() - 1);
 	}
 
@@ -109,6 +95,11 @@ public class Pilot {
 	 */
 	public void doPlay() {
 		showAllHoleInPages();
+
+		if (p.player.getCurrentPhraseIndex() == 0 && !p.lecteur.isAlive()) {
+			p.lecteur.start();
+		}
+
 		goTo(p.player.getCurrentPhraseIndex());
 	}
 
@@ -148,22 +139,20 @@ public class Pilot {
 		}
 
 		if (start2 < end2) {
-			//si la fenetre est fixe on indique quel mot on doit remplir
-			if ( p.param.fixedField) {
+			// si la fenetre est fixe on indique quel mot on doit remplir
+			if (p.param.fixedField) {
 				for (JInternalFrame f : p.fenetreMasque) {
 					if (f.isVisible()) {
 						p.fenetreMasque.get(p.fenetreMasque.indexOf(f)).jtf.setBackground(Color.cyan);
 						break;
 					}
-				}		
+				}
 			}
 			try {
 				p.afficherFrame(start2, end2, masque);
 			} catch (BadLocationException e) {
 				e.printStackTrace();
 			}
-		} else {
-			doNext();
 		}
 	}
 
@@ -171,7 +160,7 @@ public class Pilot {
 		showHole(p.numeroCourant);
 	}
 
-	//affiche les trous de la page courante
+	// affiche les trous de la page courante
 	public void showAllHoleInPages() {
 		String text = p.editorPane.getText();
 		int oldIndex = 0;
@@ -179,7 +168,7 @@ public class Pilot {
 		for (int i = 0; i < p.textHandler.mots.size(); i++) {
 
 			String bonMot = p.textHandler.mots.get(i);
-	
+
 			List<Integer> numerosSegments = p.segmentsEnFonctionDeLaPage.get(p.pageActuelle);
 			// pour tous les segments de la page actuelle
 			for (Integer integer : numerosSegments) {
@@ -193,7 +182,7 @@ public class Pilot {
 							int end2 = start2 + bonMot.length();
 							oldIndex = end2;
 							try {
-								p.afficherFrameVide(start2, end2,p.pageActuelle,bonMot);
+								p.afficherFrameVide(start2, end2, p.pageActuelle, bonMot);
 							} catch (BadLocationException e) {
 								e.printStackTrace();
 							}
