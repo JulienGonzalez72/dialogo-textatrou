@@ -221,7 +221,26 @@ public class TextHandler {
 	public int getAbsoluteOffset(int startPhrase, int offset) {
 		return getPhrasesLength(0, startPhrase - 1) + offset;
 	}
-
+	
+	/**
+	 * Retourne une liste des mots à trouver par segment.
+	 */
+	public List<String> getHidedWords(int phrase) {
+		return motsParSegment.get(phrase);
+	}
+	
+	public int getStartOffset(String expression, int phrase) {
+		return getPhrasesLength(0, phrase - 1) + phrases.get(phrase).indexOf(expression);
+	}
+	
+	public int getEndOffset(String expression, int phrase) {
+		return getStartOffset(expression, phrase) + expression.length();
+	}
+	
+	public int getHolesCount(int phrase) {
+		return motsParSegment.get(phrase).size();
+	}
+	
 	/**
 	 * Ceci est l'opération inverse, elle permet d'obtenir la position par rapport
 	 * au premier segment affiché avec la position du caractère dans tout le texte.
@@ -236,6 +255,11 @@ public class TextHandler {
 			length += phrase.length();
 		}
 		return length;
+	}
+	
+	@Override
+	public String toString() {
+		return txt;
 	}
 
 }
