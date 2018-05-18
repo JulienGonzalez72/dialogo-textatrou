@@ -1,17 +1,11 @@
 package main.view;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.event.*;
+import java.io.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.text.BadLocationException;
-import main.Constants;
-import main.Parametres;
+import main.*;
 import main.model.Lecteur;
 
 public class ControlPanel extends JPanel {
@@ -82,11 +76,9 @@ public class ControlPanel extends JPanel {
 		goToField.addActionListener((ActionEvent e) -> {
 			gotoMagiqueAvancer(pan, -1);
 		});
-
-		// addMenu();
 	}
 
-	// appeler avec -1 si on lance le goto avec le goto
+	// appeler avec -1 si on lance le goto avec le gotoField
 	private void gotoMagiqueAvancer(Panneau pan, int numeroSegment) {
 
 		int n;
@@ -100,43 +92,42 @@ public class ControlPanel extends JPanel {
 				n = Integer.parseInt(goToField.getText()) - 1;
 			} else {
 				n = numeroSegment;
-			}
-
-			int page = -1;
-			for (int i = 1; i <= pan.segmentsEnFonctionDeLaPage.size(); i++) {
-				if (pan.segmentsEnFonctionDeLaPage.get(i).contains(n)) {
-					page = i;
-					System.out.println("Nouvelle page = " + page);
-					break;
-				}
-			}
-
+			}			
+			
 			// on met a jour le numeroCourant et le numero de segment;
 			String s = null;
-			int tempI = n;
 			while (s == null) {
 				try {
-					s = pan.textHandler.motsParSegment.get(tempI).get(0);
+					s = pan.textHandler.motsParSegment.get(n).get(0);
 				} catch (Exception e2) {
-					tempI++;
+					n++;
 				}
 			}
-
+			
 			for (int i = 0; i < pan.textHandler.mots.size(); i++) {
 				if (pan.textHandler.mots.get(i) == s) {
 					pan.numeroCourant = i;
 					break;
 				}
 			}
-			// phrase = le nuemro de segment
+			
+			int page = -1;
+			for (int i = 1; i <= pan.segmentsEnFonctionDeLaPage.size(); i++) {
+				if (pan.segmentsEnFonctionDeLaPage.get(i).contains(n)) {
+					page = i;
+					System.out.println("Nouvelle page : "+page+" /  Page actuelle : "+pan.pageActuelle);
+					break;
+				}
+			}
+			
+			// phrase = le numero de segment
 			pan.pilot.phrase = n;
-
+			
 			// on réécrit tous les mots dépassés
 			// et on enleve les fenetres
 			for (Mask m : pan.fenetreMasque) {
-				if (pan.getNumero(m) < pan.numeroCourant && m.page == page) {
-					System.out.println("Masque numero " + pan.getNumero(m) + " est remplacé par le bon mot. Valeur : "
-							+ m.motCouvert);
+				if (pan.getNumero(m) < pan.numeroCourant && m.page == pan.pageActuelle) {
+					System.out.println(" ( "+pan.fenetreMasque.indexOf(m)+" ) Masque numero " + pan.getNumero(m) + " est rendu visible. Valeur : " + m.motCouvert);
 					String temp = pan.editorPane.getText();
 					String r = "";
 					char[] tab = temp.toCharArray();
@@ -156,42 +147,35 @@ public class ControlPanel extends JPanel {
 
 			// ON CHANGE DE page SI BESOIN
 			if (page != pan.pageActuelle) {
+				System.out.println("Nouvelle page = " + page);
 				pan.pilot.controler.showPage(pan.pilot.controler.getPageOfPhrase(n));
-			}
-
-			// on réécrit tous les mots dépassés
-			// et on enleve les fenetres
-			for (Mask m : pan.fenetreMasque) {
-				if (pan.getNumero(m) < pan.numeroCourant && m.page == page) {
-					System.out.println("Masque numero " + pan.getNumero(m) + " est remplacé par le bon mot. Valeur : "
-							+ m.motCouvert);
-					String temp = pan.editorPane.getText();
-					String r = "";
-					char[] tab = temp.toCharArray();
-					int j = 0;
-					for (int i = 0; i < temp.length(); i++) {
-						if (i >= m.start && i < m.end) {
-							r += m.motCouvert.charAt(j);
-							j++;
-						} else {
-							r += tab[i];
+				// on réécrit tous les mots dépassés
+				// et on enleve les fenetres
+				for (Mask m : pan.fenetreMasque) {
+					if (pan.getNumero(m) < pan.numeroCourant && m.page == page) {
+						System.out.println(" ( "+pan.fenetreMasque.indexOf(m)+" ) Masque numero " + pan.getNumero(m) + " est rendu visible. Valeur : " + m.motCouvert);
+						String temp = pan.editorPane.getText();
+						String r = "";
+						char[] tab = temp.toCharArray();
+						int j = 0;
+						for (int i = 0; i < temp.length(); i++) {
+							if (i >= m.start && i < m.end) {
+								r += m.motCouvert.charAt(j);
+								j++;
+							} else {
+								r += tab[i];
+							}
+							pan.editorPane.setText(r);
 						}
-						pan.editorPane.setText(r);
+						m.setVisible(false);
 					}
-					m.setVisible(false);
 				}
 			}
+
+			
 
 			// on replace les masques visibles
-			for (Mask m : pan.fenetreMasque) {
-				if (m.isVisible()) {
-					try {
-						pan.replacerMasque(m);
-					} catch (BadLocationException e1) {
-						e1.printStackTrace();
-					}
-				}
-			}
+			pan.replaceAllMask();
 
 			// on interrompt la lecture et on la relance en partant du nouveau segment
 			pan.lecteur.needToDead = true;
@@ -225,24 +209,20 @@ public class ControlPanel extends JPanel {
 			} else {
 				n = numeroSegment;
 			}
-
-			int page = -1;
-			for (int i = 1; i <= pan.segmentsEnFonctionDeLaPage.size(); i++) {
-				if (pan.segmentsEnFonctionDeLaPage.get(i).contains(n)) {
-					page = i;
-					System.out.println("Nouvelle page = " + page);
-					break;
-				}
-			}
+			
+			int oldN = n;
 
 			// on met a jour le numeroCourant et le numero de segment;
 			String s = null;
-			int tempI = n;
 			while (s == null) {
+				if(n < 0) {
+					n = oldN;
+					break;
+				}
 				try {
-					s = pan.textHandler.motsParSegment.get(tempI).get(0);
+					s = pan.textHandler.motsParSegment.get(n).get(0);
 				} catch (Exception e2) {
-					tempI++;
+					n--;
 				}
 			}
 
@@ -252,47 +232,60 @@ public class ControlPanel extends JPanel {
 					break;
 				}
 			}
-			// phrase = le nuemro de segment
+	
+			int page = -1;
+			for (int i = 1; i <= pan.segmentsEnFonctionDeLaPage.size(); i++) {
+				if (pan.segmentsEnFonctionDeLaPage.get(i).contains(n)) {
+					page = i;
+					System.out.println("Nouvelle page : "+page+" /  Page actuelle : "+pan.pageActuelle);
+					break;
+				}
+			}
+			
+			// phrase = le numero de segment
 			pan.pilot.phrase = n;
-
-			// on réécrit tous les mots dépassés
-			// et on enleve les fenetres
+	
 			for (Mask m : pan.fenetreMasque) {
 				if (m.jtf.getBackground().equals(Color.CYAN)) {
 					m.jtf.setBackground(Color.white);
 				}
-				if (pan.getNumero(m) >= pan.numeroCourant && m.page == page) {
-					System.out.println(
-							"Masque numero " + pan.getNumero(m) + " est rendu visible. Valeur : " + m.motCouvert);
+				if (pan.getNumero(m) >= pan.numeroCourant && m.page == pan.pageActuelle) {
+					System.out.println(" ( "+pan.fenetreMasque.indexOf(m)+" ) Masque numero " + pan.getNumero(m) + " est rendu visible. Valeur : " + m.motCouvert);
 					m.setVisible(true);
 				}
 			}
 
 			// ON CHANGE DE page SI BESOIN
 			if (page != pan.pageActuelle) {
+				System.out.println("Nouvelle page = " + page);
 				pan.pilot.controler.showPage(pan.pilot.controler.getPageOfPhrase(n));
-			}
-
-			// on réécrit tous les mots dépassés
-			// et on enleve les fenetres
-			for (Mask m : pan.fenetreMasque) {
-				if (pan.getNumero(m) >= pan.numeroCourant && m.page == page) {
-					System.out.println(
-							"Masque numero " + pan.getNumero(m) + " est rendu visible. Valeur : " + m.motCouvert);
-					m.setVisible(true);
-				}
-			}
-
-			// on replace les masques visibles
-			for (Mask m : pan.fenetreMasque) {
-				if (m.isVisible()) {
-					try {
-						pan.replacerMasque(m);
-					} catch (BadLocationException e1) {
-						e1.printStackTrace();
+				for (Mask m : pan.fenetreMasque) {
+					if (pan.getNumero(m) >= pan.numeroCourant && m.page == page) {
+						System.out.println(" ( "+pan.fenetreMasque.indexOf(m)+" ) Masque numero " + pan.getNumero(m) + " est rendu visible. Valeur : " + m.motCouvert);
+						m.setVisible(true);
+					} else if (m.page == page) {
+						System.out.println(" ( "+pan.fenetreMasque.indexOf(m)+" ) Masque numero " + pan.getNumero(m) + " est rendu visible. Valeur : " + m.motCouvert);
+						String temp = pan.editorPane.getText();
+						String r = "";
+						char[] tab = temp.toCharArray();
+						int j = 0;
+						for (int i = 0; i < temp.length(); i++) {
+							if (i >= m.start && i < m.end) {
+								r += m.motCouvert.charAt(j);
+								j++;
+							} else {
+								r += tab[i];
+							}
+							pan.editorPane.setText(r);
+						}
 					}
 				}
 			}
+
+
+
+			// on replace les masques visibles
+			pan.replaceAllMask();
 
 			// on interrompt la lecture et on la relance en partant du nouveau segment
 			pan.lecteur.needToDead = true;

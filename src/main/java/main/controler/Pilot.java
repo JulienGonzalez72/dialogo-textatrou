@@ -5,8 +5,6 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import main.Constants;
-import main.model.Lecteur;
-import main.model.TextHandler;
 import main.view.Mask;
 import main.view.Panneau;
 
@@ -31,6 +29,15 @@ public class Pilot {
 		if (n < p.param.premierSegment - 1 || n >= p.textHandler.getPhrasesCount() - 1) {
 			throw new IllegalArgumentException("Numéro de segment invalide : " + n);
 		}
+		
+		//desactivation des autres fenetres fixes
+		if ( true) {
+			for (JInternalFrame j : p.getAllFrames()) {
+				if(!(j instanceof Mask)) {
+					j.dispose();
+				}
+			}
+		} 
 
 		p.param.stockerPreference();
 		phrase = n;
@@ -42,6 +49,7 @@ public class Pilot {
 		/// désactive les boutons de contrôle pour éviter le spam ///
 		p.controlPanel.disableAll(Constants.DISABLE_TIME);
 
+		boolean doitJouer = !p.fenetre.isResizable();
 		/// empêche le redimensionnement de la fenêtre lors de la première lecture ///
 		p.fenetre.setResizable(false);
 
@@ -50,10 +58,12 @@ public class Pilot {
 
 		controler.showPage(controler.getPageOfPhrase(n));
 
+		if (doitJouer) {
 		/// play du son correspondant au segment N ///
 		controler.play(n);
 		/// attente de la fin du temps de pause ///
 		controler.doWait(controler.getCurrentWaitTime(), Constants.CURSOR_SPEAK);
+		}
 
 	}
 
@@ -117,14 +127,14 @@ public class Pilot {
 
 	public void showHole(int n) {
 
-		JInternalFrame masque = null;
+		Mask masque = null;
 
 		// desactivation de la prochaine fenetre de masque
 		if (!p.param.fixedField) {
-			for (JInternalFrame f : p.fenetreMasque) {
-				if (f.isVisible()) {
-					f.setVisible(false);
-					masque = f;
+			for (Mask m : p.fenetreMasque) {
+				if (p.fenetreMasque.indexOf(m) == n) {
+					m.setVisible(false);
+					masque = m;
 					break;
 				}
 			}
@@ -132,10 +142,15 @@ public class Pilot {
 
 		String bonMot = p.textHandler.mots.get(n);
 
+		
 		int start2 = p.editorPane.getText().indexOf(" " + p.param.mysterCarac) + 1;
 		int end2 = -1;
 		if (bonMot != null) {
 			end2 = start2 + bonMot.length();
+		}
+		if(!p.param.fixedField) {
+			start2 = masque.start;
+			end2 = masque.end;
 		}
 
 		if (start2 < end2) {

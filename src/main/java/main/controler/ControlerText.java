@@ -1,7 +1,7 @@
 package main.controler;
 
 import java.awt.Cursor;
-import java.util.List;
+//import java.util.List;
 
 import main.Constants;
 import main.view.Panneau;
@@ -110,18 +110,18 @@ public class ControlerText {
 					//	getPageOfPhrase(n), w);
 			}
 		}*/
-		p.showAllHoleInPage(page, p.pilot.getCurrentPhraseIndex());
+		//p.showAllHoleInPage(page, p.pilot.getCurrentPhraseIndex());
 	}
 	
 	public void nextHole() {
-		p.currentHole++;
+		//p.currentHole++;
 	}
 	
 	/**
 	 * Initialise le premier trou du segment.
 	 */
 	public void firstHole() {
-		p.currentHole = 0;
+		//p.currentHole = 0;
 	}
 	
 	/**
@@ -131,27 +131,27 @@ public class ControlerText {
 		return p.textHandler.getHolesCount(n);
 	}
 	
-	public boolean hasNextHole() {
-		return p.currentHole < getHolesCount(p.pilot.getCurrentPhraseIndex());
-	}
+	//public boolean hasNextHole() {
+		//return p.currentHole < getHolesCount(p.pilot.getCurrentPhraseIndex());
+	//}
 	
 	public boolean waitForFill() {
-		p.setCurrentHole(p.pilot.getCurrentPhraseIndex(), p.currentHole);
+		//p.setCurrentHole(p.pilot.getCurrentPhraseIndex(), p.currentHole);
 		while (true) {
 			Thread.yield();
-			if (p.controlerMask.enter) {
-				p.controlerMask.enter = false;
+			//if (p.controlerMask.enter) {
+			//	p.controlerMask.enter = false;
 				return true;
 			}
 		}
-	}
+	//}
 	
 	public void validCurrentHole() {
-		p.validHole(p.pilot.getCurrentPhraseIndex(), p.currentHole);
+		//p.validHole(p.pilot.getCurrentPhraseIndex(), p.currentHole);
 	}
 	
 	public void removeAllHoles() {
-		p.removeAllHoles();
+		//p.removeAllHoles();
 	}
 	
 	public void blink() {

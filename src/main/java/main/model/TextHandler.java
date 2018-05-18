@@ -1,7 +1,6 @@
 package main.model;
 
 import java.util.*;
-
 import main.Constants;
 import main.Parametres;
 
@@ -26,14 +25,25 @@ public class TextHandler {
 		this.param = param;
 		this.mots = new HashMap<Integer,String>();
 		this.motsParSegment = new HashMap<>();
+		
 		remplirMots(texteOriginal);
 		txt = format(texteOriginal);
 		this.phrases = new HashMap<Integer, String>();
 		for (String phrase : txt.split(Constants.PAUSE)) {
 			phrases.put(phrases.size(), phrase);
-		}
+		}	
 		System.out.println(mots.toString());
 		System.out.println(motsParSegment.toString());
+	}
+
+	public boolean oneHoleEqualOneWord() {
+		boolean r = true;
+		for (String s : mots.values()) {
+			if ( s.contains(" ")) {
+				r = false;
+			}
+		}			
+		return r;
 	}
 
 	private void remplirMots(String s) {

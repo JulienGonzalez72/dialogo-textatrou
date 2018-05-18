@@ -42,7 +42,7 @@ public class Panneau extends JDesktopPane {
 	public Player player;
 	public FenetreParametre fenetreParam;
 	public Parametres param;
-	public Lecteur lecteur = new Lecteur(this,0);
+	public Lecteur lecteur = new Lecteur(this, 0);
 	public int numeroCourant = 0;
 	int nbMotsDansLaPage;
 
@@ -66,6 +66,11 @@ public class Panneau extends JDesktopPane {
 			texteCesures = texteCesures.substring(texteCesures.indexOf("/") + 1, texteCesures.length());
 		}
 		textHandler = new TextHandler(texteCesures, param);
+		if(!textHandler.oneHoleEqualOneWord()) {
+			fenetreParam.pan.fixedField.setSelected(true);
+			fenetreParam.pan.fixedField.setText("Un seul mode disponible pour ce texte");
+			fenetreParam.pan.fixedField.setEnabled(false);
+		}
 
 		this.setLayout(new BorderLayout());
 		editorPane = new TextPane(param);
@@ -252,12 +257,12 @@ public class Panneau extends JDesktopPane {
 		}
 		editorPane.setText(texteAfficher.replaceAll("_", param.mysterCarac + ""));
 
-		if ( !fenetre.isResizable()) {
+		if (!fenetre.isResizable()) {
 			pilot.showAllHoleInPages();
 		}
-		
+
 		for (Mask m : fenetreMasque) {
-			if ( m.page == page && fenetreMasque.indexOf(m) >= numeroCourant) {
+			if (m.page == page && fenetreMasque.indexOf(m) >= numeroCourant) {
 				m.setVisible(true);
 				try {
 					replacerMasque(m);
@@ -265,6 +270,7 @@ public class Panneau extends JDesktopPane {
 					e.printStackTrace();
 				}
 			} else {
+				m.jtf.setBackground(Color.white);
 				m.setVisible(false);
 			}
 		}
@@ -281,6 +287,16 @@ public class Panneau extends JDesktopPane {
 	}
 
 	public void afficherCompteRendu() {
+
+		// desactivation des autres fenetres fixes
+		if (true) {
+			for (JInternalFrame j : getAllFrames()) {
+				if (!(j instanceof Mask)) {
+					j.dispose();
+				}
+			}
+		}
+
 		// met a jour la barre de progression
 		progressBar.setValue(textHandler.getPhrasesCount() - 1);
 		progressBar.setString((textHandler.getPhrasesCount() - 1) + "/" + (textHandler.getPhrasesCount() - 1));
@@ -313,7 +329,7 @@ public class Panneau extends JDesktopPane {
 	 * numeroCourant
 	 */
 	public void afficherFrame(int start, int end, JInternalFrame masque) throws BadLocationException {
-		
+
 		frame = new JInternalFrame();
 		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
 		frame.setBorder(null);
@@ -343,7 +359,7 @@ public class Panneau extends JDesktopPane {
 				String bonMot = textHandler.mots.get(numeroCourant);
 				// Si juste
 				if (jtf.getText().equalsIgnoreCase(bonMot)) {
-					saisieCorrecte(f2,start,end,bonMot);
+					saisieCorrecte(f2, start, end, bonMot);
 				} else {
 					blink();
 					nbErreurs++;
@@ -355,9 +371,8 @@ public class Panneau extends JDesktopPane {
 		frame.setVisible(true);
 
 	}
-	
-	
-	//traitement lors d'une bonne saisie de mot
+
+	// traitement lors d'une bonne saisie de mot
 	public void saisieCorrecte(JInternalFrame f2, int start, int end, String bonMot) {
 		// desactivation de la prochaine fenetre de masque
 		if (param.fixedField) {
@@ -367,17 +382,17 @@ public class Panneau extends JDesktopPane {
 				}
 			}
 		}
-		if ( frame != null) {
+		if (frame != null) {
 			frame.dispose();
 		}
 		editorPane.setEnabled(true);
 		numeroCourant++;
-		
-		//on passe au segment suivant si on change de segment
-		if ( changementSegment()) {
+
+		// on passe au segment suivant si on change de segment
+		if (changementSegment()) {
 			pilot.phrase++;
 		}
-		
+
 		String temp = editorPane.getText();
 		String r = "";
 		char[] tab = temp.toCharArray();
@@ -399,9 +414,9 @@ public class Panneau extends JDesktopPane {
 					e1.printStackTrace();
 				}
 			}
-		}	
-		
-		//on reprend le lecteur
+		}
+
+		// on reprend le lecteur
 		synchronized (lecteur.lock) {
 			lecteur.lock.notify();
 			lecteur.notified = true;
@@ -411,22 +426,21 @@ public class Panneau extends JDesktopPane {
 	public boolean changementSegment() {
 
 		int segmentMotPrecedent = -1;
-		for (int i =0;i < textHandler.motsParSegment.size();i++) {
-			if ( textHandler.motsParSegment.get(i).contains(textHandler.mots.get(numeroCourant-1))) {
+		for (int i = 0; i < textHandler.motsParSegment.size(); i++) {
+			if (textHandler.motsParSegment.get(i).contains(textHandler.mots.get(numeroCourant - 1))) {
 				segmentMotPrecedent = i;
 				break;
 			}
 		}
-		
-		
+
 		int segmentMotActuel = -1;
-		for (int i =0;i < textHandler.motsParSegment.size();i++) {
-			if ( textHandler.motsParSegment.get(i).contains(textHandler.mots.get(numeroCourant))) {
+		for (int i = 0; i < textHandler.motsParSegment.size(); i++) {
+			if (textHandler.motsParSegment.get(i).contains(textHandler.mots.get(numeroCourant))) {
 				segmentMotActuel = i;
 				break;
 			}
 		}
-		
+
 		return segmentMotPrecedent != segmentMotActuel;
 	}
 
@@ -489,7 +503,7 @@ public class Panneau extends JDesktopPane {
 
 	public List<Mask> fenetreMasque = new ArrayList<>();
 
-	public void afficherFrameVide(int start, int end,int page, String bonMot) throws BadLocationException {
+	public void afficherFrameVide(int start, int end, int page, String bonMot) throws BadLocationException {
 		Mask frame = new Mask();
 		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
 		frame.setBorder(null);
@@ -502,7 +516,13 @@ public class Panneau extends JDesktopPane {
 				editorPane.getFont().getSize() / 2);
 		jtf.setFont(f);
 		jtf.setHorizontalAlignment(JTextField.CENTER);
-		jtf.setEnabled(false);
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				jtf.setEnabled(false);			
+			}
+		});
+
 		frame.jtf = jtf;
 		frame.start = start;
 		frame.end = end;
@@ -510,26 +530,54 @@ public class Panneau extends JDesktopPane {
 		frame.motCouvert = bonMot;
 		frame.add(jtf);
 
-		fenetre.pan.add(frame);
-		frame.setVisible(true);
-		fenetreMasque.add(frame);
+		boolean motDejaExistant = false;
+		for (Mask mask : fenetreMasque) {
+			if (mask.motCouvert == frame.motCouvert) {
+				motDejaExistant = true;
+				mask.setVisible(true);
+				break;
+			}
+		}
+		if (!motDejaExistant) {
+			fenetre.pan.add(frame);
+			frame.setVisible(true);
+			fenetreMasque.add(frame);
+			System.out.println("( " + fenetreMasque.indexOf(frame) + " ) Ajout de la frame numero : " + getNumero(frame)
+					+ ". Valeur : " + frame.motCouvert);
+		}
+
 	}
 
 	/*
 	 * replace une fenetre invisible, la rendnat visible
 	 */
 	public void replacerMasque(Mask frame) throws BadLocationException {
-		int start = frame.start;
-		int end = frame.end;
-		Rectangle r = editorPane.modelToView(start).union(editorPane.modelToView(end));
-		frame.setBounds(r.x, r.y, r.width, r.height / 2);
-		frame.setVisible(true);
+		try {
+			int start = frame.start;
+			int end = frame.end;
+			Rectangle r = editorPane.modelToView(start).union(editorPane.modelToView(end));
+			frame.setBounds(r.x, r.y, r.width, r.height / 2);
+			frame.setVisible(true);
+		} catch (Exception e) {
+		}
 	}
-	
-	//donne le numeor d'un masque
+
+	public void replaceAllMask() {
+		for (Mask m : fenetreMasque) {
+			if (m.isVisible()) {
+				try {
+					replacerMasque(m);
+				} catch (BadLocationException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+	}
+
+	// donne le numeor d'un masque
 	public int getNumero(Mask m) {
 		int i = -1;
-		for (int j =0; j < textHandler.mots.size();j++) {
+		for (int j = 0; j < textHandler.mots.size(); j++) {
 			if (textHandler.mots.get(j) == m.motCouvert) {
 				i = j;
 			}
