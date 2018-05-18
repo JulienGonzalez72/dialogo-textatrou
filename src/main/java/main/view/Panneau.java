@@ -317,7 +317,6 @@ public class Panneau extends JDesktopPane {
 		fenetreParam.pan.fontFamilyComboBox.setEnabled(true);
 		fenetreParam.pan.fontSizeComboBox.setEnabled(true);
 		fenetreParam.pan.segmentDeDepart.setEnabled(true);
-		fenetreParam.pan.champMysterCarac.setEditable(true);
 		fenetre.setResizable(true);
 		fenetreParam.stopExercice();
 	}
@@ -377,7 +376,7 @@ public class Panneau extends JDesktopPane {
 		// desactivation de la prochaine fenetre de masque
 		if (param.fixedField) {
 			for (Mask f : fenetreMasque) {
-				if (f.motCouvert.equals(bonMot)) {
+				if (f.motCouvert.equals(bonMot) && f.start == start) {
 					f.setVisible(false);
 				}
 			}
@@ -501,7 +500,7 @@ public class Panneau extends JDesktopPane {
 		return occur;
 	}
 
-	public List<Mask> fenetreMasque = new ArrayList<>();
+	public List<Mask> fenetreMasque = new PersonalizedList();
 
 	public void afficherFrameVide(int start, int end, int page, String bonMot) throws BadLocationException {
 		Mask frame = new Mask();
@@ -532,7 +531,7 @@ public class Panneau extends JDesktopPane {
 
 		boolean motDejaExistant = false;
 		for (Mask mask : fenetreMasque) {
-			if (mask.motCouvert == frame.motCouvert) {
+			if (mask.motCouvert == frame.motCouvert && mask.start == frame.start ) {
 				motDejaExistant = true;
 				mask.setVisible(true);
 				break;
@@ -574,15 +573,17 @@ public class Panneau extends JDesktopPane {
 		}
 	}
 
-	// donne le numeor d'un masque
+	// donne le numero d'un masque
 	public int getNumero(Mask m) {
-		int i = -1;
+		/*int i = -1;
 		for (int j = 0; j < textHandler.mots.size(); j++) {
 			if (textHandler.mots.get(j) == m.motCouvert) {
 				i = j;
 			}
 		}
-		return i;
+		
+		System.out.println("test i "+i+" / test index of "+fenetreMasque.indexOf(m));*/
+		return fenetreMasque.indexOf(m);
 	}
 
 }

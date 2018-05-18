@@ -64,7 +64,6 @@ public class FenetreParametre extends JFrame {
 		public JComboBox<Object> fontSizeComboBox;
 		public JComboBox<Object> colorComboBox;
 		public JTextField segmentDeDepart;
-		public JTextField champMysterCarac;
 		public JButton valider;
 		public JCheckBox fixedField;
 		public JSlider waitSlider;
@@ -129,25 +128,16 @@ public class FenetreParametre extends JFrame {
 					new Font("OpenDyslexic", Font.PLAIN, 15), "1");
 			segmentDeDepart.addActionListener(controleur);
 
-			JLabel mysterCarac = fastLabel("Caractère à trouver :");
-			champMysterCarac = fastTextField("", new Font("OpenDyslexic", Font.PLAIN, 15), "_");
-			champMysterCarac.addActionListener(controleur);
-
-			JPanel midPanel = new JPanel(new GridLayout(10, 2));
+			JPanel midPanel = new JPanel(new GridLayout(7, 2));
 
 			midPanel.add(police);
 			midPanel.add(taillePolice);
 			fastCentering(fontFamilyComboBox, midPanel, "   ");
 			fastCentering(fontSizeComboBox, midPanel, "   ");
-
-			midPanel.add(segments);
-			midPanel.add(mysterCarac);
-			fastCentering(segmentDeDepart, midPanel, "   ");
-			fastCentering(champMysterCarac, midPanel, "   ");
-
 			midPanel.add(couleurDeFond);
-			midPanel.add(fastLabel(""));
+			midPanel.add(segments);
 			fastCentering(colorComboBox, midPanel, "   ");
+			fastCentering(segmentDeDepart, midPanel, "   ");
 
 			waitSlider = new JSlider();
 			waitSlider.setMaximum(Constants.MAX_WAIT_TIME_PERCENT);

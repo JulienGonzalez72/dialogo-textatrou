@@ -1,7 +1,11 @@
 package main.controler;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import main.Constants;
@@ -45,7 +49,6 @@ public class Pilot {
 		p.fenetreParam.pan.fontFamilyComboBox.setEnabled(false);
 		p.fenetreParam.pan.fontSizeComboBox.setEnabled(false);
 		p.fenetreParam.pan.segmentDeDepart.setEnabled(false);
-		p.fenetreParam.pan.champMysterCarac.setEditable(false);
 		/// désactive les boutons de contrôle pour éviter le spam ///
 		p.controlPanel.disableAll(Constants.DISABLE_TIME);
 
@@ -149,8 +152,13 @@ public class Pilot {
 			end2 = start2 + bonMot.length();
 		}
 		if(!p.param.fixedField) {
-			start2 = masque.start;
-			end2 = masque.end;
+			try {
+				start2 = masque.start;
+				end2 = masque.end;
+			}catch (Exception e) {
+				System.out.println(p.fenetreMasque.indexOf(masque));
+			    e.printStackTrace();
+			}
 		}
 
 		if (start2 < end2) {
@@ -177,22 +185,35 @@ public class Pilot {
 
 	// affiche les trous de la page courante
 	public void showAllHoleInPages() {
+		
+		Map<Integer, List<String>> tempMotsParSegment = new HashMap<>();
+		int indice = 0;
+		for (List<String> s : p.textHandler.motsParSegment.values()) {
+			List<String> ll = new ArrayList<>();
+			for (String string : s) {
+				ll.add(string);
+			}
+			tempMotsParSegment.put(indice, ll);
+			indice++;
+		}
+		
 		String text = p.editorPane.getText();
 		int oldIndex = 0;
 		// pour tous les mots à trouver
 		for (int i = 0; i < p.textHandler.mots.size(); i++) {
-
+			
 			String bonMot = p.textHandler.mots.get(i);
 
 			List<Integer> numerosSegments = p.segmentsEnFonctionDeLaPage.get(p.pageActuelle);
 			// pour tous les segments de la page actuelle
 			for (Integer integer : numerosSegments) {
 				// si le segment contient des mots a trouver
-				if (p.textHandler.motsParSegment.get(integer) != null) {
+				if (!tempMotsParSegment.get(integer).isEmpty()) {
 					// pour chacun de ces mots
-					for (String s : p.textHandler.motsParSegment.get(integer)) {
+					for (int j=0;j <tempMotsParSegment.get(integer).size();j++) {
 						// si ce mot est egale a un bon mot
-						if (s.equals(bonMot)) {
+						if (tempMotsParSegment.get(integer).get(j).equals(bonMot)) {				
+							tempMotsParSegment.get(integer).set(j,"$unmotquinexistepas$");
 							int start2 = text.indexOf(" " + p.param.mysterCarac, oldIndex) + 1;
 							int end2 = start2 + bonMot.length();
 							oldIndex = end2;
@@ -204,9 +225,10 @@ public class Pilot {
 
 						}
 					}
+			
 				}
 			}
-
+			p.replaceAllMask();
 		}
 	}
 

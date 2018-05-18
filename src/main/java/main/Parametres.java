@@ -15,7 +15,7 @@ public class Parametres {
 	public int tailleX;
 	public int tailleY;
 	public int premierSegment;
-	public char mysterCarac;
+	public char mysterCarac = '_';
 	public int tempsPauseEnPourcentageDuTempsDeLecture;
 	public boolean fixedField = true;
 	public int panWidth, panHeight, panX, panY;

@@ -65,20 +65,11 @@ public class ControleurParam implements ActionListener, ChangeListener {
 		if (arg0.getSource() == panneau.fixedField) {
 			param.fixedField = panneau.fixedField.isSelected();
 		}
-		if (arg0.getSource() == panneau.champMysterCarac) {
-			param.mysterCarac = panneau.champMysterCarac.getText().toCharArray()[0];
-		}
 		if (arg0.getSource() == panneau.valider) {
 			fen.eMenuItem2.setEnabled(true);
 			// mise a jour de la couleur de la barre de progression
 			fen.fenetre.pan.progressBar.setForeground(Color.GREEN);
 			if (verifierValiditeChamp()) {
-				try {
-					param.mysterCarac = panneau.champMysterCarac.getText().toCharArray()[0];
-				} catch (Exception e) {
-					param.mysterCarac = ' ';
-					panneau.champMysterCarac.setText(" ");
-				}
 				try {
 					param.premierSegment = Math.max(0, Integer.valueOf(panneau.segmentDeDepart.getText()));
 				} catch (Exception e) {
@@ -158,19 +149,6 @@ public class ControleurParam implements ActionListener, ChangeListener {
 			valide = false;
 		}
 		param.premierSegment = premierSegment;
-
-		try {
-			if (panneau.champMysterCarac.getText().length() > 1) {
-				JOptionPane.showMessageDialog(panneau, "Entrez un seul caractere",
-						"Erreur", JOptionPane.ERROR_MESSAGE);
-				panneau.champMysterCarac.setText(" ");
-				valide = false;
-			}
-		} catch (Exception e) {
-			panneau.champMysterCarac.setText(" ");
-			param.mysterCarac = ' ';
-			valide = false;
-		}
 		return valide;
 	}
 

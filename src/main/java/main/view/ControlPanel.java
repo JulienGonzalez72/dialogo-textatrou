@@ -127,7 +127,7 @@ public class ControlPanel extends JPanel {
 			// et on enleve les fenetres
 			for (Mask m : pan.fenetreMasque) {
 				if (pan.getNumero(m) < pan.numeroCourant && m.page == pan.pageActuelle) {
-					System.out.println(" ( "+pan.fenetreMasque.indexOf(m)+" ) Masque numero " + pan.getNumero(m) + " est rendu visible. Valeur : " + m.motCouvert);
+					System.out.println(" ( " + pan.fenetreMasque.indexOf(m)+" ) Masque numero " + pan.getNumero(m) + " est rendu visible. Valeur : " + m.motCouvert);
 					String temp = pan.editorPane.getText();
 					String r = "";
 					char[] tab = temp.toCharArray();
