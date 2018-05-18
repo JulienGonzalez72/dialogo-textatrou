@@ -515,12 +515,12 @@ public class Panneau extends JDesktopPane {
 				editorPane.getFont().getSize() / 2);
 		jtf.setFont(f);
 		jtf.setHorizontalAlignment(JTextField.CENTER);
-		// SwingUtilities.invokeLater(new Runnable() {
-		// @Override
-		// public void run() {
-		jtf.setEnabled(false);
-		// }
-		// });
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				jtf.setEnabled(false);
+			}
+		});
 
 		frame.jtf = jtf;
 		frame.start = start;
