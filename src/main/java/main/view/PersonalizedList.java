@@ -15,6 +15,7 @@ public class PersonalizedList extends ArrayList<Mask> {
 			Mask mask = (Mask) this.get(i);
 			if ( mask.motCouvert.equals(m.motCouvert) && m.start == mask.start && m.end == mask.end) {
 				r = i;
+				break;
 			}
 		}
 		return r;

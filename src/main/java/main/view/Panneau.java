@@ -66,7 +66,7 @@ public class Panneau extends JDesktopPane {
 			texteCesures = texteCesures.substring(texteCesures.indexOf("/") + 1, texteCesures.length());
 		}
 		textHandler = new TextHandler(texteCesures, param);
-		if(!textHandler.oneHoleEqualOneWord()) {
+		if (!textHandler.oneHoleEqualOneWord()) {
 			fenetreParam.pan.fixedField.setSelected(true);
 			fenetreParam.pan.fixedField.setText("Un seul mode disponible pour ce texte");
 			fenetreParam.pan.fixedField.setEnabled(false);
@@ -515,12 +515,12 @@ public class Panneau extends JDesktopPane {
 				editorPane.getFont().getSize() / 2);
 		jtf.setFont(f);
 		jtf.setHorizontalAlignment(JTextField.CENTER);
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				jtf.setEnabled(false);			
-			}
-		});
+		// SwingUtilities.invokeLater(new Runnable() {
+		// @Override
+		// public void run() {
+		jtf.setEnabled(false);
+		// }
+		// });
 
 		frame.jtf = jtf;
 		frame.start = start;
@@ -531,7 +531,7 @@ public class Panneau extends JDesktopPane {
 
 		boolean motDejaExistant = false;
 		for (Mask mask : fenetreMasque) {
-			if (mask.motCouvert == frame.motCouvert && mask.start == frame.start ) {
+			if (mask.motCouvert == frame.motCouvert && mask.start == frame.start) {
 				motDejaExistant = true;
 				mask.setVisible(true);
 				break;
@@ -575,14 +575,12 @@ public class Panneau extends JDesktopPane {
 
 	// donne le numero d'un masque
 	public int getNumero(Mask m) {
-		/*int i = -1;
-		for (int j = 0; j < textHandler.mots.size(); j++) {
-			if (textHandler.mots.get(j) == m.motCouvert) {
-				i = j;
-			}
-		}
-		
-		System.out.println("test i "+i+" / test index of "+fenetreMasque.indexOf(m));*/
+		/*
+		 * int i = -1; for (int j = 0; j < textHandler.mots.size(); j++) { if
+		 * (textHandler.mots.get(j) == m.motCouvert) { i = j; } }
+		 * 
+		 * System.out.println("test i "+i+" / test index of "+fenetreMasque.indexOf(m));
+		 */
 		return fenetreMasque.indexOf(m);
 	}
 

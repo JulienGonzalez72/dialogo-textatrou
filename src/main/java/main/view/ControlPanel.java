@@ -101,6 +101,9 @@ public class ControlPanel extends JPanel {
 					s = pan.textHandler.motsParSegment.get(n).get(0);
 				} catch (Exception e2) {
 					n++;
+					if ( n >= pan.textHandler.getPhrasesCount()) {
+						return;
+					}
 				}
 			}
 			
