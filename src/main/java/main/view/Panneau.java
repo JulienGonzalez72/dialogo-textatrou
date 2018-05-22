@@ -97,7 +97,7 @@ public class Panneau extends JDesktopPane {
 		fenetreParam.editorPane = editorPane;
 		progressBar.setString(param.premierSegment + "/" + (textHandler.getPhrasesCount() - 1));
 		progressBar.setValue(param.premierSegment);
-		editorPane.setBackground(param.couleurFond);
+		editorPane.setBackground(param.bgColor);
 		editorPane.setFont(param.police);
 		pageActuelle = 0;
 		nbEssaisRestantPourLeSegmentCourant = nbEssaisParSegment = param.mysterCarac;

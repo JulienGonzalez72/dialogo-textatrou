@@ -35,6 +35,11 @@ public class TextHandler {
 		System.out.println(mots.toString());
 		System.out.println(motsParSegment.toString());
 		System.out.println(phrases.toString());
+		
+		for (int i = 0; i < mots.size(); i++) {
+			System.out.println("Le trou " + i + " a-t-il un trou suivant ? " + hasNextHoleInPhrase(i));
+			System.out.println("Le trou " + i + " a-t-il un trou précédent ? " + hasPreviousHoleInPhrase(i));
+		}
 	}
 
 	public boolean oneHoleEqualOneWord() {
@@ -237,7 +242,7 @@ public class TextHandler {
 	 * Retourne une liste des mots à trouver par segment.
 	 */
 	public List<String> getHidedWords(int phrase) {
-		return motsParSegment.get(phrase);
+		return motsParSegment.containsKey(phrase) ? motsParSegment.get(phrase) : new ArrayList<>();
 	}
 	
 	public int getStartOffset(String expression, int phrase) {
@@ -249,7 +254,49 @@ public class TextHandler {
 	}
 	
 	public int getHolesCount(int phrase) {
-		return motsParSegment.get(phrase).size();
+		return motsParSegment.containsKey(phrase) ? motsParSegment.get(phrase).size() : 0;
+	}
+	
+	public int getHolesCount(int startPhrase, int endPhrase) {
+		int count = 0;
+		for (int i = startPhrase; i <= endPhrase; i++) {
+			count += getHolesCount(i);
+		}
+		return count;
+	}
+	
+	/**
+	 * Retourne <code>true</code> si il y a au moins un autre trou après le trou indiqué dans le même segment.
+	 */
+	public boolean hasNextHoleInPhrase(int hole) {
+		int p = getPhraseOf(hole);
+		List<String> words = getHidedWords(p);
+		int holeInPhrase = hole - getHolesCount(0, p - 1);
+		return holeInPhrase < words.size() - 1;
+	}
+	
+	/**
+	 * Retourne <code>true</code> si il y a au moins un autre trou avant le trou indiqué dans le même segment.
+	 */
+	public boolean hasPreviousHoleInPhrase(int hole) {
+		int p = getPhraseOf(hole);
+		List<String> words = getHidedWords(p);
+		int holeInPhrase = hole - getHolesCount(0, p - 1);
+		return holeInPhrase > 0 && words.size() > 1;
+	}
+	
+	/**
+	 * Retourne le numéro de segment correspondant au trou indiqué.
+	 */
+	public int getPhraseOf(int hole) {
+		int n = 0;
+		for (int i = 0; i < getPhrasesCount(); i++) {
+			n += getHolesCount(i);
+			if (n > hole) {
+				return i;
+			}
+		}
+		return -1;
 	}
 	
 	/**
