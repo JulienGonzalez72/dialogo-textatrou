@@ -236,7 +236,7 @@ public class TextHandler {
 	 * Retourne une liste des mots à trouver par segment.
 	 */
 	public List<String> getHidedWords(int phrase) {
-		return motsParSegment.get(phrase);
+		return motsParSegment.containsKey(phrase) ? motsParSegment.get(phrase) : new ArrayList<>();
 	}
 
 	public int getStartOffset(String expression, int phrase) {
@@ -248,7 +248,49 @@ public class TextHandler {
 	}
 
 	public int getHolesCount(int phrase) {
-		return motsParSegment.get(phrase).size();
+		return motsParSegment.containsKey(phrase) ? motsParSegment.get(phrase).size() : 0;
+	}
+	
+	public int getHolesCount(int startPhrase, int endPhrase) {
+		int count = 0;
+		for (int i = startPhrase; i <= endPhrase; i++) {
+			count += getHolesCount(i);
+		}
+		return count;
+	}
+	
+	/**
+	 * Retourne <code>true</code> si il y a au moins un autre trou après le trou indiqué dans le même segment.
+	 */
+	public boolean hasNextHoleInPhrase(int hole) {
+		int p = getPhraseOf(hole);
+		List<String> words = getHidedWords(p);
+		int holeInPhrase = hole - getHolesCount(0, p - 1);
+		return holeInPhrase < words.size() - 1;
+	}
+	
+	/**
+	 * Retourne <code>true</code> si il y a au moins un autre trou avant le trou indiqué dans le même segment.
+	 */
+	public boolean hasPreviousHoleInPhrase(int hole) {
+		int p = getPhraseOf(hole);
+		List<String> words = getHidedWords(p);
+		int holeInPhrase = hole - getHolesCount(0, p - 1);
+		return holeInPhrase > 0 && words.size() > 1;
+	}
+	
+	/**
+	 * Retourne le numéro de segment correspondant au trou indiqué.
+	 */
+	public int getPhraseOf(int hole) {
+		int n = 0;
+		for (int i = 0; i < getPhrasesCount(); i++) {
+			n += getHolesCount(i);
+			if (n > hole) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	/**
@@ -272,31 +314,6 @@ public class TextHandler {
 		return txt;
 	}
 
-	public boolean hasNextHoleInPhrase(int numeroCourant) {
-		int j = 0;
-		int k= 0;
-		System.out.println();
-		System.out.println(numeroCourant);
-		for (int i = 0; i <= numeroCourant; i++) {
-			System.out.println(motsParSegment.get(k));
-			System.out.println(motsParSegment.get(k).get(j));
-			if ( motsParSegment.get(k).size() == j){		
-				k++;
-				j = 0;
-				System.out.println("k = "+k);
-			} else {
-				j++;
-				System.out.println("j = "+j);
-			}
-		}
-		System.out.println(k+"/"+j);
-		System.out.println();
-
-		return false;
-	}
-
-	public boolean hasPreviousHoleInPhrase(int numeroCourant) {
-		return false;
-	}
+	
 
 }

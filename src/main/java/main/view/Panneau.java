@@ -95,11 +95,10 @@ public class Panneau extends JDesktopPane {
 	 * S'exécute lorsque le panneau s'est bien intégré à la fenêtre.
 	 */
 	public void init() {
-		param.appliquerPreferenceTaillePosition(fenetreParam, (Fenetre) fenetre);
 		fenetreParam.editorPane = editorPane;
 		progressBar.setString(param.premierSegment + "/" + (textHandler.getPhrasesCount() - 1));
 		progressBar.setValue(param.premierSegment);
-		editorPane.setBackground(param.couleurFond);
+		editorPane.setBackground(param.bgColor);
 		editorPane.setFont(param.police);
 		pageActuelle = 0;
 		nbEssaisRestantPourLeSegmentCourant = nbEssaisParSegment = param.mysterCarac;
@@ -525,12 +524,6 @@ public class Panneau extends JDesktopPane {
 
 	// donne le numero d'un masque
 	public int getNumero(Mask m) {
-		/*
-		 * int i = -1; for (int j = 0; j < textHandler.mots.size(); j++) { if
-		 * (textHandler.mots.get(j) == m.motCouvert) { i = j; } }
-		 * 
-		 * System.out.println("test i "+i+" / test index of "+fenetreMasque.indexOf(m));
-		 */
 		return fenetreMasque.indexOf(m);
 	}
 

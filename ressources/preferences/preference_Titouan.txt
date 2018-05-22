@@ -7,5 +7,5 @@ tempsAttente=0
 y=89
 x=677
 w=1000
-rejouerSon=true
 couleurFond=255/255/150
+

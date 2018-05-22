@@ -30,7 +30,7 @@ public class ControleurParam implements ActionListener, ChangeListener {
 		if (arg0.getSource() instanceof JComboBox) {
 			jcb = (JComboBox<?>) arg0.getSource();
 		}
-		if (jcb == panneau.colorComboBox) {
+		/*if (jcb == panneau.colorComboBox) {
 			String s = (String) jcb.getSelectedItem();
 			Color color = FenetreParametre.stringToColor(s);
 			((JComboBox<?>) jcb).setBackground(color);
@@ -38,46 +38,39 @@ public class ControleurParam implements ActionListener, ChangeListener {
 				if (fen.editorPane != null) {
 					fen.editorPane.setBackground(color);
 				}
-				param.couleurFond = color;
+				param.bgColor = color;
 			}
 			panneau.grabFocus();
-		}
+		}*/
 		if (jcb == panneau.fontSizeComboBox) {
-			int taille = Integer.valueOf((String) jcb.getSelectedItem());
-			param.taillePolice = taille;
-			param.police = param.police.deriveFont((float) taille);
-			panneau.fontSizeComboBox.setFont(new Font(param.police.getFontName(), param.police.getStyle(),
-					Math.min(20, param.police.getSize())));
+			int taille = (Integer) jcb.getSelectedItem();
+			Font font = new Font(panneau.fontFamilyComboBox.getFont().getFontName(), Constants.DEFAULT_FONT_STYLE, taille);
 			if (fen.editorPane != null) {
-				fen.editorPane.setFont(param.police);
+				fen.editorPane.setFont(font);
 				fen.fenetre.pan.rebuildPages();
 			}
 		}
 		if (jcb == panneau.fontFamilyComboBox) {
 			String police = (String) jcb.getSelectedItem();
-			param.police = getFont(police, jcb.getSelectedIndex(), Font.BOLD, param.taillePolice);
-			panneau.fontFamilyComboBox.setFont(new Font(param.police.getFontName(), param.police.getStyle(),
-					Math.min(20, param.police.getSize())));
+			Font font = new Font(police, Constants.DEFAULT_FONT_STYLE, (Integer) panneau.fontSizeComboBox.getSelectedItem());
+			jcb.setFont(font.deriveFont((float) jcb.getFont().getSize()));
 			if (fen.editorPane != null) {
-				fen.editorPane.setFont(param.police);
+				fen.editorPane.setFont(font);
+				fen.fenetre.pan.rebuildPages();
 			}
 		}
 		if (arg0.getSource() == panneau.fixedField) {
 			param.fixedField = panneau.fixedField.isSelected();
 		}
 		if (arg0.getSource() == panneau.valider) {
+			panneau.savePreferences();
 			fen.eMenuItem2.setEnabled(true);
 			// mise a jour de la couleur de la barre de progression
 			fen.fenetre.pan.progressBar.setForeground(Color.GREEN);
 			if (verifierValiditeChamp()) {
-				try {
-					param.premierSegment = Math.max(0, Integer.valueOf(panneau.segmentDeDepart.getText()));
-				} catch (Exception e) {
-					param.premierSegment = 0;
-					panneau.segmentDeDepart.setText("0");
+				if (!fen.fenetre.isVisible()) {
+					fen.lancerExercice();
 				}
-				param.fixedField = panneau.fixedField.isSelected();
-				fen.lancerExercice();
 			}
 		}
 	}
@@ -158,8 +151,8 @@ public class ControleurParam implements ActionListener, ChangeListener {
 	private boolean couleursUniques() {
 		boolean r = true;
 		List<Color> couleursUtilisées = new ArrayList<Color>();
-		couleursUtilisées.add(param.couleurFond);
-		if (occurence(param.couleurFond, couleursUtilisées) != 1) {
+		couleursUtilisées.add(param.bgColor);
+		if (occurence(param.bgColor, couleursUtilisées) != 1) {
 			r = false;
 		}
 		return r;
