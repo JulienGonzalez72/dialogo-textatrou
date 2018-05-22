@@ -42,7 +42,7 @@ public class Panneau extends JDesktopPane {
 	public Player player;
 	public FenetreParametre fenetreParam;
 	public Parametres param;
-	public Lecteur lecteur = new Lecteur(this, 0);
+	public Lecteur lecteur;
 	public int numeroCourant = 0;
 	int nbMotsDansLaPage;
 
@@ -84,6 +84,8 @@ public class Panneau extends JDesktopPane {
 		progressBar = new JProgressBar(0, (textHandler.getPhrasesCount() - 1));
 		progressBar.setStringPainted(true);
 		progressBar.setForeground(Color.GREEN);
+		
+		lecteur = new Lecteur(this, param.premierSegment);
 
 	}
 
@@ -353,12 +355,11 @@ public class Panneau extends JDesktopPane {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				JInternalFrame f2 = null;
 				JTextField jtf = (JTextField) arg0.getSource();
 				String bonMot = textHandler.mots.get(numeroCourant);
 				// Si juste
 				if (jtf.getText().equalsIgnoreCase(bonMot)) {
-					saisieCorrecte(f2, start, end, bonMot);
+					controlPanel.gotoMagiqueAvancer(Panneau.this, pilot.getCurrentPhraseIndex()+1);
 				} else {
 					blink();
 					nbErreurs++;
@@ -369,57 +370,6 @@ public class Panneau extends JDesktopPane {
 		frame.add(jtf);
 		frame.setVisible(true);
 
-	}
-
-	// traitement lors d'une bonne saisie de mot
-	public void saisieCorrecte(JInternalFrame f2, int start, int end, String bonMot) {
-		// desactivation de la prochaine fenetre de masque
-		if (param.fixedField) {
-			for (Mask f : fenetreMasque) {
-				if (f.motCouvert.equals(bonMot) && f.start == start) {
-					f.setVisible(false);
-				}
-			}
-		}
-		if (frame != null) {
-			frame.dispose();
-		}
-		editorPane.setEnabled(true);
-		numeroCourant++;
-
-		// on passe au segment suivant si on change de segment
-		if (changementSegment()) {
-			pilot.phrase++;
-		}
-
-		String temp = editorPane.getText();
-		String r = "";
-		char[] tab = temp.toCharArray();
-		int j = 0;
-		for (int i = 0; i < temp.length(); i++) {
-			if (i >= start && i < end) {
-				r += bonMot.charAt(j);
-				j++;
-			} else {
-				r += tab[i];
-			}
-		}
-		editorPane.setText(r);
-		for (Mask m : fenetreMasque) {
-			if (m.isVisible()) {
-				try {
-					replacerMasque(m);
-				} catch (BadLocationException e1) {
-					e1.printStackTrace();
-				}
-			}
-		}
-
-		// on reprend le lecteur
-		synchronized (lecteur.lock) {
-			lecteur.lock.notify();
-			lecteur.notified = true;
-		}
 	}
 
 	public boolean changementSegment() {

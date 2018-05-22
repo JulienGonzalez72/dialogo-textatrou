@@ -44,6 +44,7 @@ public class ControlPanel extends JPanel {
 		playButton.setEnabled(false);
 		playButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				pan.numeroCourant++;
 				gotoMagiqueReculer(pan, pan.pilot.getCurrentPhraseIndex());
 			}
 		});
@@ -53,7 +54,6 @@ public class ControlPanel extends JPanel {
 		nextButton.setEnabled(false);
 		nextButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
 				gotoMagiqueAvancer(pan, pan.pilot.getCurrentPhraseIndex() + 1);
 			}
 		});
@@ -63,6 +63,7 @@ public class ControlPanel extends JPanel {
 		repeatButton.setEnabled(false);
 		repeatButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {	
+				pan.numeroCourant++;
 				gotoMagiqueReculer(pan, pan.pilot.getCurrentPhraseIndex());					
 			}
 		});
@@ -79,7 +80,7 @@ public class ControlPanel extends JPanel {
 	}
 
 	// appeler avec -1 si on lance le goto avec le gotoField
-	private void gotoMagiqueAvancer(Panneau pan, int numeroSegment) {
+	public void gotoMagiqueAvancer(Panneau pan, int numeroSegment) {
 
 		int n;
 		try {
@@ -88,29 +89,40 @@ public class ControlPanel extends JPanel {
 				pan.pilot.doPlay();
 				return;
 			}
+			
+			// on met a jour le numero de segment;
 			if (numeroSegment == -1) {
 				n = Integer.parseInt(goToField.getText()) - 1;
-			} else {
-				n = numeroSegment;
-			}			
-			
-			// on met a jour le numeroCourant et le numero de segment;
-			String s = null;
-			while (s == null) {
-				try {
-					s = pan.textHandler.motsParSegment.get(n).get(0);
-				} catch (Exception e2) {
-					n++;
-					if ( n >= pan.textHandler.getPhrasesCount()) {
-						return;
+			} else {		
+				if (pan.textHandler.hasNextHoleInPhrase(pan.numeroCourant)) {	
+					//n = la meme phrase
+					n = pan.pilot.getCurrentPhraseIndex();
+				} else {
+					//n = la prochaine phrase où il ya un mot à découvrir
+					n = numeroSegment;
+					String s = null;
+					while (s == null) {
+						try {
+							s = pan.textHandler.motsParSegment.get(n).get(0);
+						} catch (Exception e2) {
+							n++;
+							if ( n >= pan.textHandler.getPhrasesCount()) {
+								return;
+							}
+						}
 					}
 				}
-			}
+				
+			}			
+			//on passe au mot a decouvrir suivant	
+			pan.numeroCourant++;
+			// on met a jour le segment
+			pan.pilot.phrase = n;
 			
-			for (int i = 0; i < pan.textHandler.mots.size(); i++) {
-				if (pan.textHandler.mots.get(i) == s) {
-					pan.numeroCourant = i;
-					break;
+			//on desactive toutes les fenetres qui ne sont pas des masques
+			for (JInternalFrame jf : pan.getAllFrames()) {
+				if ( !(jf instanceof Mask)) {
+					jf.setVisible(false);
 				}
 			}
 			
@@ -123,14 +135,13 @@ public class ControlPanel extends JPanel {
 				}
 			}
 			
-			// phrase = le numero de segment
-			pan.pilot.phrase = n;
+
 			
 			// on réécrit tous les mots dépassés
 			// et on enleve les fenetres
 			for (Mask m : pan.fenetreMasque) {
 				if (pan.getNumero(m) < pan.numeroCourant && m.page == pan.pageActuelle) {
-					System.out.println(" ( " + pan.fenetreMasque.indexOf(m)+" ) Masque numero " + pan.getNumero(m) + " est rendu visible. Valeur : " + m.motCouvert);
+					System.out.println(" ( " + pan.fenetreMasque.indexOf(m)+" ) Masque numero " + pan.getNumero(m) + " est rendu INVISIBLE. Valeur : " + m.motCouvert);
 					String temp = pan.editorPane.getText();
 					String r = "";
 					char[] tab = temp.toCharArray();
@@ -210,31 +221,26 @@ public class ControlPanel extends JPanel {
 			if (numeroSegment == -1) {
 				n = Integer.parseInt(goToField.getText()) - 1;
 			} else {
-				n = numeroSegment;
-			}
-			
-			int oldN = n;
-
-			// on met a jour le numeroCourant et le numero de segment;
-			String s = null;
-			while (s == null) {
-				if(n < 0) {
-					n = oldN;
-					break;
-				}
-				try {
-					s = pan.textHandler.motsParSegment.get(n).get(0);
-				} catch (Exception e2) {
-					n--;
-				}
-			}
-
-			for (int i = 0; i < pan.textHandler.mots.size(); i++) {
-				if (pan.textHandler.mots.get(i) == s) {
-					pan.numeroCourant = i;
-					break;
+				if ( pan.textHandler.hasPreviousHoleInPhrase(pan.numeroCourant)) {
+					n = pan.pilot.getCurrentPhraseIndex();
+				} else {
+					n = numeroSegment;
+					String s = null;
+					while (s == null) {
+						if(n < 0) {
+							break;
+						}
+						try {
+							s = pan.textHandler.motsParSegment.get(n).get(0);
+						} catch (Exception e2) {
+							n--;
+						}
+					}
 				}
 			}
+			pan.numeroCourant--;
+			// phrase = le numero de segment
+			pan.pilot.phrase = n;
 	
 			int page = -1;
 			for (int i = 1; i <= pan.segmentsEnFonctionDeLaPage.size(); i++) {
@@ -245,8 +251,7 @@ public class ControlPanel extends JPanel {
 				}
 			}
 			
-			// phrase = le numero de segment
-			pan.pilot.phrase = n;
+	
 	
 			for (Mask m : pan.fenetreMasque) {
 				if (m.jtf.getBackground().equals(Color.CYAN)) {

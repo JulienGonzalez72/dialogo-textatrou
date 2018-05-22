@@ -32,6 +32,10 @@ public class Mask extends JInternalFrame {
 		}
 		
 	}
+	
+	public String toString(){
+		return motCouvert+" ( "+start+"/"+end+" )";
+	}
 
 
 }
