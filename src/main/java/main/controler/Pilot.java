@@ -41,7 +41,6 @@ public class Pilot {
 			}
 		}
 
-		p.param.stockerPreference();
 		phrase = n;
 		/// désacive la taille et la police et le segment de départ
 		p.fenetreParam.pan.fontFamilyComboBox.setEnabled(false);

@@ -4,12 +4,11 @@ import java.awt.*;
 import java.io.*;
 import java.util.Properties;
 import main.controler.ControleurParam;
-import main.view.*;
+import main.view.Fenetre;
 
 public class Parametres {
 
 	public Font police = ControleurParam.getFont(null, 0, Font.BOLD, Constants.DEFAULT_FONT_SIZE);
-	public int taillePolice = Constants.DEFAULT_FONT_SIZE;
 	public Color bgColor = Constants.BG_COLOR;
 	public String titre;
 	public int tailleX;
@@ -39,11 +38,12 @@ public class Parametres {
 		prop.put("h", String.valueOf(panHeight));
 		prop.put("x", String.valueOf(panX));
 		prop.put("y", String.valueOf(panY));
-		prop.put("taillePolice", String.valueOf(taillePolice));
+		prop.put("taillePolice", String.valueOf(police.getSize()));
 		prop.put("typePolice", police.getFontName());
 		prop.put("couleurFond", fromColorToString(bgColor));
 		prop.put("tempsAttente", String.valueOf(tempsPauseEnPourcentageDuTempsDeLecture));
 		prop.put("rejouerSon", String.valueOf(fixedField));
+		prop.put("premierSegment", String.valueOf(premierSegment));
 		String fichier = "./ressources/preferences/preference_" + Constants.NOM_ELEVE + ".txt";
 		OutputStream ops = null;
 		try {
@@ -57,6 +57,13 @@ public class Parametres {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Applique les preferences de taille et position uniquement
+	 */
+	public void appliquerPreferenceTaillePosition(Fenetre fen) {
+		fen.setBounds(panX, panY, panWidth, panHeight);
 	}
 	
 	/**
@@ -80,7 +87,7 @@ public class Parametres {
 			e.printStackTrace();
 		}
 
-		p.taillePolice = Integer.valueOf(pro.getProperty("taillePolice"));
+		int taillePolice = Integer.valueOf(pro.getProperty("taillePolice"));
 		String police = pro.getProperty("typePolice");
 		int index = 999;
 		if (police.equals("OpenDyslexic") || police.equals("OpenDyslexic Bold")) {
@@ -92,14 +99,14 @@ public class Parametres {
 		if (police.equals("Lexia")) {
 			index = 2;
 		}
-		p.police = ControleurParam.getFont(police, index, Font.BOLD, p.taillePolice);
+		p.police = ControleurParam.getFont(police, index, Font.BOLD, taillePolice);
 		p.bgColor = fromStringToColor(pro.getProperty("couleurFond"));
-		p.police = ControleurParam.getFont(police, index, Font.BOLD, p.taillePolice);
 		p.tempsPauseEnPourcentageDuTempsDeLecture = Integer.valueOf(pro.getProperty("tempsAttente"));
 		p.panX = Integer.valueOf(pro.getProperty("x"));
 		p.panY = Integer.valueOf(pro.getProperty("y"));
 		p.panWidth = Integer.valueOf(pro.getProperty("w"));
 		p.panHeight = Integer.valueOf(pro.getProperty("h"));
+		p.premierSegment = Integer.valueOf(pro.getProperty("premierSegment"));
 		
 		return p;
 	}

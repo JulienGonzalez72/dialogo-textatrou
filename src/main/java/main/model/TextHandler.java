@@ -35,11 +35,6 @@ public class TextHandler {
 		System.out.println(mots.toString());
 		System.out.println(motsParSegment.toString());
 		System.out.println(phrases.toString());
-		
-		for (int i = 0; i < mots.size(); i++) {
-			System.out.println("Le trou " + i + " a-t-il un trou suivant ? " + hasNextHoleInPhrase(i));
-			System.out.println("Le trou " + i + " a-t-il un trou précédent ? " + hasPreviousHoleInPhrase(i));
-		}
 	}
 
 	public boolean oneHoleEqualOneWord() {
@@ -317,14 +312,6 @@ public class TextHandler {
 	@Override
 	public String toString() {
 		return txt;
-	}
-
-	public boolean hasNextHoleInPhrase(int numeroCourant) {
-		return false;
-	}
-
-	public boolean hasPreviousHoleInPhrase(int numeroCourant) {
-		return false;
 	}
 
 }
