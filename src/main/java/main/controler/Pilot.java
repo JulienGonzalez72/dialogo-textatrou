@@ -33,15 +33,13 @@ public class Pilot {
 		if (n < p.param.premierSegment - 1 || n >= p.textHandler.getPhrasesCount() - 1) {
 			throw new IllegalArgumentException("Numéro de segment invalide : " + n);
 		}
-		
-		//desactivation des autres fenetres fixes
-		if ( true) {
-			for (JInternalFrame j : p.getAllFrames()) {
-				if(!(j instanceof Mask)) {
-					j.dispose();
-				}
+
+		// desactivation des autres fenetres fixes
+		for (JInternalFrame j : p.getAllFrames()) {
+			if (!(j instanceof Mask)) {
+				j.dispose();
 			}
-		} 
+		}
 
 		p.param.stockerPreference();
 		phrase = n;
@@ -62,10 +60,10 @@ public class Pilot {
 		controler.showPage(controler.getPageOfPhrase(n));
 
 		if (doitJouer) {
-		/// play du son correspondant au segment N ///
-		controler.play(n);
-		/// attente de la fin du temps de pause ///
-		controler.doWait(controler.getCurrentWaitTime(), Constants.CURSOR_SPEAK);
+			/// play du son correspondant au segment N ///
+			controler.play(n);
+			/// attente de la fin du temps de pause ///
+			controler.doWait(controler.getCurrentWaitTime(), Constants.CURSOR_SPEAK);
 		}
 
 	}
@@ -81,10 +79,13 @@ public class Pilot {
 	 * segment du texte.
 	 */
 	public void doNext() {
-	
-		  try { goTo(p.player.getCurrentPhraseIndex() + 1); } catch
-		  (IllegalArgumentException e) { p.afficherCompteRendu(); }
-		 
+
+		try {
+			goTo(p.player.getCurrentPhraseIndex() + 1);
+		} catch (IllegalArgumentException e) {
+			p.afficherCompteRendu();
+		}
+
 	}
 
 	/**
@@ -109,11 +110,25 @@ public class Pilot {
 	public void doPlay() {
 		showAllHoleInPages();
 
-		if (p.player.getCurrentPhraseIndex() == 0 && !p.lecteur.isAlive()) {
+		goTo(p.player.getCurrentPhraseIndex());
+
+		//si c'est la première fois qu'on appuie sur play
+		if (p.player.getCurrentPhraseIndex() == p.param.premierSegment-1 && !p.lecteur.isAlive()) {
+			
+			//on recupere le numero courant
+			int numeroCourant = 0;
+			for (int i =0; i < p.textHandler.motsParSegment.size();i++) {
+				if ( i == p.param.premierSegment-1) {
+					break;
+				}
+				numeroCourant += p.textHandler.motsParSegment.get(i).size();	
+			}	
+			p.numeroCourant =  numeroCourant;
+			//mise a jour du lecteur en fonction du segment de depart
+			p.lecteur.segmentDeDepart = p.param.premierSegment-1;	
 			p.lecteur.start();
 		}
 
-		goTo(p.player.getCurrentPhraseIndex());
 	}
 
 	public int getCurrentPhraseIndex() {
@@ -135,7 +150,7 @@ public class Pilot {
 		// desactivation de la prochaine fenetre de masque
 		if (!p.param.fixedField) {
 			for (Mask m : p.fenetreMasque) {
-				if (p.fenetreMasque.indexOf(m) == n) {
+				if(m.isVisible()) {
 					m.setVisible(false);
 					masque = m;
 					break;
@@ -145,17 +160,17 @@ public class Pilot {
 
 		String bonMot = p.textHandler.mots.get(n);
 
-		
 		int start2 = p.editorPane.getText().indexOf(" " + p.param.mysterCarac) + 1;
 		int end2 = -1;
 		if (bonMot != null) {
 			end2 = start2 + bonMot.length();
 		}
-		if(!p.param.fixedField) {
+		if (!p.param.fixedField) {
 			try {
 				start2 = masque.start;
 				end2 = masque.end;
-			}catch (Exception e) {}
+			} catch (Exception e) {
+			}
 		}
 
 		if (start2 < end2) {
@@ -182,7 +197,7 @@ public class Pilot {
 
 	// affiche les trous de la page courante
 	public void showAllHoleInPages() {
-		
+
 		Map<Integer, List<String>> tempMotsParSegment = new HashMap<>();
 		int indice = 0;
 		for (List<String> s : p.textHandler.motsParSegment.values()) {
@@ -193,12 +208,12 @@ public class Pilot {
 			tempMotsParSegment.put(indice, ll);
 			indice++;
 		}
-		
+
 		String text = p.editorPane.getText();
 		int oldIndex = 0;
 		// pour tous les mots à trouver
 		for (int i = 0; i < p.textHandler.mots.size(); i++) {
-			
+
 			String bonMot = p.textHandler.mots.get(i);
 
 			List<Integer> numerosSegments = p.segmentsEnFonctionDeLaPage.get(p.pageActuelle);
@@ -207,10 +222,10 @@ public class Pilot {
 				// si le segment contient des mots a trouver
 				if (!tempMotsParSegment.get(integer).isEmpty()) {
 					// pour chacun de ces mots
-					for (int j=0;j <tempMotsParSegment.get(integer).size();j++) {
+					for (int j = 0; j < tempMotsParSegment.get(integer).size(); j++) {
 						// si ce mot est egale a un bon mot
-						if (tempMotsParSegment.get(integer).get(j).equals(bonMot)) {				
-							tempMotsParSegment.get(integer).set(j,"$unmotquinexistepas$");
+						if (tempMotsParSegment.get(integer).get(j).equals(bonMot)) {
+							tempMotsParSegment.get(integer).set(j, "$unmotquinexistepas$");
 							int start2 = text.indexOf(" " + p.param.mysterCarac, oldIndex) + 1;
 							int end2 = start2 + bonMot.length();
 							oldIndex = end2;
@@ -222,7 +237,7 @@ public class Pilot {
 
 						}
 					}
-			
+
 				}
 			}
 			p.replaceAllMask();

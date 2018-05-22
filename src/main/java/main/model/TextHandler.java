@@ -14,24 +14,24 @@ public class TextHandler {
 	 * Liste des segments associés à leurs numéros
 	 */
 	private Map<Integer, String> phrases;
-	
-	public Map<Integer,String> mots;
-	
-	public Map<Integer,List<String>> motsParSegment;
-	
+
+	public Map<Integer, String> mots;
+
+	public Map<Integer, List<String>> motsParSegment;
+
 	Parametres param;
 
 	public TextHandler(String texteOriginal, Parametres param) {
 		this.param = param;
-		this.mots = new HashMap<Integer,String>();
+		this.mots = new HashMap<Integer, String>();
 		this.motsParSegment = new HashMap<>();
-		
+
 		remplirMots(texteOriginal);
 		txt = format(texteOriginal);
 		this.phrases = new HashMap<Integer, String>();
 		for (String phrase : txt.split(Constants.PAUSE)) {
 			phrases.put(phrases.size(), phrase);
-		}	
+		}
 		System.out.println(mots.toString());
 		System.out.println(motsParSegment.toString());
 		System.out.println(phrases.toString());
@@ -40,10 +40,10 @@ public class TextHandler {
 	public boolean oneHoleEqualOneWord() {
 		boolean r = true;
 		for (String s : mots.values()) {
-			if ( s.contains(" ")) {
+			if (s.contains(" ")) {
 				r = false;
 			}
-		}			
+		}
 		return r;
 	}
 
@@ -56,7 +56,7 @@ public class TextHandler {
 		String motCourant = "";
 		List<String> listStrings = new ArrayList<>();
 		for (int i = 0; i < tab.length; i++) {
-			if ( tab[i] == '/') {		
+			if (tab[i] == '/') {
 				motsParSegment.put(numeroSegmentCourant, listStrings);
 				listStrings = new ArrayList<>();
 				numeroSegmentCourant++;
@@ -69,13 +69,13 @@ public class TextHandler {
 			}
 			if (dansCrochet) {
 				motCourant += tab[i];
-			} else if ( motCourant != ""){
+			} else if (motCourant != "") {
 				mots.put(numero, motCourant);
 				listStrings.add(motCourant);
-				motCourant ="";
+				motCourant = "";
 				numero++;
 			}
-		}	
+		}
 	}
 
 	private String format(String str) {
@@ -95,11 +95,10 @@ public class TextHandler {
 				r += '_';
 			} else {
 				r += tab[i];
-			}	
+			}
 		}
 		return r;
 	}
-
 
 	public String getShowText() {
 		String r = "";
@@ -115,7 +114,7 @@ public class TextHandler {
 				i++;
 			}
 			if (dansCrochet) {
-				//r += '_';
+				// r += '_';
 				r += tab[i];
 			} else {
 				r += tab[i];
@@ -207,7 +206,7 @@ public class TextHandler {
 	public int startWordPosition(int offset) {
 		for (int i = Math.min(getShowText().length() - 1, offset); i >= 0; i--) {
 			if (Character.isWhitespace(getShowText().charAt(i)) || isPunctuation(getShowText().charAt(i))) {
-				return i+1;
+				return i + 1;
 			}
 		}
 		return -1;
@@ -232,26 +231,26 @@ public class TextHandler {
 	public int getAbsoluteOffset(int startPhrase, int offset) {
 		return getPhrasesLength(0, startPhrase - 1) + offset;
 	}
-	
+
 	/**
 	 * Retourne une liste des mots à trouver par segment.
 	 */
 	public List<String> getHidedWords(int phrase) {
 		return motsParSegment.get(phrase);
 	}
-	
+
 	public int getStartOffset(String expression, int phrase) {
 		return getPhrasesLength(0, phrase - 1) + phrases.get(phrase).indexOf(expression);
 	}
-	
+
 	public int getEndOffset(String expression, int phrase) {
 		return getStartOffset(expression, phrase) + expression.length();
 	}
-	
+
 	public int getHolesCount(int phrase) {
 		return motsParSegment.get(phrase).size();
 	}
-	
+
 	/**
 	 * Ceci est l'opération inverse, elle permet d'obtenir la position par rapport
 	 * au premier segment affiché avec la position du caractère dans tout le texte.
@@ -267,10 +266,18 @@ public class TextHandler {
 		}
 		return length;
 	}
-	
+
 	@Override
 	public String toString() {
 		return txt;
+	}
+
+	public boolean hasNextHoleInPhrase(int numeroCourant) {
+		return false;
+	}
+
+	public boolean hasPreviousHoleInPhrase(int numeroCourant) {
+		return false;
 	}
 
 }
