@@ -273,6 +273,25 @@ public class TextHandler {
 	}
 
 	public boolean hasNextHoleInPhrase(int numeroCourant) {
+		int j = 0;
+		int k= 0;
+		System.out.println();
+		System.out.println(numeroCourant);
+		for (int i = 0; i <= numeroCourant; i++) {
+			System.out.println(motsParSegment.get(k));
+			System.out.println(motsParSegment.get(k).get(j));
+			if ( motsParSegment.get(k).size() == j){		
+				k++;
+				j = 0;
+				System.out.println("k = "+k);
+			} else {
+				j++;
+				System.out.println("j = "+j);
+			}
+		}
+		System.out.println(k+"/"+j);
+		System.out.println();
+
 		return false;
 	}
 
