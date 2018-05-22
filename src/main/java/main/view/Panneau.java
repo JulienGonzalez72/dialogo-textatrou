@@ -525,12 +525,6 @@ public class Panneau extends JDesktopPane {
 
 	// donne le numero d'un masque
 	public int getNumero(Mask m) {
-		/*
-		 * int i = -1; for (int j = 0; j < textHandler.mots.size(); j++) { if
-		 * (textHandler.mots.get(j) == m.motCouvert) { i = j; } }
-		 * 
-		 * System.out.println("test i "+i+" / test index of "+fenetreMasque.indexOf(m));
-		 */
 		return fenetreMasque.indexOf(m);
 	}
 

@@ -313,5 +313,5 @@ public class TextHandler {
 	public String toString() {
 		return txt;
 	}
-
+	
 }
