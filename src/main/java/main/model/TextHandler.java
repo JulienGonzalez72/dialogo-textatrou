@@ -34,6 +34,7 @@ public class TextHandler {
 		}	
 		System.out.println(mots.toString());
 		System.out.println(motsParSegment.toString());
+		System.out.println(phrases.toString());
 	}
 
 	public boolean oneHoleEqualOneWord() {

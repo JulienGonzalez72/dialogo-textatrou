@@ -155,10 +155,7 @@ public class Pilot {
 			try {
 				start2 = masque.start;
 				end2 = masque.end;
-			}catch (Exception e) {
-				System.out.println(p.fenetreMasque.indexOf(masque));
-			    e.printStackTrace();
-			}
+			}catch (Exception e) {}
 		}
 
 		if (start2 < end2) {
