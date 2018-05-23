@@ -146,12 +146,8 @@ public class ControlerText {
 	 * passé en paramètre. Désaffiche au préalable tous les trous.
 	 */
 	public void showHolesInPage(int h) {
-		// désaffice au préalable tous les trous
-		for (JInternalFrame jif : p.getAllFrames()) {
-			jif.dispose();
-		}
-		// reinitialisation de la liste des masques
-		p.fenetreMasque = new ArrayList<>();
+		//réinitialisation des trous
+		removeAllMasks();
 		// pour tous les trous
 		for (int i = 0; i < p.textHandler.getHolesCount(); i++) {
 			// si ce trou est dans la meme page que h
@@ -376,6 +372,20 @@ public class ControlerText {
 
 		p.replaceAllMask();
 
+	}
+
+	/**
+	 * Montre la page du segment i, lis le segment i et attends
+	 * 
+	 * @param i
+	 */
+	public void readPhrase(int i) {
+		// on montre la page du segment
+		showPage(getPageOfPhrase(i));
+		// lire le fichier audio correspondant à ce segment
+		play(i);
+		// attendre le temps de pause nécessaire
+		doWait(getCurrentWaitTime(), Constants.CURSOR_LISTEN);
 	}
 
 }
