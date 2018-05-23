@@ -132,9 +132,5 @@ public class Pilot {
 	public boolean hasPreviousPhrase() {
 		return p.player.hasPreviousPhrase();
 	}
-<<<<<<< HEAD
-		
-=======
-
->>>>>>> 3d6261c7358b1a9657c9e8c6a1727a3c089ece9c
+	
 }
