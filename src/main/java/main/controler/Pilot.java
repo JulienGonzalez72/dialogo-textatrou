@@ -39,13 +39,6 @@ public class Pilot {
 			throw new IllegalArgumentException("Numéro de segment invalide : " + n);
 		}
 
-		// desactivation des autres fenetres fixes
-		/*for (JInternalFrame j : p.getAllFrames()) {
-			if (!(j instanceof Mask)) {
-				j.dispose();
-			}
-		}*/
-
 		phrase = n;
 		/// désacive la taille et la police et le segment de départ
 		p.fenetreParam.pan.fontFamilyComboBox.setEnabled(false);
@@ -53,22 +46,6 @@ public class Pilot {
 		p.fenetreParam.pan.segmentDeDepart.setEnabled(false);
 		/// désactive les boutons de contrôle pour éviter le spam ///
 		p.controlPanel.disableAll(Constants.DISABLE_TIME);
-
-		/*boolean doitJouer = !p.fenetre.isResizable();
-		/// empêche le redimensionnement de la fenêtre lors de la première lecture ///
-		p.fenetre.setResizable(false);
-
-		// met a jour la barre de progression
-		updateBar();
-
-		controler.showPage(controler.getPageOfPhrase(n));
-
-		if (doitJouer) {
-			/// play du son correspondant au segment N ///
-			controler.play(n);
-			/// attente de la fin du temps de pause ///
-			controler.doWait(controler.getCurrentWaitTime(), Constants.CURSOR_SPEAK);
-		}*/
 		
 		updateBar();
 		
@@ -155,5 +132,9 @@ public class Pilot {
 	public boolean hasPreviousPhrase() {
 		return p.player.hasPreviousPhrase();
 	}
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> 3d6261c7358b1a9657c9e8c6a1727a3c089ece9c
 }

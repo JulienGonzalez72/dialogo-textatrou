@@ -39,9 +39,6 @@ public class TextHandler {
 		for (String phrase : txt.split(Constants.PAUSE)) {
 			phrases.put(phrases.size(), phrase);
 		}
-		System.out.println(mots.toString());
-		System.out.println(motsParSegment.toString());
-		System.out.println(phrases.toString());
 	}
 
 	public boolean oneHoleEqualOneWord() {

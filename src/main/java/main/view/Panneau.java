@@ -387,14 +387,14 @@ public class Panneau extends JDesktopPane {
 			public void run() {
 				time += interval;
 				if (time >= interval * 4) {
-					editorPane.setBackground(Constants.BG_COLOR);
+					editorPane.setBackground(param.bgColor);
 					cancel();
 					return;
 				}
 				if (time % (interval * 2) != 0)
 					editorPane.setBackground(Constants.ALERT_COLOR);
 				else
-					editorPane.setBackground(Constants.BG_COLOR);
+					editorPane.setBackground(param.bgColor);
 			}
 		}, 0, interval);
 	}
@@ -434,7 +434,11 @@ public class Panneau extends JDesktopPane {
 		}
 		return occur;
 	}
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> 3d6261c7358b1a9657c9e8c6a1727a3c089ece9c
 	/*
 	 * replace une fenetre invisible, la rendnat visible
 	 */
