@@ -327,7 +327,7 @@ public class Panneau extends JDesktopPane {
 
 	/**
 	 * Affiche une fenetre correspondant au mot délimité par start et end, d'indice
-	 * numeroCourant
+	 * numeroCourant, et met le masque correspondant dans la liste des masques
 	 */
 	public void afficherFrame(int start, int end, JInternalFrame masque) throws BadLocationException {
 
@@ -369,6 +369,8 @@ public class Panneau extends JDesktopPane {
 
 		frame.add(jtf);
 		frame.setVisible(true);
+		
+		fenetreMasque.add(new Mask(start,end,jtf));
 
 	}
 

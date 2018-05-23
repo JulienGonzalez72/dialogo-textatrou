@@ -172,8 +172,10 @@ public class ControlerText {
 			try {
 				start = masque.start;
 				end = masque.end;
-			} catch (Exception e) {}
-		//fenentre fixe
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		//fenetre fixe
 		} else {
 			start = p.editorPane.getText().indexOf(" " + p.param.mysterCarac) + 1;
 			end = -1;
@@ -252,7 +254,7 @@ public class ControlerText {
 
 	/**
 	 * 
-	 *  Colorire le trou h en couleur c
+	 *  Colore le trou h en couleur c
 	 * 
 	 * @param h : le numero du trou
 	 * @param c : la couleur de coloriage
