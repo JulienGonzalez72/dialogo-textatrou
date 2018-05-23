@@ -172,10 +172,19 @@ public class ControlerText {
 			try {
 				start = masque.start;
 				end = masque.end;
+<<<<<<< HEAD
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		//fenetre fixe
+=======
+				masque.n = h;
+				masque.phrase = p.textHandler.getPhraseOf(h);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		//fenentre fixe
+>>>>>>> 176844895596bac223b27b8cbc299215e865690e
 		} else {
 			start = p.editorPane.getText().indexOf(" " + p.param.mysterCarac) + 1;
 			end = -1;
@@ -260,8 +269,16 @@ public class ControlerText {
 	 * @param c : la couleur de coloriage
 	 */
 	public void color(int h, Color c) {
-		
-		
+		getMask(h).setBackground(c);
 	}
-
+	
+	private Mask getMask(int h) {
+		for (int i = 0; i < p.fenetreMasque.size(); i++) {
+			if (p.fenetreMasque.get(i).n == h) {
+				return p.fenetreMasque.get(i);
+			}
+		}
+		return null;
+	}
+	
 }
