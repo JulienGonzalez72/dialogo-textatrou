@@ -48,6 +48,7 @@ public class LectorFixFrame extends Thread {
 		for (int h = 0; h < numberHole ; h++) {
 			//si le trou est le premier de son segment
 			if(controler.isFirstInPhrase(h)) {
+				//on montre uniquement les trous à partir du trou actuel et de cette page
 				controler.showHolesInPage(h);
 			}
 		}
