@@ -43,6 +43,7 @@ public class Panneau extends JDesktopPane {
 	public Map<Integer, List<Integer>> segmentsEnFonctionDeLaPage = new HashMap<Integer, List<Integer>>();
 	public Player player;
 	public FenetreParametre fenetreParam;
+	public List<Mask> fenetreMasque = new ArrayList<>();
 	public Parametres param;
 	public LectorFixFrame lecteur;
 	public int numeroCourant = 0;
@@ -259,8 +260,8 @@ public class Panneau extends JDesktopPane {
 			texteAfficher += string;
 		}
 		editorPane.setText(texteAfficher.replaceAll("_", param.mysterCarac + ""));
-
-		for (Mask m : fenetreMasque) {
+		
+		/*for (Mask m : fenetreMasque) {
 			if (m.page == page && fenetreMasque.indexOf(m) >= numeroCourant) {
 				m.setVisible(true);
 				try {
@@ -272,7 +273,7 @@ public class Panneau extends JDesktopPane {
 				m.jtf.setBackground(Color.white);
 				m.setVisible(false);
 			}
-		}
+		}*/
 	}
 
 	public boolean pageFinis() {
@@ -325,28 +326,28 @@ public class Panneau extends JDesktopPane {
 	 * Affiche une fenetre correspondant au mot délimité par start et end, d'indice
 	 * numeroCourant, et met le masque correspondant dans la liste des masques
 	 */
-	public void afficherFrameFenetreFixe(int start, int end, int h) throws BadLocationException {
-		
-		JInternalFrame frame = new JInternalFrame();
+	public void afficherFrame(int start, int end, int h) throws BadLocationException {
+		Mask frame = new Mask(start, end, null);
 		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
 		frame.setBorder(null);
 		
-		fenetre.pan.setLayout(null);
+		setLayout(null);
 		
 		JTextField jtf = new JTextField();
+		jtf.addActionListener(controlerMask);
 		jtf.setEnabled(false);
+		frame.jtf = jtf;
 		frame.add(jtf);
 		
 		frame.setVisible(true);
-		Mask m = new Mask(start, end, null);
-		m.motCouvert = textHandler.mots.get(h);
-		m.page = controlerGlobal.getPageOf(h);
-		m.n = h;
-		fenetreMasque.add(m);
+		frame.motCouvert = textHandler.mots.get(h);
+		frame.page = controlerGlobal.getPageOf(h);
+		frame.n = h;
+		fenetreMasque.add(frame);
 		
 		Rectangle r = editorPane.modelToView(start).union(editorPane.modelToView(end));
 		frame.setBounds(r.x, r.y, r.width, r.height / 2);
-		fenetre.pan.add(frame);	
+		add(frame);	
 		
 		for (Component c : fenetre.pan.getComponents()) {
 			if ( c instanceof JInternalFrame) {
@@ -434,53 +435,6 @@ public class Panneau extends JDesktopPane {
 		return occur;
 	}
 
-	public List<Mask> fenetreMasque = new PersonalizedList();
-
-	public void afficherFrameVide(int start, int end, int page, String bonMot) throws BadLocationException {
-		Mask frame = new Mask();
-		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
-		frame.setBorder(null);
-		fenetre.pan.setLayout(null);
-		Rectangle r = editorPane.modelToView(start).union(editorPane.modelToView(end));
-		frame.setBounds(r.x, r.y, r.width, r.height / 2);
-
-		JTextField jtf = new JTextField();
-		Font f = new Font(editorPane.getFont().getFontName(), editorPane.getFont().getStyle(),
-				editorPane.getFont().getSize() / 2);
-		jtf.setFont(f);
-		jtf.setHorizontalAlignment(JTextField.CENTER);
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				jtf.setEnabled(false);
-			}
-		});
-
-		frame.jtf = jtf;
-		frame.start = start;
-		frame.end = end;
-		frame.page = page;
-		frame.motCouvert = bonMot;
-		frame.add(jtf);
-
-		boolean motDejaExistant = false;
-		for (Mask mask : fenetreMasque) {
-			if (mask.motCouvert == frame.motCouvert && mask.start == frame.start) {
-				motDejaExistant = true;
-				mask.setVisible(true);
-				break;
-			}
-		}
-		if (!motDejaExistant) {
-			fenetre.pan.add(frame);
-			frame.setVisible(true);
-			fenetreMasque.add(frame);
-			System.out.println("( " + fenetreMasque.indexOf(frame) + " ) Ajout de la frame numero : " + getNumero(frame)
-					+ ". Valeur : " + frame.motCouvert);
-		}
-
-	}
-
 	/*
 	 * replace une fenetre invisible, la rendnat visible
 	 */
@@ -510,6 +464,16 @@ public class Panneau extends JDesktopPane {
 	// donne le numero d'un masque
 	public int getNumero(Mask m) {
 		return fenetreMasque.indexOf(m);
+	}
+	
+	public void removeAllMasks() {
+		for (int i = 0; i < fenetreMasque.size(); i++) {
+			Mask m = fenetreMasque.get(i);
+			m.setVisible(false);
+			remove(m);
+			System.out.println("suppression du masque " + m.n);
+		}
+		fenetreMasque.clear();
 	}
 
 }

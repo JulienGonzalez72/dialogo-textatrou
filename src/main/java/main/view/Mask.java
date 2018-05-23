@@ -29,6 +29,14 @@ public class Mask extends JInternalFrame {
 		this.jtf = jtf;
 	}
 	
+	public void activate() {
+		jtf.setEnabled(true);
+		jtf.grabFocus();
+	}
+	
+	public void desactivate() {
+		jtf.setEnabled(false);
+	}
 
 	public static class PositionComparator implements Comparator<Mask> {
 		@Override

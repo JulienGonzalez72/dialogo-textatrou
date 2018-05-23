@@ -10,12 +10,12 @@ public class ReaderInside extends ReaderThread {
 	
 	public void run() {
 		while (h < controler.getHolesCount()) {
-			controler.removeAllHoles();
+			controler.removeAllMasks();
 			int n = controler.getPhraseOf(h);
 			controler.showPage(controler.getPageOfPhrase(n));
 			controler.showHolesInPage(h);
 			controler.play(n);
-			while (controler.waitForFill()) {
+			while (!controler.waitForFill(h)) {
 				
 			}
 			h++;

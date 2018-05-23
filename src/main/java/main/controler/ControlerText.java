@@ -163,7 +163,6 @@ public class ControlerText {
 
 		// fenetres pas fixes
 		if (!p.param.fixedField) {
-<<<<<<< HEAD
 			/*for (Mask m : p.fenetreMasque) {
 				if (m.isVisible()) {
 					m.setVisible(false);
@@ -172,9 +171,6 @@ public class ControlerText {
 					break;
 				}
 			}*/
-=======
-			
->>>>>>> 30f00871bb49bfad71e94aaf7a4c474cfe0b6772
 		// fenetre fixe
 		} else {
 			String bonMot = p.textHandler.mots.get(h);
@@ -185,13 +181,11 @@ public class ControlerText {
 				end = start + bonMot.length();
 			}
 			try {
-				p.afficherFrameFenetreFixe(start, end,h);
+				p.afficherFrame(start, end,h);
 			} catch (BadLocationException e) {
 				e.printStackTrace();
 			}
 		}
-
-<<<<<<< HEAD
 		
 		start = p.textHandler.getHoleStartOffset(h);
 		end = p.textHandler.getHoleEndOffset(h);
@@ -200,9 +194,6 @@ public class ControlerText {
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
-=======
-	
->>>>>>> 30f00871bb49bfad71e94aaf7a4c474cfe0b6772
 
 	}
 
@@ -256,22 +247,15 @@ public class ControlerText {
 	// public boolean hasNextHole() {
 	// return p.currentHole < getHolesCount(p.pilot.getCurrentPhraseIndex());
 	// }
-
-<<<<<<< HEAD
-=======
-
->>>>>>> 30f00871bb49bfad71e94aaf7a4c474cfe0b6772
-	public boolean waitForFill() {
+	
+	public boolean waitForFill(int h) {
+		getMask(h).activate();
+		p.controlerMask.enter = false;
 		while (true) {
 			Thread.yield();
 			if (p.controlerMask.enter) {
-				p.controlerMask.enter = false;
 				return true;
 			}
-<<<<<<< HEAD
-		}
-	}
-=======
 		}
 	}
 
@@ -298,14 +282,13 @@ public class ControlerText {
 		}
 		return false;
 	}*/
->>>>>>> 30f00871bb49bfad71e94aaf7a4c474cfe0b6772
 
 	public void validCurrentHole() {
 		// p.validHole(p.pilot.getCurrentPhraseIndex(), p.currentHole);
 	}
 
-	public void removeAllHoles() {
-		// p.removeAllHoles();
+	public void removeAllMasks() {
+		p.removeAllMasks();
 	}
 
 	public void blink() {
