@@ -259,6 +259,10 @@ public class TextHandler {
 		return count;
 	}
 	
+	public int getHolesCount() {
+		return mots.size();
+	}
+	
 	/**
 	 * Retourne <code>true</code> si il y a au moins un autre trou après le trou indiqué dans le même segment.
 	 */
