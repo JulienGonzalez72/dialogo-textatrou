@@ -75,10 +75,6 @@ public class Pilot {
 		if (activeThread != null) {
 			activeThread.doStop();
 		}
-<<<<<<< HEAD
-=======
-
->>>>>>> bced4c5e6b2a86fbac1d47293ae35214c55fcc86
 		activeThread = getReaderThread(n);
 		activeThread.start();
 	}
@@ -159,9 +155,5 @@ public class Pilot {
 	public boolean hasPreviousPhrase() {
 		return p.player.hasPreviousPhrase();
 	}
-<<<<<<< HEAD
-	
-=======
-
->>>>>>> bced4c5e6b2a86fbac1d47293ae35214c55fcc86
+		
 }
