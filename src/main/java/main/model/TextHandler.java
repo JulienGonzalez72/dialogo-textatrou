@@ -10,13 +10,20 @@ public class TextHandler {
 	 * Texte formatés
 	 */
 	public String txt;
+	
 	/**
 	 * Liste des segments associés à leurs numéros
 	 */
 	private Map<Integer, String> phrases;
 
+	/**
+	 * Liste des mots associés à leurs numéros de trous.
+	 */
 	public Map<Integer, String> mots;
 
+	/**
+	 * Liste des mots pour chaque segment.
+	 */
 	public Map<Integer, List<String>> motsParSegment;
 
 	Parametres param;
@@ -247,6 +254,9 @@ public class TextHandler {
 		return getStartOffset(expression, phrase) + expression.length();
 	}
 
+	/**
+	 * Retourne le nombre de trous que contient le segment <code>phrase</code>.
+	 */
 	public int getHolesCount(int phrase) {
 		return motsParSegment.containsKey(phrase) ? motsParSegment.get(phrase).size() : 0;
 	}
@@ -259,6 +269,9 @@ public class TextHandler {
 		return count;
 	}
 	
+	/**
+	 * Retourne le nombre de trous total du texte.
+	 */
 	public int getHolesCount() {
 		return mots.size();
 	}
