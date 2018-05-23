@@ -161,14 +161,14 @@ public class ControlerText {
 
 		// fenetres pas fixes
 		if (!p.param.fixedField) {
-			for (Mask m : p.fenetreMasque) {
+			/*for (Mask m : p.fenetreMasque) {
 				if (m.isVisible()) {
 					m.setVisible(false);
 					start = m.start;
 					end = m.end;
 					break;
 				}
-			}
+			}*/
 		// fenetre fixe
 		} else {
 			String bonMot = p.textHandler.mots.get(h);
@@ -180,8 +180,11 @@ public class ControlerText {
 			}
 		}
 
+		
+		start = p.textHandler.getHoleStartOffset(h);
+		end = p.textHandler.getHoleEndOffset(h);
 		try {
-			p.afficherFrame(start, end,h);
+			p.afficherFrame(start, end, h);
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
@@ -239,7 +242,6 @@ public class ControlerText {
 	// return p.currentHole < getHolesCount(p.pilot.getCurrentPhraseIndex());
 	// }
 
-<<<<<<< HEAD
 	public boolean waitForFill() {
 		while (true) {
 			Thread.yield();
@@ -247,30 +249,7 @@ public class ControlerText {
 				p.controlerMask.enter = false;
 				return true;
 			}
-=======
-	public boolean waitForFill(int h) {
-		
-		Mask m = getMask(h);
-		Object lock = new Object();
-		m.lock = lock;
-		m.jtf.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				m.lock.notify();			
-			}
-		});
-		
-		try {
-			synchronized (lock) {
-				m.lock.wait();
-			}		
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
->>>>>>> 9fa16605021141354e45cf5e3f55f7a521ab2e8d
 		}
-		
-		return false;
 	}
 
 	public void validCurrentHole() {
@@ -309,6 +288,10 @@ public class ControlerText {
 
 	public void activateInput(int h) {
 		getMask(h).jtf.setEnabled(true);
+	}
+	
+	public int getPhraseOf(int h) {
+		return p.textHandler.getPhraseOf(h);
 	}
 
 }

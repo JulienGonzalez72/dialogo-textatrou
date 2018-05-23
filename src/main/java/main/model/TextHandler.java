@@ -7,7 +7,7 @@ import main.Parametres;
 public class TextHandler {
 
 	/**
-	 * Texte formatés
+	 * Texte formaté
 	 */
 	public String txt;
 	
@@ -324,6 +324,54 @@ public class TextHandler {
 			length += phrase.length();
 		}
 		return length;
+	}
+	
+	/**
+	 * Retourne la position de départ du trou indiqué.
+	 */
+	public int getHoleStartOffset(int hole) {
+		int p = getPhraseOf(hole);
+		int n = 0;
+		for (int i = getPhraseOffset(p); i < length(); i++) {
+			if (isHole(i)) {
+				if (n == hole - getFirstHole(p)) {
+					return i;
+				}
+				else {
+					n++;
+					while (isHole(++i));
+				}
+			}
+		}
+		return -1;
+	}
+	
+	public int getHoleEndOffset(int hole) {
+		return getHoleStartOffset(hole) + getHoleLength(hole);
+	}
+	
+	public int length() {
+		return getPhrasesLength(0, getPhrasesCount());
+	}
+	
+	/**
+	 * Retourne le numéro du premier trou à partir du segment indiqué.
+	 */
+	public int getFirstHole(int phrase) {
+		for (int i = 0; i < getHolesCount(); i++) {
+			if (phrase == getPhraseOf(i)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	public boolean isHole(int offset) {
+		return getShowText().charAt(offset) == '_';
+	}
+	
+	public int getHoleLength(int h) {
+		return mots.get(h).length();
 	}
 
 	@Override
