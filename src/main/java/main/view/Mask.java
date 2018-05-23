@@ -11,6 +11,10 @@ public class Mask extends JInternalFrame {
 	public int end;
 	public JTextField jtf;
 	public int page;
+	/**
+	 * numéro du trou
+	 */
+	public int n;
 	public int phrase;
 	public String motCouvert;
 	
