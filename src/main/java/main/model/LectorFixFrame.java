@@ -7,24 +7,17 @@ import java.util.Map;
 import main.Constants;
 import main.controler.ControlerText;
 
-public class LectorFixFrame extends Thread {
+public class LectorFixFrame extends ReaderThread {
 
-	ControlerText controler;
 	public Object lock = new Object();
 	public boolean notified;
-	public boolean needToDead = false;
 	public int numberHole;
 
-	public LectorFixFrame(ControlerText controler,int numberHole) {
-		this.controler = controler;
-		this.numberHole = numberHole;
+	public LectorFixFrame(ControlerText controler, int n) {
+		super(controler, n);
 	}
 
 	public void run() {
-		
-		Map<Integer,List<String>> wordByPhrases = controler.getWordByPhrases();
-		Map<Integer,String> words = controler.getWords();
-		int numberHole = words.size();
 		
 
 			//activer la fenêtre de saisie
@@ -39,7 +32,7 @@ public class LectorFixFrame extends Thread {
 			//passer au trou suivant
 		
 		//pour chaque trou
-		for (int h = 0; h < numberHole ; h++) {
+		for (int h = 0; h < controler.getHolesCount() ; h++) {
 			//si le trou est le premier de son segment
 			if(controler.isFirstInPhrase(h)) {
 				//on montre uniquement les trous à partir du trou actuel et de cette page

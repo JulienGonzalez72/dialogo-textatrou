@@ -16,6 +16,7 @@ import main.controler.ControlerText;
 import main.controler.Pilot;
 import main.Parametres;
 import main.controler.ControlerKey;
+import main.controler.ControlerMask;
 import main.model.LectorFixFrame;
 import main.model.Player;
 import main.model.TextHandler;
@@ -37,6 +38,7 @@ public class Panneau extends JDesktopPane {
 	public ControlPanel controlPanel;
 	public ControlerText controlerGlobal;
 	public ControlerKey controlerKey;
+	public ControlerMask controlerMask;
 	public Pilot pilot;
 	public Map<Integer, List<Integer>> segmentsEnFonctionDeLaPage = new HashMap<Integer, List<Integer>>();
 	public Player player;
@@ -58,6 +60,7 @@ public class Panneau extends JDesktopPane {
 		this.param = param;
 		this.fenetreParam = fenetreParam;
 		this.controlerGlobal = new ControlerText(this);
+		this.controlerMask = new ControlerMask(this);
 		this.fenetre = fenetre;
 		this.pilot = new Pilot(this);
 		String texteCesures = getTextFromFile("ressources/textes/" + Constants.TEXT_FILE_NAME);
@@ -116,7 +119,6 @@ public class Panneau extends JDesktopPane {
 		controlerKey = new ControlerKey(pilot);
 		editorPane.addKeyListener(controlerKey);
 		editorPane.requestFocus();
-
 	}
 
 	public void setCursor(String fileName) {
@@ -259,10 +261,6 @@ public class Panneau extends JDesktopPane {
 		}
 		editorPane.setText(texteAfficher.replaceAll("_", param.mysterCarac + ""));
 
-		if (!fenetre.isResizable()) {
-			pilot.showAllHoleInPages();
-		}
-
 		for (Mask m : fenetreMasque) {
 			if (m.page == page && fenetreMasque.indexOf(m) >= numeroCourant) {
 				m.setVisible(true);
@@ -331,7 +329,7 @@ public class Panneau extends JDesktopPane {
 	 */
 	public void afficherFrame(int start, int end) throws BadLocationException {
 
-		frame = new JInternalFrame();
+		JInternalFrame frame = new JInternalFrame();
 		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
 		frame.setBorder(null);
 		fenetre.pan.setLayout(null);
@@ -368,6 +366,7 @@ public class Panneau extends JDesktopPane {
 		});
 
 		frame.add(jtf);
+		jtf.addActionListener(controlerMask);
 		frame.setVisible(true);
 		
 		fenetreMasque.add(new Mask(start,end,jtf));

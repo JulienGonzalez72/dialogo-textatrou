@@ -218,18 +218,25 @@ public class ControlerText {
 	public int getHolesCount(int n) {
 		return p.textHandler.getHolesCount(n);
 	}
+	
+	/**
+	 * Retourne le nombre de trous total dans le texte.
+	 */
+	public int getHolesCount() {
+		return p.textHandler.getHolesCount();
+	}
 
 	// public boolean hasNextHole() {
 	// return p.currentHole < getHolesCount(p.pilot.getCurrentPhraseIndex());
 	// }
 
 	public boolean waitForFill() {
-		// p.setCurrentHole(p.pilot.getCurrentPhraseIndex(), p.currentHole);
 		while (true) {
 			Thread.yield();
-			// if (p.controlerMask.enter) {
-			// p.controlerMask.enter = false;
-			return true;
+			if (p.controlerMask.enter) {
+				p.controlerMask.enter = false;
+				return true;
+			}
 		}
 	}
 	// }
