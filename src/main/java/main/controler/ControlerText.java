@@ -2,6 +2,8 @@ package main.controler;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 //import java.util.List;
 import java.util.Map;
@@ -143,8 +145,8 @@ public class ControlerText {
 		for (int i = 0; i < p.textHandler.getHolesCount(); i++) {
 			// si ce trou est dans la meme page que h
 			if (getPageOf(i) == getPageOf(h)) {
-				// si ce trou est après le trou h
-				if (i > h) {
+				// si ce trou est après le trou h ou est le trou h
+				if (i >= h) {
 					// on affiche ce trou
 					showHole(i);
 				}
@@ -153,8 +155,6 @@ public class ControlerText {
 	}
 
 	private void showHole(int h) {
-
-		String bonMot = p.textHandler.mots.get(h);
 
 		int start = -1;
 		int end = -1;
@@ -171,7 +171,9 @@ public class ControlerText {
 			}
 		// fenetre fixe
 		} else {
-			start = p.editorPane.getText().indexOf(" " + p.param.mysterCarac) + 1;
+			String bonMot = p.textHandler.mots.get(h);
+			int indexDeDebut = p.fenetreMasque.isEmpty() ? 0 : p.fenetreMasque.get(p.fenetreMasque.size()-1).end;
+			start = p.editorPane.getText().substring(indexDeDebut).indexOf(" " + p.param.mysterCarac) +1+indexDeDebut;
 			end = -1;
 			if (bonMot != null) {
 				end = start + bonMot.length();
@@ -179,13 +181,20 @@ public class ControlerText {
 		}
 
 		try {
-			p.afficherFrame(start, end);
+			p.afficherFrame(start, end,h);
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
 
 	}
 
+	/**
+	 * 
+	 * Retourne la page correspondant au trou h
+	 * 
+	 * @param h
+	 * 
+	 */
 	public int getPageOf(int h) {
 		int r = -1;
 		// recuperer le segment du trou avec son numero
@@ -230,6 +239,7 @@ public class ControlerText {
 	// return p.currentHole < getHolesCount(p.pilot.getCurrentPhraseIndex());
 	// }
 
+<<<<<<< HEAD
 	public boolean waitForFill() {
 		while (true) {
 			Thread.yield();
@@ -237,9 +247,31 @@ public class ControlerText {
 				p.controlerMask.enter = false;
 				return true;
 			}
+=======
+	public boolean waitForFill(int h) {
+		
+		Mask m = getMask(h);
+		Object lock = new Object();
+		m.lock = lock;
+		m.jtf.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				m.lock.notify();			
+			}
+		});
+		
+		try {
+			synchronized (lock) {
+				m.lock.wait();
+			}		
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+>>>>>>> 9fa16605021141354e45cf5e3f55f7a521ab2e8d
 		}
+		
+		return false;
 	}
-	// }
 
 	public void validCurrentHole() {
 		// p.validHole(p.pilot.getCurrentPhraseIndex(), p.currentHole);
@@ -263,7 +295,6 @@ public class ControlerText {
 	 *            : la couleur de coloriage
 	 */
 	public void color(int h, Color c) {
-		System.out.println(p.fenetreMasque.toString());
 		getMask(h).setBackground(c);
 	}
 

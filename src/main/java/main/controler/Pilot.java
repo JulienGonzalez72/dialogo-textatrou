@@ -155,4 +155,56 @@ public class Pilot {
 		return p.player.hasPreviousPhrase();
 	}
 
+<<<<<<< HEAD
+=======
+	// affiche les trous de la page courante
+	public void showAllHoleInPages() {
+
+		Map<Integer, List<String>> tempMotsParSegment = new HashMap<>();
+		int indice = 0;
+		for (List<String> s : p.textHandler.motsParSegment.values()) {
+			List<String> ll = new ArrayList<>();
+			for (String string : s) {
+				ll.add(string);
+			}
+			tempMotsParSegment.put(indice, ll);
+			indice++;
+		}
+
+		String text = p.editorPane.getText();
+		int oldIndex = 0;
+		// pour tous les mots à trouver
+		for (int i = 0; i < p.textHandler.mots.size(); i++) {
+
+			String bonMot = p.textHandler.mots.get(i);
+
+			List<Integer> numerosSegments = p.segmentsEnFonctionDeLaPage.get(p.pageActuelle);
+			// pour tous les segments de la page actuelle
+			for (Integer integer : numerosSegments) {
+				// si le segment contient des mots a trouver
+				if (tempMotsParSegment.get(integer)!=null && !tempMotsParSegment.get(integer).isEmpty()) {
+					// pour chacun de ces mots
+					for (int j = 0; j < tempMotsParSegment.get(integer).size(); j++) {
+						// si ce mot est egale a un bon mot
+						if (tempMotsParSegment.get(integer).get(j).equals(bonMot)) {
+							tempMotsParSegment.get(integer).set(j, "$unmotquinexistepas$");
+							int start2 = text.indexOf(" " + p.param.mysterCarac, oldIndex) + 1;
+							int end2 = start2 + bonMot.length();
+							oldIndex = end2;
+							try {
+								p.afficherFrameVide(start2, end2, p.pageActuelle, bonMot);
+							} catch (BadLocationException e) {
+								e.printStackTrace();
+							}
+
+						}
+					}
+
+				}
+			}
+			p.replaceAllMask();
+		}
+	}
+
+>>>>>>> 9fa16605021141354e45cf5e3f55f7a521ab2e8d
 }

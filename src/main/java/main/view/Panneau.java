@@ -87,7 +87,7 @@ public class Panneau extends JDesktopPane {
 		progressBar = new JProgressBar(0, (textHandler.getPhrasesCount() - 1));
 		progressBar.setStringPainted(true);
 		progressBar.setForeground(Color.GREEN);
-		
+
 		lecteur = new LectorFixFrame(controlerGlobal, param.premierSegment);
 
 	}
@@ -109,7 +109,7 @@ public class Panneau extends JDesktopPane {
 
 		/// construit la mise en page virtuelle ///
 		rebuildPages();
-		
+
 		/// initialise le lecteur et le démarre ///
 		player = new Player(textHandler, param);
 		player.load(param.premierSegment - 1);
@@ -327,7 +327,7 @@ public class Panneau extends JDesktopPane {
 	 * Affiche une fenetre correspondant au mot délimité par start et end, d'indice
 	 * numeroCourant, et met le masque correspondant dans la liste des masques
 	 */
-	public void afficherFrame(int start, int end) throws BadLocationException {
+	public void afficherFrame(int start, int end, int h) throws BadLocationException {
 
 		JInternalFrame frame = new JInternalFrame();
 		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
@@ -341,8 +341,9 @@ public class Panneau extends JDesktopPane {
 			Rectangle r = editorPane.modelToView(start).union(editorPane.modelToView(end));
 			frame.setBounds(r.x, r.y, r.width, r.height / 2);
 			fenetre.pan.add(frame);
-		} 
+		}
 
+		String bonMot = textHandler.mots.get(h);
 		JTextField jtf = new JTextField();
 		Font f = new Font(editorPane.getFont().getFontName(), editorPane.getFont().getStyle(),
 				editorPane.getFont().getSize() / 2);
@@ -354,10 +355,10 @@ public class Panneau extends JDesktopPane {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				JTextField jtf = (JTextField) arg0.getSource();
-				String bonMot = textHandler.mots.get(numeroCourant);
+
 				// Si juste
 				if (jtf.getText().equalsIgnoreCase(bonMot)) {
-					
+
 				} else {
 					blink();
 					nbErreurs++;
@@ -368,8 +369,11 @@ public class Panneau extends JDesktopPane {
 		frame.add(jtf);
 		jtf.addActionListener(controlerMask);
 		frame.setVisible(true);
-		
-		fenetreMasque.add(new Mask(start,end,jtf));
+		Mask m = new Mask(start, end, jtf);
+		m.motCouvert = textHandler.mots.get(h);
+		m.page = controlerGlobal.getPageOf(h);
+		m.n = h;
+		fenetreMasque.add(m);
 
 	}
 
