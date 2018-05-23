@@ -159,32 +159,17 @@ public class ControlerText {
 		int start = -1;
 		int end = -1;
 
-		Mask masque = null;
-		//fenetres pas fixes
+		// fenetres pas fixes
 		if (!p.param.fixedField) {
 			for (Mask m : p.fenetreMasque) {
 				if (m.isVisible()) {
 					m.setVisible(false);
-					masque = m;
+					start = m.start;
+					end = m.end;
 					break;
 				}
 			}
-			try {
-				start = masque.start;
-				end = masque.end;
-<<<<<<< HEAD
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		//fenetre fixe
-=======
-				masque.n = h;
-				masque.phrase = p.textHandler.getPhraseOf(h);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		//fenentre fixe
->>>>>>> 176844895596bac223b27b8cbc299215e865690e
+		// fenetre fixe
 		} else {
 			start = p.editorPane.getText().indexOf(" " + p.param.mysterCarac) + 1;
 			end = -1;
@@ -194,7 +179,7 @@ public class ControlerText {
 		}
 
 		try {
-			p.afficherFrame(start, end, masque);
+			p.afficherFrame(start, end);
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
@@ -208,7 +193,7 @@ public class ControlerText {
 		// pour toutes les pages
 		for (int i = 0; i < getPhrasesCount(); i++) {
 			// si la page contient le segment
-			if (p.segmentsEnFonctionDeLaPage.get(i+1).contains(n)) {
+			if (p.segmentsEnFonctionDeLaPage.get(i + 1).contains(n)) {
 				r = i;
 				break;
 			}
@@ -263,15 +248,18 @@ public class ControlerText {
 
 	/**
 	 * 
-	 *  Colore le trou h en couleur c
+	 * Colore le trou h en couleur c
 	 * 
-	 * @param h : le numero du trou
-	 * @param c : la couleur de coloriage
+	 * @param h
+	 *            : le numero du trou
+	 * @param c
+	 *            : la couleur de coloriage
 	 */
 	public void color(int h, Color c) {
+		System.out.println(p.fenetreMasque.toString());
 		getMask(h).setBackground(c);
 	}
-	
+
 	private Mask getMask(int h) {
 		for (int i = 0; i < p.fenetreMasque.size(); i++) {
 			if (p.fenetreMasque.get(i).n == h) {
@@ -280,5 +268,9 @@ public class ControlerText {
 		}
 		return null;
 	}
-	
+
+	public void activateInput(int h) {
+		getMask(h).jtf.setEnabled(true);
+	}
+
 }
