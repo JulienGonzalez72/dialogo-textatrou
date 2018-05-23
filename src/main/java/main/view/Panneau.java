@@ -329,7 +329,7 @@ public class Panneau extends JDesktopPane {
 	 * Affiche une fenetre correspondant au mot délimité par start et end, d'indice
 	 * numeroCourant, et met le masque correspondant dans la liste des masques
 	 */
-	public void afficherFrame(int start, int end, JInternalFrame masque) throws BadLocationException {
+	public void afficherFrame(int start, int end) throws BadLocationException {
 
 		frame = new JInternalFrame();
 		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
@@ -343,7 +343,7 @@ public class Panneau extends JDesktopPane {
 			Rectangle r = editorPane.modelToView(start).union(editorPane.modelToView(end));
 			frame.setBounds(r.x, r.y, r.width, r.height / 2);
 			fenetre.pan.add(frame);
-		}
+		} 
 
 		JTextField jtf = new JTextField();
 		Font f = new Font(editorPane.getFont().getFontName(), editorPane.getFont().getStyle(),

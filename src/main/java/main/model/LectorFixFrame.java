@@ -26,12 +26,7 @@ public class LectorFixFrame extends Thread {
 		Map<Integer,String> words = controler.getWords();
 		int numberHole = words.size();
 		
-		//pour chaque trou
-			//si le trou est le premier de son segment	
-				//on montre uniquement les trous à partir du trou actuel et de cette page
-				//lire le fichier audio correspondant à ce segment
-				//attendre le temps de pause nécessaire	
-			//colorier le trou actuel en bleu
+
 			//activer la fenêtre de saisie
 			//attendre une saisie
 			//tant que la saisie n'est pas juste
@@ -56,8 +51,11 @@ public class LectorFixFrame extends Thread {
 			}
 			//colorier le trou actuel en bleu
 			controler.color(h,Color.cyan);
-			//active la fnêtre de saisie
+			//active la fenêtre de saisie
 			controler.activateInput(h);
+			while(!controler.waitForFill()) {
+				System.out.println("salut");
+			}
 		}
 		
 		
