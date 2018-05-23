@@ -6,6 +6,7 @@ import java.util.Map;
 
 import main.Constants;
 import main.controler.ControlerText;
+import main.view.Mask;
 
 public class LectorFixFrame extends ReaderThread {
 
@@ -17,8 +18,8 @@ public class LectorFixFrame extends ReaderThread {
 	}
 
 	public void run() {
-		
 
+<<<<<<< HEAD
 			//activer la fenêtre de saisie
 			//attendre une saisie
 			//tant que la saisie n'est pas juste
@@ -35,27 +36,51 @@ public class LectorFixFrame extends ReaderThread {
 			//si le trou est le premier de son segment
 			if(controler.isFirstInPhrase(h)) {
 				//on montre uniquement les trous à partir du trou actuel et de cette page
+=======
+		// activer la fenêtre de saisie
+		// attendre une saisie
+		// tant que la saisie n'est pas juste
+		// compabiliser une erreur
+		// clignoter
+		// attendre une saisie
+		// désactiver la fenêtre de saisie
+		// remplacer le trou par le mot correspondant
+		// replacer tous les trous
+		// passer au trou suivant
+
+		// pour chaque trou
+		for (int h = this.h; h < controler.getHolesCount(); h++) {
+			// si le trou est le premier de son segment
+			if (controler.isFirstInPhrase(h)) {
+				// on montre uniquement les trous à partir du trou actuel et de cette page
+>>>>>>> 30f00871bb49bfad71e94aaf7a4c474cfe0b6772
 				controler.showHolesInPage(h);
-				//lire le fichier audio correspondant à ce segment
+				// lire le fichier audio correspondant à ce segment
 				controler.play(controler.getPageOf(h));
-				//attendre le temps de pause nécessaire	
+				// attendre le temps de pause nécessaire
 				controler.doWait(controler.getCurrentWaitTime(), Constants.CURSOR_LISTEN);
 			}
-			//colorier le trou actuel en bleu
-			controler.color(h,Color.cyan);
-			//active la fenêtre de saisie
+			// colorier le trou actuel en bleu
+			controler.color(h, Color.cyan);
+			// active la fenêtre de saisie avec le trou actuel
 			controler.activateInput(h);
+<<<<<<< HEAD
 			while(!controler.waitForFill()) {
 				System.out.println("salut");
+=======
+
+			while (!controler.waitForFill()) {
+				System.out.println("FAUX");
+>>>>>>> 30f00871bb49bfad71e94aaf7a4c474cfe0b6772
 			}
-			System.out.println("NE DOIT PAS SE LIRE");
+
+
 		}
-		
-		
+
 		controler.showReport();
 
 	}
-	
+
 	public void doStop() {
 		needToDead = true;
 		interrupt();

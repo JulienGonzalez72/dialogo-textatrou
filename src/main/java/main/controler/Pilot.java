@@ -75,7 +75,16 @@ public class Pilot {
 		if (activeThread != null) {
 			activeThread.doStop();
 		}
+<<<<<<< HEAD
 		activeThread = getReaderThread(n);
+=======
+		activeThread = (LectorFixFrame) getReaderThread(0);
+		activeThread.start();
+	}
+	
+	public void lancerLectorFixe() {
+		activeThread = (LectorFixFrame) getReaderThread(0);
+>>>>>>> 30f00871bb49bfad71e94aaf7a4c474cfe0b6772
 		activeThread.start();
 	}
 	
@@ -155,5 +164,9 @@ public class Pilot {
 	public boolean hasPreviousPhrase() {
 		return p.player.hasPreviousPhrase();
 	}
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> 30f00871bb49bfad71e94aaf7a4c474cfe0b6772
 }

@@ -44,7 +44,7 @@ public class ControlPanel extends JPanel {
 		playButton.setEnabled(false);
 		playButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new LectorFixFrame(pan.controlerGlobal, 1).start();;
+				new LectorFixFrame(pan.controlerGlobal, 0).start();
 			}
 		});
 

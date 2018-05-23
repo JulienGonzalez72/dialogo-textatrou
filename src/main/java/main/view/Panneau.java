@@ -88,11 +88,10 @@ public class Panneau extends JDesktopPane {
 		progressBar.setStringPainted(true);
 		progressBar.setForeground(Color.GREEN);
 
-		lecteur = new LectorFixFrame(controlerGlobal, param.premierSegment);
 
 	}
 
-	JDesktopPane panelFenetreFixe = null;
+	public JDesktopPane panelFenetreFixe = null;
 
 	/**
 	 * S'exécute lorsque le panneau s'est bien intégré à la fenêtre.
@@ -321,60 +320,40 @@ public class Panneau extends JDesktopPane {
 		fenetreParam.stopExercice();
 	}
 
-	public JInternalFrame frame;
 
 	/**
 	 * Affiche une fenetre correspondant au mot délimité par start et end, d'indice
 	 * numeroCourant, et met le masque correspondant dans la liste des masques
 	 */
-	public void afficherFrame(int start, int end, int h) throws BadLocationException {
-
+	public void afficherFrameFenetreFixe(int start, int end, int h) throws BadLocationException {
+		
 		JInternalFrame frame = new JInternalFrame();
 		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
 		frame.setBorder(null);
+		
 		fenetre.pan.setLayout(null);
-
-		if (param.fixedField) {
-			panelFenetreFixe.add(frame);
-			frame.setBounds(0, 0, panelFenetreFixe.getWidth(), panelFenetreFixe.getHeight());
-		} else {
-			Rectangle r = editorPane.modelToView(start).union(editorPane.modelToView(end));
-			frame.setBounds(r.x, r.y, r.width, r.height / 2);
-			fenetre.pan.add(frame);
-		}
-
-		String bonMot = textHandler.mots.get(h);
+		
 		JTextField jtf = new JTextField();
-		Font f = new Font(editorPane.getFont().getFontName(), editorPane.getFont().getStyle(),
-				editorPane.getFont().getSize() / 2);
-		jtf.setFont(f);
-
-		jtf.setHorizontalAlignment(JTextField.CENTER);
-		jtf.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				JTextField jtf = (JTextField) arg0.getSource();
-
-				// Si juste
-				if (jtf.getText().equalsIgnoreCase(bonMot)) {
-
-				} else {
-					blink();
-					nbErreurs++;
-				}
-			}
-		});
-
+		jtf.setEnabled(false);
 		frame.add(jtf);
-		jtf.addActionListener(controlerMask);
+		
 		frame.setVisible(true);
-		Mask m = new Mask(start, end, jtf);
+		Mask m = new Mask(start, end, null);
 		m.motCouvert = textHandler.mots.get(h);
 		m.page = controlerGlobal.getPageOf(h);
 		m.n = h;
 		fenetreMasque.add(m);
-
+		
+		Rectangle r = editorPane.modelToView(start).union(editorPane.modelToView(end));
+		frame.setBounds(r.x, r.y, r.width, r.height / 2);
+		fenetre.pan.add(frame);	
+		
+		for (Component c : fenetre.pan.getComponents()) {
+			if ( c instanceof JInternalFrame) {
+				((JInternalFrame) c).toFront();
+			}
+		}
+							
 	}
 
 	public boolean changementSegment() {
