@@ -434,7 +434,7 @@ public class Panneau extends JDesktopPane {
 		return occur;
 	}
 
-	public List<Mask> fenetreMasque = new PersonalizedList();
+	public List<Mask> fenetreMasque = new ArrayList<>();
 
 	public void afficherFrameVide(int start, int end, int page, String bonMot) throws BadLocationException {
 		Mask frame = new Mask();
@@ -510,6 +510,16 @@ public class Panneau extends JDesktopPane {
 	// donne le numero d'un masque
 	public int getNumero(Mask m) {
 		return fenetreMasque.indexOf(m);
+	}
+
+	public Mask getFenetreFixe() {
+		Mask m = null;
+		for (Component c : panelFenetreFixe.getComponents()) {
+			if ( c instanceof Mask) {
+				m = (Mask) c;
+			}
+		}
+		return m;
 	}
 
 }

@@ -1,10 +1,12 @@
 package main.controler;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 //import java.util.List;
 import java.util.Map;
@@ -16,6 +18,7 @@ import javax.swing.text.BadLocationException;
 import main.Constants;
 import main.view.Mask;
 import main.view.Panneau;
+
 
 public class ControlerText {
 
@@ -139,10 +142,18 @@ public class ControlerText {
 	}
 
 	/**
+	 * 
 	 * Affiche tous les trous correspondant à la page indiquée et à partir du trou
-	 * passé en paramètre
+	 * passé en paramètre.
+	 * Désaffiche au préalable tous les trous.
 	 */
 	public void showHolesInPage(int h) {
+		//désaffice au préalable tous les trous
+		for (JInternalFrame jif : p.getAllFrames()) {
+			jif.dispose();
+		}
+		//reinitialisation de la liste des masques
+		p.fenetreMasque = new ArrayList<>();
 		// pour tous les trous
 		for (int i = 0; i < p.textHandler.getHolesCount(); i++) {
 			// si ce trou est dans la meme page que h
@@ -151,7 +162,7 @@ public class ControlerText {
 				if (i >= h) {
 					// on affiche ce trou
 					showHole(i);
-				}
+				} 
 			}
 		}
 	}
@@ -192,18 +203,14 @@ public class ControlerText {
 	 * 
 	 */
 	public int getPageOf(int h) {
-		int r = -1;
-		// recuperer le segment du trou avec son numero
-		int n = p.textHandler.getPhraseOf(h);
-		// pour toutes les pages
-		for (int i = 0; i < getPhrasesCount(); i++) {
-			// si la page contient le segment
-			if (p.segmentsEnFonctionDeLaPage.get(i + 1).contains(n)) {
-				r = i;
-				break;
-			}
-		}
-		return r;
+		return getPageOfPhrase(getPhraseOf(h));
+	}
+	
+	/**
+	 * 
+	 */
+	public int getPhraseOf(int h) {
+		return p.textHandler.getPhraseOf(h);
 	}
 
 	public void nextHole() {
@@ -236,12 +243,29 @@ public class ControlerText {
 	// }
 
 
-	public boolean waitForFill() {
+	public boolean waitForFill(int h) {
 		while (true) {
 			Thread.yield();
 			if (p.controlerMask.enter) {
 				p.controlerMask.enter = false;
 				return true;
+			}
+		}
+	}
+	
+	public boolean waitForFillFenetreFixe(int h) {
+		while (true) {
+			Thread.yield();
+			if (p.controlerMask.enter) {
+				p.controlerMask.enter = false;
+				
+				Mask m = getFenetreFixe();
+
+				if(m.jtf.getText().equals(getMask(h).motCouvert)) {
+					return true;
+				} else {
+					return false;
+				}
 			}
 		}
 	}
@@ -292,6 +316,7 @@ public class ControlerText {
 	 *            : la couleur de coloriage
 	 */
 	public void color(int h, Color c) {
+		System.out.println(getMask(h).toString());
 		getMask(h).setBackground(c);
 	}
 
@@ -311,16 +336,13 @@ public class ControlerText {
 	 * @param h
 	 * @return
 	 */
-	public Mask activateInput(int h) {
+	public Mask activateInputFenetreFixe(int h) {
 		
 		Mask frame = new Mask();
 		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
 		frame.setBorder(null);
 		frame.setBounds(0, 0, p.panelFenetreFixe.getWidth(), p.panelFenetreFixe.getHeight());
-		
-		for (JInternalFrame jif : p.panelFenetreFixe.getAllFrames()) {
-			jif.dispose();
-		}	
+	
 		p.panelFenetreFixe.add(frame);
 		
 		String bonMot = p.textHandler.mots.get(h);
@@ -340,6 +362,40 @@ public class ControlerText {
 		jtf.requestFocus();
 		
 		return frame;
+		
+	}
+
+	public void doError() {
+		blink();
+		p.nbErreurs++;
+	}
+
+	public void desactiverFenetreFixe() {
+		getFenetreFixe().dispose();
+		
+	}
+	
+	private Mask getFenetreFixe() {
+		return p.getFenetreFixe();
+	}
+
+	public void replaceMaskByWord(int h) {
+		Mask m = getMask(h);
+		String temp = "";
+		int j = 0;
+		for (int i = 0; i < p.editorPane.getText().length(); i++) {
+			if ( i >= m.start && i < m.end) {
+				temp += m.motCouvert.charAt(j);
+				j++;
+			} else {
+				temp += p.editorPane.getText().charAt(i);
+			}
+		}
+		
+		p.editorPane.setText(temp);
+		
+		p.replaceAllMask();
+		
 		
 	}
 
