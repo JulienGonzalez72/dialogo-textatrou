@@ -7,6 +7,7 @@ import javax.swing.*;
 
 public class Mask extends JInternalFrame {
 
+	public Object lock = new Object();
 	public int start;
 	public int end;
 	public JTextField jtf;

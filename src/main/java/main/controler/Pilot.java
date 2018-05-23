@@ -149,58 +149,6 @@ public class Pilot {
 		return p.player.hasPreviousPhrase();
 	}
 
-	public void showHole(int n) {
-
-		Mask masque = null;
-
-		// desactivation de la prochaine fenetre de masque
-		if (!p.param.fixedField) {
-			for (Mask m : p.fenetreMasque) {
-				if(m.isVisible()) {
-					m.setVisible(false);
-					masque = m;
-					break;
-				}
-			}
-		}
-
-		String bonMot = p.textHandler.mots.get(n);
-
-		int start2 = p.editorPane.getText().indexOf(" " + p.param.mysterCarac) + 1;
-		int end2 = -1;
-		if (bonMot != null) {
-			end2 = start2 + bonMot.length();
-		}
-		if (!p.param.fixedField) {
-			try {
-				start2 = masque.start;
-				end2 = masque.end;
-			} catch (Exception e) {
-			}
-		}
-
-		if (start2 < end2) {
-			// si la fenetre est fixe on indique quel mot on doit remplir
-			if (p.param.fixedField) {
-				for (JInternalFrame f : p.fenetreMasque) {
-					if (f.isVisible()) {
-						p.fenetreMasque.get(p.fenetreMasque.indexOf(f)).jtf.setBackground(Color.cyan);
-						break;
-					}
-				}
-			}
-			try {
-				p.afficherFrame(start2, end2, masque);
-			} catch (BadLocationException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	public void nextHole() {
-		showHole(p.numeroCourant);
-	}
-
 	// affiche les trous de la page courante
 	public void showAllHoleInPages() {
 

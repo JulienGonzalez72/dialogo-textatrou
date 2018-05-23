@@ -13,11 +13,11 @@ public class LectorFixFrame extends Thread {
 	public Object lock = new Object();
 	public boolean notified;
 	public boolean needToDead = false;
-	public int numberHole;
+	public int firstHole;
 
-	public LectorFixFrame(ControlerText controler,int numberHole) {
+	public LectorFixFrame(ControlerText controler,int firstHole) {
 		this.controler = controler;
-		this.numberHole = numberHole;
+		this.firstHole = firstHole;
 	}
 
 	public void run() {
@@ -39,7 +39,7 @@ public class LectorFixFrame extends Thread {
 			//passer au trou suivant
 		
 		//pour chaque trou
-		for (int h = 0; h < numberHole ; h++) {
+		for (int h = firstHole; h < numberHole ; h++) {
 			//si le trou est le premier de son segment
 			if(controler.isFirstInPhrase(h)) {
 				//on montre uniquement les trous à partir du trou actuel et de cette page
@@ -53,9 +53,10 @@ public class LectorFixFrame extends Thread {
 			controler.color(h,Color.cyan);
 			//active la fenêtre de saisie
 			controler.activateInput(h);
-			while(!controler.waitForFill()) {
+			while(!controler.waitForFill(h)) {
 				System.out.println("salut");
 			}
+			System.out.println("NE DOIT PAS SE LIRE");
 		}
 		
 		
