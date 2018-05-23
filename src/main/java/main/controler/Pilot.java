@@ -9,11 +9,16 @@ import java.util.Map;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import main.Constants;
+import main.model.LectorFixFrame;
 import main.view.Mask;
 import main.view.Panneau;
 
 public class Pilot {
 
+	/**
+	 * Thread de lecture actif
+	 */
+	private LectorFixFrame activeThread;
 	private Panneau p;
 	public ControlerText controler;
 	/**
@@ -49,7 +54,7 @@ public class Pilot {
 		/// désactive les boutons de contrôle pour éviter le spam ///
 		p.controlPanel.disableAll(Constants.DISABLE_TIME);
 
-		boolean doitJouer = !p.fenetre.isResizable();
+		/*boolean doitJouer = !p.fenetre.isResizable();
 		/// empêche le redimensionnement de la fenêtre lors de la première lecture ///
 		p.fenetre.setResizable(false);
 
@@ -63,8 +68,12 @@ public class Pilot {
 			controler.play(n);
 			/// attente de la fin du temps de pause ///
 			controler.doWait(controler.getCurrentWaitTime(), Constants.CURSOR_SPEAK);
+		}*/
+		
+		if (activeThread != null) {
+			activeThread.doStop();
 		}
-
+		activeThread.start();
 	}
 
 	private void updateBar() {

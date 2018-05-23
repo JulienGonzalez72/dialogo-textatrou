@@ -62,5 +62,10 @@ public class LectorFixFrame extends Thread {
 		controler.showReport();
 
 	}
+	
+	public void doStop() {
+		needToDead = true;
+		interrupt();
+	}
 
 }
