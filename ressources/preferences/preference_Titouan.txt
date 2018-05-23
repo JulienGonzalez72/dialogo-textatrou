@@ -1,4 +1,5 @@
 #Sauvegarde
+<<<<<<< HEAD
 #Tue May 22 15:55:45 CEST 2018
 taillePolice=12
 typePolice=OpenDyslexic Bold
@@ -9,3 +10,16 @@ x=546
 w=1000
 rejouerSon=true
 couleurFond=255/255/150
+=======
+#Tue May 22 14:59:55 CEST 2018
+taillePolice=42
+typePolice=Times New Roman Gras
+h=683
+tempsAttente=0
+premierSegment=1
+y=815
+x=-1250
+w=1616
+rejouerSon=true
+couleurFond=255/175/175
+>>>>>>> 0c7307730f6df55f52f7c19d8988f7f99049adbd

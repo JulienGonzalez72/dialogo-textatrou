@@ -3,7 +3,8 @@ package main.view;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.util.*;
+import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.*;
 
@@ -20,15 +21,9 @@ public class FenetreParametre extends JFrame {
 	public PanneauParam pan;
 
 	public FenetreParametre(String titre, int tailleX, int tailleY) {
-		param = new Parametres();
+		param = Parametres.load();
 		setIconImage(getToolkit().getImage("icone.jpg"));
-		param.police = ControleurParam.getFont(null, 0, Font.BOLD, Constants.DEFAULT_FONT_SIZE);
-		param.taillePolice = Constants.DEFAULT_FONT_SIZE;
-		param.bgColor = Constants.BG_COLOR;
 		editorPane = null;
-		param.titre = titre;
-		param.tailleX = tailleX;
-		param.tailleY = tailleY;
 		param.mysterCarac = '_';
 		setTitle(titre);
 		setSize(tailleX, tailleY);
@@ -42,7 +37,8 @@ public class FenetreParametre extends JFrame {
 			e.printStackTrace();
 		}
 
-		fenetre = new Fenetre(param.titre, param.tailleX * 2, param.tailleY, this, param);
+		fenetre = new Fenetre(param.titre, param.panWidth, param.panHeight, this, param);
+		fenetre.setLocation(param.panX, param.panY);
 		controlPanel = new ControlPanel(fenetre.pan, this, param);
 
 		JTabbedPane generalTab = new JTabbedPane();
@@ -178,7 +174,7 @@ public class FenetreParametre extends JFrame {
 		 * et à la fenêtre principale si elle existe.
 		 */
 		public void applyPreferences() {
-			fontSizeComboBox.setSelectedItem(param.taillePolice);
+			fontSizeComboBox.setSelectedItem(param.police.getSize());
 			fontFamilyComboBox.setSelectedItem(getCorrectFontName(param.police.getFontName()));
 			
 			segmentDeDepart.setText(String.valueOf(param.premierSegment));
@@ -192,9 +188,10 @@ public class FenetreParametre extends JFrame {
 		 * Enregistre les préférences en fonction de la sélection de l'utilisateur.
 		 */
 		public void savePreferences() {
-			param.bgColor = colorComboBox.getBackground();//stringToColor((String) bgColorComboBox.getSelectedItem());
-			param.taillePolice = (Integer) fontSizeComboBox.getSelectedItem();
-			param.police = ControleurParam.getFont((String) fontFamilyComboBox.getSelectedItem(), fontFamilyComboBox.getSelectedIndex(), Font.BOLD, param.taillePolice);
+			param.bgColor = colorComboBox.getBackground();
+			param.police = param.police.deriveFont(Float.valueOf((Integer) fontSizeComboBox.getSelectedItem()));
+			param.police = ControleurParam.getFont((String) fontFamilyComboBox.getSelectedItem(), fontFamilyComboBox.getSelectedIndex(), Font.BOLD,
+					(Integer) fontSizeComboBox.getSelectedItem());
 			try {
 				param.premierSegment = Integer.parseInt(segmentDeDepart.getText());
 			} catch (NumberFormatException e) {}

@@ -95,6 +95,7 @@ public class Panneau extends JDesktopPane {
 	 * S'exécute lorsque le panneau s'est bien intégré à la fenêtre.
 	 */
 	public void init() {
+		param.appliquerPreferenceTaillePosition(fenetre);
 		fenetreParam.editorPane = editorPane;
 		progressBar.setString(param.premierSegment + "/" + (textHandler.getPhrasesCount() - 1));
 		progressBar.setValue(param.premierSegment);

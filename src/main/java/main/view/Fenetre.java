@@ -3,6 +3,8 @@ package main.view;
 import java.awt.Dimension;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 import javax.swing.*;
@@ -53,6 +55,14 @@ public class Fenetre extends JFrame {
 			public void componentMoved(ComponentEvent e) {
 				param.panX = Fenetre.this.getX();
 				param.panY = Fenetre.this.getY();
+			}
+		});
+		
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				param.premierSegment = pan.pilot.getCurrentPhraseIndex() + 1;
+				param.stockerPreference();
 			}
 		});
 	}
