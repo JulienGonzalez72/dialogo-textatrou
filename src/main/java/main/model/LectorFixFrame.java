@@ -56,6 +56,8 @@ public class LectorFixFrame extends Thread {
 			}
 			//colorier le trou actuel en bleu
 			controler.color(h,Color.cyan);
+			//active la fnêtre de saisie
+			controler.activateInput(h);
 		}
 		
 		

@@ -172,12 +172,19 @@ public class ControlerText {
 			try {
 				start = masque.start;
 				end = masque.end;
+<<<<<<< HEAD
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		//fenetre fixe
+=======
 				masque.n = h;
 				masque.phrase = p.textHandler.getPhraseOf(h);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		//fenentre fixe
+>>>>>>> 176844895596bac223b27b8cbc299215e865690e
 		} else {
 			start = p.editorPane.getText().indexOf(" " + p.param.mysterCarac) + 1;
 			end = -1;
@@ -256,7 +263,7 @@ public class ControlerText {
 
 	/**
 	 * 
-	 *  Colorire le trou h en couleur c
+	 *  Colore le trou h en couleur c
 	 * 
 	 * @param h : le numero du trou
 	 * @param c : la couleur de coloriage
