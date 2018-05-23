@@ -142,7 +142,6 @@ public class ControlerText {
 		// pour tous les trous
 		for (int i = 0; i < p.textHandler.getHolesCount(); i++) {
 			// si ce trou est dans la meme page que h
-			System.out.println(i+"/"+h);
 			if (getPageOf(i) == getPageOf(h)) {
 				// si ce trou est après le trou h
 				if (i > h) {
@@ -191,7 +190,7 @@ public class ControlerText {
 
 	}
 
-	private int getPageOf(int h) {
+	public int getPageOf(int h) {
 		int r = -1;
 		// recuperer le segment du trou avec son numero
 		int n = p.textHandler.getPhraseOf(h);
@@ -249,6 +248,18 @@ public class ControlerText {
 
 	public void blink() {
 		p.blink();
+	}
+
+	/**
+	 * 
+	 *  Colorire le trou h en couleur c
+	 * 
+	 * @param h : le numero du trou
+	 * @param c : la couleur de coloriage
+	 */
+	public void color(int h, Color c) {
+		
+		
 	}
 
 }
