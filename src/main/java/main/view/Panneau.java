@@ -338,7 +338,7 @@ public class Panneau extends JDesktopPane {
 		frame.add(jtf);
 		
 		frame.setVisible(true);
-		Mask m = new Mask(start, end, null);
+		Mask m = new Mask(start, end, jtf);
 		m.motCouvert = textHandler.mots.get(h);
 		m.page = controlerGlobal.getPageOf(h);
 		m.n = h;
@@ -435,51 +435,6 @@ public class Panneau extends JDesktopPane {
 	}
 
 	public List<Mask> fenetreMasque = new ArrayList<>();
-
-	public void afficherFrameVide(int start, int end, int page, String bonMot) throws BadLocationException {
-		Mask frame = new Mask();
-		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
-		frame.setBorder(null);
-		fenetre.pan.setLayout(null);
-		Rectangle r = editorPane.modelToView(start).union(editorPane.modelToView(end));
-		frame.setBounds(r.x, r.y, r.width, r.height / 2);
-
-		JTextField jtf = new JTextField();
-		Font f = new Font(editorPane.getFont().getFontName(), editorPane.getFont().getStyle(),
-				editorPane.getFont().getSize() / 2);
-		jtf.setFont(f);
-		jtf.setHorizontalAlignment(JTextField.CENTER);
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				jtf.setEnabled(false);
-			}
-		});
-
-		frame.jtf = jtf;
-		frame.start = start;
-		frame.end = end;
-		frame.page = page;
-		frame.motCouvert = bonMot;
-		frame.add(jtf);
-
-		boolean motDejaExistant = false;
-		for (Mask mask : fenetreMasque) {
-			if (mask.motCouvert == frame.motCouvert && mask.start == frame.start) {
-				motDejaExistant = true;
-				mask.setVisible(true);
-				break;
-			}
-		}
-		if (!motDejaExistant) {
-			fenetre.pan.add(frame);
-			frame.setVisible(true);
-			fenetreMasque.add(frame);
-			System.out.println("( " + fenetreMasque.indexOf(frame) + " ) Ajout de la frame numero : " + getNumero(frame)
-					+ ". Valeur : " + frame.motCouvert);
-		}
-
-	}
 
 	/*
 	 * replace une fenetre invisible, la rendnat visible

@@ -174,18 +174,13 @@ public class ControlerText {
 
 		// fenetres pas fixes
 		if (!p.param.fixedField) {
-<<<<<<< HEAD
-			/*for (Mask m : p.fenetreMasque) {
-				if (m.isVisible()) {
-					m.setVisible(false);
-					start = m.start;
-					end = m.end;
-					break;
-				}
-			}*/
-=======
-			
->>>>>>> 30f00871bb49bfad71e94aaf7a4c474cfe0b6772
+			start = p.textHandler.getHoleStartOffset(h);
+			end = p.textHandler.getHoleEndOffset(h);
+			try {
+				p.afficherFrameFenetreFixe(start, end, h);
+			} catch (BadLocationException e) {
+				e.printStackTrace();
+			}
 		// fenetre fixe
 		} else {
 			String bonMot = p.textHandler.mots.get(h);
@@ -202,18 +197,9 @@ public class ControlerText {
 			}
 		}
 
-<<<<<<< HEAD
 		
-		start = p.textHandler.getHoleStartOffset(h);
-		end = p.textHandler.getHoleEndOffset(h);
-		try {
-			p.afficherFrame(start, end, h);
-		} catch (BadLocationException e) {
-			e.printStackTrace();
-		}
-=======
-	
->>>>>>> 30f00871bb49bfad71e94aaf7a4c474cfe0b6772
+
+
 
 	}
 
@@ -264,25 +250,13 @@ public class ControlerText {
 	// return p.currentHole < getHolesCount(p.pilot.getCurrentPhraseIndex());
 	// }
 
-<<<<<<< HEAD
-=======
-
-<<<<<<< HEAD
-	public boolean waitForFill(int h) {
-=======
->>>>>>> 30f00871bb49bfad71e94aaf7a4c474cfe0b6772
 	public boolean waitForFill() {
->>>>>>> d1e14c697f813926ddef73c3888a4470d0fbded0
 		while (true) {
 			Thread.yield();
 			if (p.controlerMask.enter) {
 				p.controlerMask.enter = false;
 				return true;
 			}
-<<<<<<< HEAD
-		}
-	}
-=======
 		}
 	}
 	
@@ -303,30 +277,7 @@ public class ControlerText {
 		}
 	}
 
-	//ca marche
-	/*public boolean waitForFill(Mask m) {
-		
-	
-		m.jtf.setEnabled(true);
-		m.jtf.addActionListener(new ActionListener() {	
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				synchronized (m.lock) {
-					m.lock.notify();	
-				}				
-			}
-		});
-		
-		try {
-			synchronized (m.lock) {
-				m.lock.wait();
-			}		
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-		return false;
-	}*/
->>>>>>> 30f00871bb49bfad71e94aaf7a4c474cfe0b6772
+
 
 	public void validCurrentHole() {
 		// p.validHole(p.pilot.getCurrentPhraseIndex(), p.currentHole);
@@ -350,8 +301,7 @@ public class ControlerText {
 	 *            : la couleur de coloriage
 	 */
 	public void color(int h, Color c) {
-		System.out.println(getMask(h).toString());
-		getMask(h).setBackground(c);
+		getMask(h).jtf.setBackground(c);
 	}
 
 	private Mask getMask(int h) {
@@ -379,8 +329,6 @@ public class ControlerText {
 	
 		p.panelFenetreFixe.add(frame);
 		
-		String bonMot = p.textHandler.mots.get(h);
-		
 		JTextField jtf = new JTextField();
 		Font f = new Font(p.editorPane.getFont().getFontName(), p.editorPane.getFont().getStyle(),
 				p.editorPane.getFont().getSize() / 2);
@@ -397,10 +345,6 @@ public class ControlerText {
 		
 		return frame;
 		
-	}
-	
-	public int getPhraseOf(int h) {
-		return p.textHandler.getPhraseOf(h);
 	}
 
 	public void doError() {
@@ -436,5 +380,7 @@ public class ControlerText {
 		
 		
 	}
+
+
 
 }
