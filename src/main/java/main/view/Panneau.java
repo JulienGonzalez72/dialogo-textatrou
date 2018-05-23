@@ -434,7 +434,11 @@ public class Panneau extends JDesktopPane {
 		}
 		return occur;
 	}
+<<<<<<< HEAD
+	
+=======
 
+>>>>>>> 3d6261c7358b1a9657c9e8c6a1727a3c089ece9c
 	/*
 	 * replace une fenetre invisible, la rendnat visible
 	 */
@@ -471,7 +475,6 @@ public class Panneau extends JDesktopPane {
 			Mask m = fenetreMasque.get(i);
 			m.setVisible(false);
 			remove(m);
-			System.out.println("suppression du masque " + m.n);
 		}
 		fenetreMasque.clear();
 	}
