@@ -340,18 +340,10 @@ public class Panneau extends JDesktopPane {
 		frame.add(jtf);
 		
 		frame.setVisible(true);
-<<<<<<< HEAD
 		frame.motCouvert = textHandler.mots.get(h);
 		frame.page = controlerGlobal.getPageOf(h);
 		frame.n = h;
 		fenetreMasque.add(frame);
-=======
-		Mask m = new Mask(start, end, jtf);
-		m.motCouvert = textHandler.mots.get(h);
-		m.page = controlerGlobal.getPageOf(h);
-		m.n = h;
-		fenetreMasque.add(m);
->>>>>>> bced4c5e6b2a86fbac1d47293ae35214c55fcc86
 		
 		Rectangle r = editorPane.modelToView(start).union(editorPane.modelToView(end));
 		frame.setBounds(r.x, r.y, r.width, r.height / 2);
@@ -395,14 +387,14 @@ public class Panneau extends JDesktopPane {
 			public void run() {
 				time += interval;
 				if (time >= interval * 4) {
-					editorPane.setBackground(Constants.BG_COLOR);
+					editorPane.setBackground(param.bgColor);
 					cancel();
 					return;
 				}
 				if (time % (interval * 2) != 0)
 					editorPane.setBackground(Constants.ALERT_COLOR);
 				else
-					editorPane.setBackground(Constants.BG_COLOR);
+					editorPane.setBackground(param.bgColor);
 			}
 		}, 0, interval);
 	}
@@ -443,11 +435,6 @@ public class Panneau extends JDesktopPane {
 		return occur;
 	}
 
-<<<<<<< HEAD
-=======
-	public List<Mask> fenetreMasque = new ArrayList<>();
-
->>>>>>> bced4c5e6b2a86fbac1d47293ae35214c55fcc86
 	/*
 	 * replace une fenetre invisible, la rendnat visible
 	 */

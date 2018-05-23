@@ -19,7 +19,6 @@ import main.Constants;
 import main.view.Mask;
 import main.view.Panneau;
 
-
 public class ControlerText {
 
 	private Panneau p;
@@ -144,15 +143,14 @@ public class ControlerText {
 	/**
 	 * 
 	 * Affiche tous les trous correspondant à la page indiquée et à partir du trou
-	 * passé en paramètre.
-	 * Désaffiche au préalable tous les trous.
+	 * passé en paramètre. Désaffiche au préalable tous les trous.
 	 */
 	public void showHolesInPage(int h) {
-		//désaffice au préalable tous les trous
+		// désaffice au préalable tous les trous
 		for (JInternalFrame jif : p.getAllFrames()) {
 			jif.dispose();
 		}
-		//reinitialisation de la liste des masques
+		// reinitialisation de la liste des masques
 		p.fenetreMasque = new ArrayList<>();
 		// pour tous les trous
 		for (int i = 0; i < p.textHandler.getHolesCount(); i++) {
@@ -162,7 +160,7 @@ public class ControlerText {
 				if (i >= h) {
 					// on affiche ce trou
 					showHole(i);
-				} 
+				}
 			}
 		}
 	}
@@ -174,24 +172,13 @@ public class ControlerText {
 
 		// fenetres pas fixes
 		if (!p.param.fixedField) {
-<<<<<<< HEAD
-			/*for (Mask m : p.fenetreMasque) {
-				if (m.isVisible()) {
-					m.setVisible(false);
-					start = m.start;
-					end = m.end;
-					break;
-				}
-			}*/
-=======
 			start = p.textHandler.getHoleStartOffset(h);
 			end = p.textHandler.getHoleEndOffset(h);
 			try {
-				p.afficherFrameFenetreFixe(start, end, h);
+				p.afficherFrame(start, end, h);
 			} catch (BadLocationException e) {
 				e.printStackTrace();
 			}
->>>>>>> bced4c5e6b2a86fbac1d47293ae35214c55fcc86
 		// fenetre fixe
 		} else {
 			String bonMot = p.textHandler.mots.get(h);
@@ -207,21 +194,6 @@ public class ControlerText {
 				e.printStackTrace();
 			}
 		}
-<<<<<<< HEAD
-		
-		start = p.textHandler.getHoleStartOffset(h);
-		end = p.textHandler.getHoleEndOffset(h);
-		try {
-			p.afficherFrame(start, end, h);
-		} catch (BadLocationException e) {
-			e.printStackTrace();
-		}
-=======
-
-		
-
-
->>>>>>> bced4c5e6b2a86fbac1d47293ae35214c55fcc86
 
 	}
 
@@ -235,7 +207,7 @@ public class ControlerText {
 	public int getPageOf(int h) {
 		return getPageOfPhrase(getPhraseOf(h));
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -260,7 +232,7 @@ public class ControlerText {
 	public int getHolesCount(int n) {
 		return p.textHandler.getHolesCount(n);
 	}
-	
+
 	/**
 	 * Retourne le nombre de trous total dans le texte.
 	 */
@@ -268,18 +240,9 @@ public class ControlerText {
 		return p.textHandler.getHolesCount();
 	}
 
-	// public boolean hasNextHole() {
-	// return p.currentHole < getHolesCount(p.pilot.getCurrentPhraseIndex());
-	// }
-<<<<<<< HEAD
-	
 	public boolean waitForFill(int h) {
 		getMask(h).activate();
 		p.controlerMask.enter = false;
-=======
-
-	public boolean waitForFill() {
->>>>>>> bced4c5e6b2a86fbac1d47293ae35214c55fcc86
 		while (true) {
 			Thread.yield();
 			if (p.controlerMask.enter) {
@@ -287,30 +250,24 @@ public class ControlerText {
 			}
 		}
 	}
-	
+
 	public boolean waitForFillFenetreFixe(int h) {
 		while (true) {
 			Thread.yield();
 			if (p.controlerMask.enter) {
 				p.controlerMask.enter = false;
-				
+
 				Mask m = getFenetreFixe();
 
-				if(m.jtf.getText().equals(getMask(h).motCouvert)) {
+				if (m.jtf.getText().equals(getMask(h).motCouvert)) {
 					return true;
 				} else {
 					return false;
 				}
 			}
 		}
-<<<<<<< HEAD
-		return false;
-	}*/
-=======
+
 	}
-
-
->>>>>>> bced4c5e6b2a86fbac1d47293ae35214c55fcc86
 
 	public void validCurrentHole() {
 		// p.validHole(p.pilot.getCurrentPhraseIndex(), p.currentHole);
@@ -354,30 +311,30 @@ public class ControlerText {
 	 * @return
 	 */
 	public Mask activateInputFenetreFixe(int h) {
-		
+
 		Mask frame = new Mask();
 		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
 		frame.setBorder(null);
 		frame.setBounds(0, 0, p.panelFenetreFixe.getWidth(), p.panelFenetreFixe.getHeight());
-	
+
 		p.panelFenetreFixe.add(frame);
-		
+
 		JTextField jtf = new JTextField();
 		Font f = new Font(p.editorPane.getFont().getFontName(), p.editorPane.getFont().getStyle(),
 				p.editorPane.getFont().getSize() / 2);
 		jtf.setFont(f);
 		jtf.setHorizontalAlignment(JTextField.CENTER);
 		jtf.addActionListener(p.controlerMask);
-		
+
 		frame.add(jtf);
 		frame.jtf = jtf;
 		frame.toFront();
 		frame.setVisible(true);
 		jtf.setEnabled(true);
 		jtf.requestFocus();
-		
+
 		return frame;
-		
+
 	}
 
 	public void doError() {
@@ -387,9 +344,9 @@ public class ControlerText {
 
 	public void desactiverFenetreFixe() {
 		getFenetreFixe().dispose();
-		
+
 	}
-	
+
 	private Mask getFenetreFixe() {
 		return p.getFenetreFixe();
 	}
@@ -399,21 +356,18 @@ public class ControlerText {
 		String temp = "";
 		int j = 0;
 		for (int i = 0; i < p.editorPane.getText().length(); i++) {
-			if ( i >= m.start && i < m.end) {
+			if (i >= m.start && i < m.end) {
 				temp += m.motCouvert.charAt(j);
 				j++;
 			} else {
 				temp += p.editorPane.getText().charAt(i);
 			}
 		}
-		
+
 		p.editorPane.setText(temp);
-		
+
 		p.replaceAllMask();
-		
-		
+
 	}
-
-
 
 }
