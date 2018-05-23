@@ -9,7 +9,17 @@ public class ReaderInside extends ReaderThread {
 	}
 	
 	public void run() {
-		
+		while (h < controler.getHolesCount()) {
+			controler.removeAllHoles();
+			int n = controler.getPhraseOf(h);
+			controler.showPage(controler.getPageOfPhrase(n));
+			controler.showHolesInPage(h);
+			controler.play(n);
+			while (controler.waitForFill()) {
+				
+			}
+			h++;
+		}
 	}
 	
 }

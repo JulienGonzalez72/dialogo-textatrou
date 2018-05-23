@@ -18,7 +18,7 @@ public class Pilot {
 	/**
 	 * Thread de lecture actif
 	 */
-	private LectorFixFrame activeThread;
+	private ReaderThread activeThread;
 	private Panneau p;
 	public ControlerText controler;
 	/**
@@ -40,11 +40,11 @@ public class Pilot {
 		}
 
 		// desactivation des autres fenetres fixes
-		for (JInternalFrame j : p.getAllFrames()) {
+		/*for (JInternalFrame j : p.getAllFrames()) {
 			if (!(j instanceof Mask)) {
 				j.dispose();
 			}
-		}
+		}*/
 
 		phrase = n;
 		/// désacive la taille et la police et le segment de départ
@@ -75,12 +75,16 @@ public class Pilot {
 		if (activeThread != null) {
 			activeThread.doStop();
 		}
+<<<<<<< HEAD
+		activeThread = getReaderThread(n);
+=======
 		activeThread = (LectorFixFrame) getReaderThread(0);
 		activeThread.start();
 	}
 	
 	public void lancerLectorFixe() {
 		activeThread = (LectorFixFrame) getReaderThread(0);
+>>>>>>> 30f00871bb49bfad71e94aaf7a4c474cfe0b6772
 		activeThread.start();
 	}
 	
@@ -133,7 +137,7 @@ public class Pilot {
 		goTo(p.player.getCurrentPhraseIndex());
 
 		//si c'est la première fois qu'on appuie sur play
-		if (p.player.getCurrentPhraseIndex() == p.param.premierSegment-1 && !p.lecteur.isAlive()) {
+		/*if (p.player.getCurrentPhraseIndex() == p.param.premierSegment-1 && !p.lecteur.isAlive()) {
 			
 			//on recupere le numero courant
 			int numeroCourant = 0;
@@ -145,7 +149,7 @@ public class Pilot {
 			}	
 			p.numeroCourant =  numeroCourant;
 			p.lecteur.start();
-		}
+		}*/
 
 	}
 
@@ -160,5 +164,9 @@ public class Pilot {
 	public boolean hasPreviousPhrase() {
 		return p.player.hasPreviousPhrase();
 	}
+<<<<<<< HEAD
+	
+=======
 
+>>>>>>> 30f00871bb49bfad71e94aaf7a4c474cfe0b6772
 }
