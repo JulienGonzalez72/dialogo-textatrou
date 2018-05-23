@@ -140,7 +140,7 @@ public class ControlerText {
 	 */
 	public void showHolesInPage(int h) {
 		// pour tous les trous
-		for (int i = 0; i < getPhrasesCount(); i++) {
+		for (int i = 0; i < p.textHandler.getHolesCount(); i++) {
 			// si ce trou est dans la meme page que h
 			System.out.println(i+"/"+h);
 			if (getPageOf(i) == getPageOf(h)) {
