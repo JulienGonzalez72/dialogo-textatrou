@@ -9,7 +9,7 @@ import java.util.Map;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import main.Constants;
-import main.model.LectorFixFrame;
+import main.model.*;
 import main.view.Mask;
 import main.view.Panneau;
 
@@ -70,10 +70,22 @@ public class Pilot {
 			controler.doWait(controler.getCurrentWaitTime(), Constants.CURSOR_SPEAK);
 		}*/
 		
+		updateBar();
+		
 		if (activeThread != null) {
 			activeThread.doStop();
 		}
+		activeThread = (LectorFixFrame) getReaderThread(0);
 		activeThread.start();
+	}
+	
+	public void lancerLectorFixe() {
+		activeThread = (LectorFixFrame) getReaderThread(0);
+		activeThread.start();
+	}
+	
+	public ReaderThread getReaderThread(int h) {
+		return p.param.fixedField ? new LectorFixFrame(p.controlerGlobal, h) : new ReaderInside(p.controlerGlobal, h);
 	}
 
 	private void updateBar() {
@@ -116,7 +128,7 @@ public class Pilot {
 	 * le début.
 	 */
 	public void doPlay() {
-		showAllHoleInPages();
+		//showAllHoleInPages();
 
 		goTo(p.player.getCurrentPhraseIndex());
 
@@ -147,55 +159,6 @@ public class Pilot {
 
 	public boolean hasPreviousPhrase() {
 		return p.player.hasPreviousPhrase();
-	}
-
-	// affiche les trous de la page courante
-	public void showAllHoleInPages() {
-
-		Map<Integer, List<String>> tempMotsParSegment = new HashMap<>();
-		int indice = 0;
-		for (List<String> s : p.textHandler.motsParSegment.values()) {
-			List<String> ll = new ArrayList<>();
-			for (String string : s) {
-				ll.add(string);
-			}
-			tempMotsParSegment.put(indice, ll);
-			indice++;
-		}
-
-		String text = p.editorPane.getText();
-		int oldIndex = 0;
-		// pour tous les mots à trouver
-		for (int i = 0; i < p.textHandler.mots.size(); i++) {
-
-			String bonMot = p.textHandler.mots.get(i);
-
-			List<Integer> numerosSegments = p.segmentsEnFonctionDeLaPage.get(p.pageActuelle);
-			// pour tous les segments de la page actuelle
-			for (Integer integer : numerosSegments) {
-				// si le segment contient des mots a trouver
-				if (tempMotsParSegment.get(integer)!=null && !tempMotsParSegment.get(integer).isEmpty()) {
-					// pour chacun de ces mots
-					for (int j = 0; j < tempMotsParSegment.get(integer).size(); j++) {
-						// si ce mot est egale a un bon mot
-						if (tempMotsParSegment.get(integer).get(j).equals(bonMot)) {
-							tempMotsParSegment.get(integer).set(j, "$unmotquinexistepas$");
-							int start2 = text.indexOf(" " + p.param.mysterCarac, oldIndex) + 1;
-							int end2 = start2 + bonMot.length();
-							oldIndex = end2;
-							try {
-								p.afficherFrameVide(start2, end2, p.pageActuelle, bonMot);
-							} catch (BadLocationException e) {
-								e.printStackTrace();
-							}
-
-						}
-					}
-
-				}
-			}
-			p.replaceAllMask();
-		}
 	}
 
 }

@@ -16,6 +16,7 @@ import main.controler.ControlerText;
 import main.controler.Pilot;
 import main.Parametres;
 import main.controler.ControlerKey;
+import main.controler.ControlerMask;
 import main.model.LectorFixFrame;
 import main.model.Player;
 import main.model.TextHandler;
@@ -37,6 +38,7 @@ public class Panneau extends JDesktopPane {
 	public ControlPanel controlPanel;
 	public ControlerText controlerGlobal;
 	public ControlerKey controlerKey;
+	public ControlerMask controlerMask;
 	public Pilot pilot;
 	public Map<Integer, List<Integer>> segmentsEnFonctionDeLaPage = new HashMap<Integer, List<Integer>>();
 	public Player player;
@@ -58,6 +60,7 @@ public class Panneau extends JDesktopPane {
 		this.param = param;
 		this.fenetreParam = fenetreParam;
 		this.controlerGlobal = new ControlerText(this);
+		this.controlerMask = new ControlerMask(this);
 		this.fenetre = fenetre;
 		this.pilot = new Pilot(this);
 		String texteCesures = getTextFromFile("ressources/textes/" + Constants.TEXT_FILE_NAME);
@@ -85,11 +88,10 @@ public class Panneau extends JDesktopPane {
 		progressBar.setStringPainted(true);
 		progressBar.setForeground(Color.GREEN);
 
-		lecteur = new LectorFixFrame(controlerGlobal, param.premierSegment);
 
 	}
 
-	JDesktopPane panelFenetreFixe = null;
+	public JDesktopPane panelFenetreFixe = null;
 
 	/**
 	 * S'exécute lorsque le panneau s'est bien intégré à la fenêtre.
@@ -116,7 +118,6 @@ public class Panneau extends JDesktopPane {
 		controlerKey = new ControlerKey(pilot);
 		editorPane.addKeyListener(controlerKey);
 		editorPane.requestFocus();
-
 	}
 
 	public void setCursor(String fileName) {
@@ -259,10 +260,6 @@ public class Panneau extends JDesktopPane {
 		}
 		editorPane.setText(texteAfficher.replaceAll("_", param.mysterCarac + ""));
 
-		if (!fenetre.isResizable()) {
-			pilot.showAllHoleInPages();
-		}
-
 		for (Mask m : fenetreMasque) {
 			if (m.page == page && fenetreMasque.indexOf(m) >= numeroCourant) {
 				m.setVisible(true);
@@ -323,59 +320,40 @@ public class Panneau extends JDesktopPane {
 		fenetreParam.stopExercice();
 	}
 
-	public JInternalFrame frame;
 
 	/**
 	 * Affiche une fenetre correspondant au mot délimité par start et end, d'indice
 	 * numeroCourant, et met le masque correspondant dans la liste des masques
 	 */
-	public void afficherFrame(int start, int end, int h) throws BadLocationException {
-
-		frame = new JInternalFrame();
+	public void afficherFrameFenetreFixe(int start, int end, int h) throws BadLocationException {
+		
+		JInternalFrame frame = new JInternalFrame();
 		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
 		frame.setBorder(null);
+		
 		fenetre.pan.setLayout(null);
-
-		if (param.fixedField) {
-			panelFenetreFixe.add(frame);
-			frame.setBounds(0, 0, panelFenetreFixe.getWidth(), panelFenetreFixe.getHeight());
-		} else {
-			Rectangle r = editorPane.modelToView(start).union(editorPane.modelToView(end));
-			frame.setBounds(r.x, r.y, r.width, r.height / 2);
-			fenetre.pan.add(frame);
-		}
-
-		String bonMot = textHandler.mots.get(h);
+		
 		JTextField jtf = new JTextField();
-		Font f = new Font(editorPane.getFont().getFontName(), editorPane.getFont().getStyle(),
-				editorPane.getFont().getSize() / 2);
-		jtf.setFont(f);
-
-		jtf.setHorizontalAlignment(JTextField.CENTER);
-		jtf.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				JTextField jtf = (JTextField) arg0.getSource();
-
-				// Si juste
-				if (jtf.getText().equalsIgnoreCase(bonMot)) {
-
-				} else {
-					blink();
-					nbErreurs++;
-				}
-			}
-		});
-
+		jtf.setEnabled(false);
 		frame.add(jtf);
+		
 		frame.setVisible(true);
-		Mask m = new Mask(start, end, jtf);
+		Mask m = new Mask(start, end, null);
 		m.motCouvert = textHandler.mots.get(h);
 		m.page = controlerGlobal.getPageOf(h);
 		m.n = h;
 		fenetreMasque.add(m);
-
+		
+		Rectangle r = editorPane.modelToView(start).union(editorPane.modelToView(end));
+		frame.setBounds(r.x, r.y, r.width, r.height / 2);
+		fenetre.pan.add(frame);	
+		
+		for (Component c : fenetre.pan.getComponents()) {
+			if ( c instanceof JInternalFrame) {
+				((JInternalFrame) c).toFront();
+			}
+		}
+							
 	}
 
 	public boolean changementSegment() {

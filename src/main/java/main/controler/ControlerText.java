@@ -2,6 +2,7 @@ package main.controler;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.JInternalFrame;
+import javax.swing.JTextField;
 import javax.swing.text.BadLocationException;
 
 import main.Constants;
@@ -155,20 +157,13 @@ public class ControlerText {
 	}
 
 	private void showHole(int h) {
-
+		
 		int start = -1;
 		int end = -1;
 
 		// fenetres pas fixes
 		if (!p.param.fixedField) {
-			for (Mask m : p.fenetreMasque) {
-				if (m.isVisible()) {
-					m.setVisible(false);
-					start = m.start;
-					end = m.end;
-					break;
-				}
-			}
+			
 		// fenetre fixe
 		} else {
 			String bonMot = p.textHandler.mots.get(h);
@@ -178,13 +173,14 @@ public class ControlerText {
 			if (bonMot != null) {
 				end = start + bonMot.length();
 			}
+			try {
+				p.afficherFrameFenetreFixe(start, end,h);
+			} catch (BadLocationException e) {
+				e.printStackTrace();
+			}
 		}
 
-		try {
-			p.afficherFrame(start, end,h);
-		} catch (BadLocationException e) {
-			e.printStackTrace();
-		}
+	
 
 	}
 
@@ -227,34 +223,52 @@ public class ControlerText {
 	public int getHolesCount(int n) {
 		return p.textHandler.getHolesCount(n);
 	}
+	
+	/**
+	 * Retourne le nombre de trous total dans le texte.
+	 */
+	public int getHolesCount() {
+		return p.textHandler.getHolesCount();
+	}
 
 	// public boolean hasNextHole() {
 	// return p.currentHole < getHolesCount(p.pilot.getCurrentPhraseIndex());
 	// }
 
-	public boolean waitForFill(int h) {
+
+	public boolean waitForFill() {
+		while (true) {
+			Thread.yield();
+			if (p.controlerMask.enter) {
+				p.controlerMask.enter = false;
+				return true;
+			}
+		}
+	}
+
+	//ca marche
+	/*public boolean waitForFill(Mask m) {
 		
-		Mask m = getMask(h);
-		Object lock = new Object();
-		m.lock = lock;
-		m.jtf.addActionListener(new ActionListener() {
-			
+	
+		m.jtf.setEnabled(true);
+		m.jtf.addActionListener(new ActionListener() {	
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				m.lock.notify();			
+				synchronized (m.lock) {
+					m.lock.notify();	
+				}				
 			}
 		});
 		
 		try {
-			synchronized (lock) {
+			synchronized (m.lock) {
 				m.lock.wait();
 			}		
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-		
 		return false;
-	}
+	}*/
 
 	public void validCurrentHole() {
 		// p.validHole(p.pilot.getCurrentPhraseIndex(), p.currentHole);
@@ -290,8 +304,43 @@ public class ControlerText {
 		return null;
 	}
 
-	public void activateInput(int h) {
-		getMask(h).jtf.setEnabled(true);
+	/**
+	 * 
+	 * Crée une fenêtre de saisie fixe qui attends le resultat du trou h
+	 * 
+	 * @param h
+	 * @return
+	 */
+	public Mask activateInput(int h) {
+		
+		Mask frame = new Mask();
+		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
+		frame.setBorder(null);
+		frame.setBounds(0, 0, p.panelFenetreFixe.getWidth(), p.panelFenetreFixe.getHeight());
+		
+		for (JInternalFrame jif : p.panelFenetreFixe.getAllFrames()) {
+			jif.dispose();
+		}	
+		p.panelFenetreFixe.add(frame);
+		
+		String bonMot = p.textHandler.mots.get(h);
+		
+		JTextField jtf = new JTextField();
+		Font f = new Font(p.editorPane.getFont().getFontName(), p.editorPane.getFont().getStyle(),
+				p.editorPane.getFont().getSize() / 2);
+		jtf.setFont(f);
+		jtf.setHorizontalAlignment(JTextField.CENTER);
+		jtf.addActionListener(p.controlerMask);
+		
+		frame.add(jtf);
+		frame.jtf = jtf;
+		frame.toFront();
+		frame.setVisible(true);
+		jtf.setEnabled(true);
+		jtf.requestFocus();
+		
+		return frame;
+		
 	}
 
 }
