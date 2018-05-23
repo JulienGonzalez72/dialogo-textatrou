@@ -123,8 +123,6 @@ public class Pilot {
 				numeroCourant += p.textHandler.motsParSegment.get(i).size();	
 			}	
 			p.numeroCourant =  numeroCourant;
-			//mise a jour du lecteur en fonction du segment de depart
-			p.lecteur.segmentDeDepart = p.param.premierSegment-1;	
 			p.lecteur.start();
 		}
 
@@ -219,7 +217,7 @@ public class Pilot {
 			// pour tous les segments de la page actuelle
 			for (Integer integer : numerosSegments) {
 				// si le segment contient des mots a trouver
-				if (!tempMotsParSegment.get(integer).isEmpty()) {
+				if (tempMotsParSegment.get(integer)!=null && !tempMotsParSegment.get(integer).isEmpty()) {
 					// pour chacun de ces mots
 					for (int j = 0; j < tempMotsParSegment.get(integer).size(); j++) {
 						// si ce mot est egale a un bon mot
