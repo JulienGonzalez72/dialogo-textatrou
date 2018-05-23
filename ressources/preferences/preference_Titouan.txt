@@ -1,12 +1,32 @@
 #Sauvegarde
+<<<<<<< HEAD
 #Wed May 23 15:00:55 CEST 2018
+=======
+<<<<<<< HEAD
+#Wed May 23 14:58:19 CEST 2018
+=======
+#Wed May 23 14:57:42 CEST 2018
+>>>>>>> bced4c5e6b2a86fbac1d47293ae35214c55fcc86
+>>>>>>> 2b07513c640c1f6984f2c1869ff5ec0fd33d4074
 taillePolice=42
 typePolice=Times New Roman Gras
-h=683
+h=768
 tempsAttente=0
 premierSegment=1
+<<<<<<< HEAD
 y=478
 x=889
+=======
+<<<<<<< HEAD
+y=15
+x=603
+w=923
+rejouerSon=false
+=======
+y=122
+x=1082
+>>>>>>> 2b07513c640c1f6984f2c1869ff5ec0fd33d4074
 w=800
 rejouerSon=true
+>>>>>>> bced4c5e6b2a86fbac1d47293ae35214c55fcc86
 couleurFond=255/175/175
