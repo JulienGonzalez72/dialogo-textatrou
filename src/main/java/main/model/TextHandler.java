@@ -314,6 +314,37 @@ public class TextHandler {
 		return txt;
 	}
 
+	/*public void cutAllBefore(int premierSegment) {
+		premierSegment--;
+		//mise a jour de la liste de mots
+		int indice = 0;
+		int k =0;
+		for (List<String> l : motsParSegment.values()) {
+			indice += l.size();
+			k++;
+			if ( k == premierSegment) {
+				break;
+			}
+		}
+		Map<Integer,String> nouvelleListeMots = new HashMap<>();
+		int j = 0;
+		for (Integer i : mots.keySet()) {
+			if ( i >= indice) {
+				nouvelleListeMots.put(j, mots.get(i));
+				j++;
+			}
+		}
+		mots = nouvelleListeMots;
+		//mise a jour de la liste de mots par segment
+		Map<Integer,List<String>> temp = new HashMap<>();
+		k = 0;
+		for (int i = premierSegment; i < motsParSegment.size();i++) {
+				temp.put(k, motsParSegment.get(i));
+				k++;
+		}
+		motsParSegment = temp;
+	}*/
+
 	
 
 }

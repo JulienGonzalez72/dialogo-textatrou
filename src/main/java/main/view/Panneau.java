@@ -16,7 +16,7 @@ import main.controler.ControlerText;
 import main.controler.Pilot;
 import main.Parametres;
 import main.controler.ControlerKey;
-import main.model.Lecteur;
+import main.model.LectorFixFrame;
 import main.model.Player;
 import main.model.TextHandler;
 
@@ -42,7 +42,7 @@ public class Panneau extends JDesktopPane {
 	public Player player;
 	public FenetreParametre fenetreParam;
 	public Parametres param;
-	public Lecteur lecteur;
+	public LectorFixFrame lecteur;
 	public int numeroCourant = 0;
 	int nbMotsDansLaPage;
 
@@ -85,7 +85,7 @@ public class Panneau extends JDesktopPane {
 		progressBar.setStringPainted(true);
 		progressBar.setForeground(Color.GREEN);
 		
-		lecteur = new Lecteur(this, param.premierSegment);
+		lecteur = new LectorFixFrame(controlerGlobal, param.premierSegment);
 
 	}
 
@@ -105,13 +105,13 @@ public class Panneau extends JDesktopPane {
 
 		/// construit la mise en page virtuelle ///
 		rebuildPages();
+		
 		/// initialise le lecteur et le démarre ///
 		player = new Player(textHandler, param);
 		player.load(param.premierSegment - 1);
 
 		controlPanel = fenetreParam.controlPanel;
 		fenetreParam.controlPanel.init();
-
 		controlerKey = new ControlerKey(pilot);
 		editorPane.addKeyListener(controlerKey);
 		editorPane.requestFocus();
@@ -358,7 +358,7 @@ public class Panneau extends JDesktopPane {
 				String bonMot = textHandler.mots.get(numeroCourant);
 				// Si juste
 				if (jtf.getText().equalsIgnoreCase(bonMot)) {
-					controlPanel.gotoMagiqueAvancer(Panneau.this, pilot.getCurrentPhraseIndex()+1);
+					
 				} else {
 					blink();
 					nbErreurs++;

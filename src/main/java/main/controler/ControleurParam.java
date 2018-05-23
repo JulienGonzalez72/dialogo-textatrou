@@ -78,10 +78,10 @@ public class ControleurParam implements ActionListener, ChangeListener {
 	/**
 	 * Retourne le font correspondant à :
 	 * 
-	 * @param1 : la police
-	 * @param2 : l'index du font dans la liste des polices de la FenetreParametre
-	 * @param3 : le style
-	 * @param4 : la taille
+	 * @param : la police
+	 * @param : l'index du font dans la liste des polices de la FenetreParametre
+	 * @param : le style
+	 * @param : la taille
 	 */
 	public static Font getFont(String police, int selectedIndex, int style, int size) {
 		try {

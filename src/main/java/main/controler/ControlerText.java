@@ -1,20 +1,58 @@
 package main.controler;
 
+import java.awt.Color;
 import java.awt.Cursor;
+import java.util.List;
 //import java.util.List;
+import java.util.Map;
+
+import javax.swing.JInternalFrame;
+import javax.swing.text.BadLocationException;
 
 import main.Constants;
+import main.view.Mask;
 import main.view.Panneau;
 
 public class ControlerText {
 
-	public Panneau p;
+	private Panneau p;
 
 	/**
 	 * Construit un contrôleur à partir du panneau correspondant.
 	 */
 	public ControlerText(Panneau p) {
 		this.p = p;
+	}
+
+	/**
+	 * Retourne la map des mots en fonction des segments
+	 */
+	public Map<Integer, List<String>> getWordByPhrases() {
+		return p.textHandler.motsParSegment;
+	}
+
+	/**
+	 * Retourne la map des mots en fonction de leur numero
+	 */
+	public Map<Integer, String> getWords() {
+		return p.textHandler.mots;
+	}
+
+	/**
+	 * Retourne true si le trou est le premier de son segment
+	 * 
+	 * @param h
+	 *            : le numero de segment
+	 */
+	public boolean isFirstInPhrase(int h) {
+		return !p.textHandler.hasPreviousHoleInPhrase(h);
+	}
+
+	/**
+	 * Affiche le compte rendu
+	 */
+	public void showReport() {
+		p.afficherCompteRendu();
 	}
 
 	/**
@@ -25,9 +63,9 @@ public class ControlerText {
 	}
 
 	/**
-	 * Joue un fichier .wav correspondant à un segment de phrase.
-	 * On sortira de cette fonction lorsque le fichier .wav aura été totalement joué.
-	 * METHODE DE TEST
+	 * Joue un fichier .wav correspondant à un segment de phrase. On sortira de
+	 * cette fonction lorsque le fichier .wav aura été totalement joué. METHODE DE
+	 * TEST
 	 */
 	public void play(int phrase) {
 		p.setCursor(Constants.CURSOR_LISTEN);
@@ -91,72 +129,126 @@ public class ControlerText {
 		}
 		return numeroPage;
 	}
-	
+
 	public int getPhrasesCount() {
 		return p.textHandler.getPhrasesCount();
 	}
-	
+
 	/**
-	 * Affiche tous les trous correspondant à la page indiquée.
+	 * Affiche tous les trous correspondant à la page indiquée et à partir du trou
+	 * passé en paramètre
 	 */
-	public void showHoles(int page) {
-		/*for (int i = 0; i < p.segmentsEnFonctionDeLaPage.get(page + 1).size(); i++) {
-			int n = p.segmentsEnFonctionDeLaPage.get(page + 1).get(i);
-			List<String> words = p.textHandler.getHidedWords(n);
-			for (int j = 0; j < words.size(); j++) {
-				String w = words.get(j);
-				System.out.println(p.textHandler.getStartOffset(w, n) + ", " + p.textHandler.getEndOffset(w, n));
-				//p.afficherFrameVide(p.textHandler.getStartOffset(w, n), p.textHandler.getEndOffset(w, n),
-					//	getPageOfPhrase(n), w);
+	public void showHolesInPage(int h) {
+		// pour tous les trous
+		for (int i = 0; i < getPhrasesCount(); i++) {
+			// si ce trou est dans la meme page que h
+			System.out.println(i+"/"+h);
+			if (getPageOf(i) == getPageOf(h)) {
+				// si ce trou est après le trou h
+				if (i > h) {
+					// on affiche ce trou
+					showHole(i);
+				}
 			}
-		}*/
-		//p.showAllHoleInPage(page, p.pilot.getCurrentPhraseIndex());
+		}
 	}
-	
+
+	private void showHole(int h) {
+
+		String bonMot = p.textHandler.mots.get(h);
+
+		int start = -1;
+		int end = -1;
+
+		Mask masque = null;
+		//fenetres pas fixes
+		if (!p.param.fixedField) {
+			for (Mask m : p.fenetreMasque) {
+				if (m.isVisible()) {
+					m.setVisible(false);
+					masque = m;
+					break;
+				}
+			}
+			try {
+				start = masque.start;
+				end = masque.end;
+			} catch (Exception e) {}
+		//fenentre fixe
+		} else {
+			start = p.editorPane.getText().indexOf(" " + p.param.mysterCarac) + 1;
+			end = -1;
+			if (bonMot != null) {
+				end = start + bonMot.length();
+			}
+		}
+
+		try {
+			p.afficherFrame(start, end, masque);
+		} catch (BadLocationException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private int getPageOf(int h) {
+		int r = -1;
+		// recuperer le segment du trou avec son numero
+		int n = p.textHandler.getPhraseOf(h);
+		// pour toutes les pages
+		for (int i = 0; i < getPhrasesCount(); i++) {
+			// si la page contient le segment
+			if (p.segmentsEnFonctionDeLaPage.get(i+1).contains(n)) {
+				r = i;
+				break;
+			}
+		}
+		return r;
+	}
+
 	public void nextHole() {
-		//p.currentHole++;
+		// p.currentHole++;
 	}
-	
+
 	/**
 	 * Initialise le premier trou du segment.
 	 */
 	public void firstHole() {
-		//p.currentHole = 0;
+		// p.currentHole = 0;
 	}
-	
+
 	/**
 	 * Retourne le nombre de trous associés au segment n.
 	 */
 	public int getHolesCount(int n) {
 		return p.textHandler.getHolesCount(n);
 	}
-	
-	//public boolean hasNextHole() {
-		//return p.currentHole < getHolesCount(p.pilot.getCurrentPhraseIndex());
-	//}
-	
+
+	// public boolean hasNextHole() {
+	// return p.currentHole < getHolesCount(p.pilot.getCurrentPhraseIndex());
+	// }
+
 	public boolean waitForFill() {
-		//p.setCurrentHole(p.pilot.getCurrentPhraseIndex(), p.currentHole);
+		// p.setCurrentHole(p.pilot.getCurrentPhraseIndex(), p.currentHole);
 		while (true) {
 			Thread.yield();
-			//if (p.controlerMask.enter) {
-			//	p.controlerMask.enter = false;
-				return true;
-			}
+			// if (p.controlerMask.enter) {
+			// p.controlerMask.enter = false;
+			return true;
 		}
-	//}
-	
+	}
+	// }
+
 	public void validCurrentHole() {
-		//p.validHole(p.pilot.getCurrentPhraseIndex(), p.currentHole);
+		// p.validHole(p.pilot.getCurrentPhraseIndex(), p.currentHole);
 	}
-	
+
 	public void removeAllHoles() {
-		//p.removeAllHoles();
+		// p.removeAllHoles();
 	}
-	
+
 	public void blink() {
 		p.blink();
 	}
-
 
 }

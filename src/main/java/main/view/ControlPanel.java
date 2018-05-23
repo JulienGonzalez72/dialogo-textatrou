@@ -6,7 +6,7 @@ import java.io.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import main.*;
-import main.model.Lecteur;
+import main.model.LectorFixFrame;
 
 public class ControlPanel extends JPanel {
 
@@ -35,7 +35,7 @@ public class ControlPanel extends JPanel {
 		previousButton.setEnabled(false);
 		previousButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				gotoMagiqueReculer(pan, pan.pilot.getCurrentPhraseIndex() - 1);
+			
 			}
 		});
 
@@ -44,8 +44,7 @@ public class ControlPanel extends JPanel {
 		playButton.setEnabled(false);
 		playButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pan.numeroCourant++;
-				gotoMagiqueReculer(pan, pan.pilot.getCurrentPhraseIndex());
+				new LectorFixFrame(pan.controlerGlobal, 1).start();;
 			}
 		});
 
@@ -54,7 +53,7 @@ public class ControlPanel extends JPanel {
 		nextButton.setEnabled(false);
 		nextButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				gotoMagiqueAvancer(pan, pan.pilot.getCurrentPhraseIndex() + 1);
+
 			}
 		});
 
@@ -62,9 +61,8 @@ public class ControlPanel extends JPanel {
 		repeatButton.setIcon(new ImageIcon(repeatIcon));
 		repeatButton.setEnabled(false);
 		repeatButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {	
-				pan.numeroCourant++;
-				gotoMagiqueReculer(pan, pan.pilot.getCurrentPhraseIndex());					
+			public void actionPerformed(ActionEvent e) {
+	
 			}
 		});
 
@@ -75,12 +73,12 @@ public class ControlPanel extends JPanel {
 		goToField.setPreferredSize(new Dimension(40, 20));
 		goToField.setEnabled(false);
 		goToField.addActionListener((ActionEvent e) -> {
-			gotoMagiqueAvancer(pan, -1);
+	
 		});
 	}
 
 	// appeler avec -1 si on lance le goto avec le gotoField
-	public void gotoMagiqueAvancer(Panneau pan, int numeroSegment) {
+	/*public void gotoMagiqueAvancer(Panneau pan, int numeroSegment) {
 
 		int n;
 		try {
@@ -89,16 +87,22 @@ public class ControlPanel extends JPanel {
 				pan.pilot.doPlay();
 				return;
 			}
-			
+
 			// on met a jour le numero de segment;
 			if (numeroSegment == -1) {
 				n = Integer.parseInt(goToField.getText()) - 1;
-			} else {		
-				if (pan.textHandler.hasNextHoleInPhrase(pan.numeroCourant)) {	
-					//n = la meme phrase
+				int nouveauNumeroCourant = 0;
+				for (int j = 0; j < n; j++) {
+					nouveauNumeroCourant+= pan.textHandler.motsParSegment.get(j).size();
+				}	
+				//-1 parce que l'on part de zero, +1 parce que l'on veut le segment d'après
+				pan.numeroCourant = nouveauNumeroCourant+1-1-(pan.param.premierSegment-1);
+			} else {
+				if (pan.textHandler.hasNextHoleInPhrase(pan.numeroCourant)) {
+					// n = la meme phrase
 					n = pan.pilot.getCurrentPhraseIndex();
 				} else {
-					//n = la prochaine phrase où il ya un mot à découvrir
+					// n = la prochaine phrase où il ya un mot à découvrir
 					n = numeroSegment;
 					String s = null;
 					while (s == null) {
@@ -106,42 +110,40 @@ public class ControlPanel extends JPanel {
 							s = pan.textHandler.motsParSegment.get(n).get(0);
 						} catch (Exception e2) {
 							n++;
-							if ( n >= pan.textHandler.getPhrasesCount()) {
+							if (n >= pan.textHandler.getPhrasesCount()) {
 								return;
 							}
 						}
 					}
 				}
-				
-			}			
-			//on passe au mot a decouvrir suivant	
-			pan.numeroCourant++;
+				// on passe au mot a decouvrir suivant
+				pan.numeroCourant++;
+			}
 			// on met a jour le segment
 			pan.pilot.phrase = n;
-			
-			//on desactive toutes les fenetres qui ne sont pas des masques
+
+			// on desactive toutes les fenetres qui ne sont pas des masques
 			for (JInternalFrame jf : pan.getAllFrames()) {
-				if ( !(jf instanceof Mask)) {
+				if (!(jf instanceof Mask)) {
 					jf.setVisible(false);
 				}
 			}
-			
+
 			int page = -1;
 			for (int i = 1; i <= pan.segmentsEnFonctionDeLaPage.size(); i++) {
 				if (pan.segmentsEnFonctionDeLaPage.get(i).contains(n)) {
 					page = i;
-					System.out.println("Nouvelle page : "+page+" /  Page actuelle : "+pan.pageActuelle);
+					System.out.println("Nouvelle page : " + page + " /  Page actuelle : " + pan.pageActuelle);
 					break;
 				}
 			}
-			
 
-			
 			// on réécrit tous les mots dépassés
 			// et on enleve les fenetres
 			for (Mask m : pan.fenetreMasque) {
 				if (pan.getNumero(m) < pan.numeroCourant && m.page == pan.pageActuelle) {
-					System.out.println(" ( " + pan.fenetreMasque.indexOf(m)+" ) Masque numero " + pan.getNumero(m) + " est rendu INVISIBLE. Valeur : " + m.motCouvert);
+					System.out.println(" ( " + pan.fenetreMasque.indexOf(m) + " ) Masque numero " + pan.getNumero(m)
+							+ " est rendu INVISIBLE. Valeur : " + m.motCouvert);
 					String temp = pan.editorPane.getText();
 					String r = "";
 					char[] tab = temp.toCharArray();
@@ -167,7 +169,8 @@ public class ControlPanel extends JPanel {
 				// et on enleve les fenetres
 				for (Mask m : pan.fenetreMasque) {
 					if (pan.getNumero(m) < pan.numeroCourant && m.page == page) {
-						System.out.println(" ( "+pan.fenetreMasque.indexOf(m)+" ) Masque numero " + pan.getNumero(m) + " est rendu visible. Valeur : " + m.motCouvert);
+						System.out.println(" ( " + pan.fenetreMasque.indexOf(m) + " ) Masque numero " + pan.getNumero(m)
+								+ " est rendu visible. Valeur : " + m.motCouvert);
 						String temp = pan.editorPane.getText();
 						String r = "";
 						char[] tab = temp.toCharArray();
@@ -186,8 +189,6 @@ public class ControlPanel extends JPanel {
 				}
 			}
 
-			
-
 			// on replace les masques visibles
 			pan.replaceAllMask();
 
@@ -200,16 +201,17 @@ public class ControlPanel extends JPanel {
 				pan.lecteur.notified = true;
 			}
 
-			pan.lecteur = new Lecteur(pan, n);
+			pan.lecteur = new LectorFixFrame(pan.controlerGlobal, n);
 			pan.lecteur.start();
 
 		} catch (IllegalArgumentException ex) {
 			JOptionPane.showMessageDialog(null, "Numéro de segment incorrect : " + goToField.getText());
 		}
 		updateButtons();
-	}
+	}*/
 
-	private void gotoMagiqueReculer(Panneau pan, int numeroSegment) {
+	//appeller avec -1 si l'appelleur est gotofield
+	/*private void gotoMagiqueReculer(Panneau pan, int numeroSegment) {
 
 		int n;
 		try {
@@ -220,14 +222,20 @@ public class ControlPanel extends JPanel {
 			}
 			if (numeroSegment == -1) {
 				n = Integer.parseInt(goToField.getText()) - 1;
+				int nouveauNumeroCourant = 0;
+				for (int j = 0; j < n; j++) {
+					nouveauNumeroCourant+= pan.textHandler.motsParSegment.get(j).size();
+				}	
+				//-1 parce que l'on part de zero, +1 parce que l'on veut le segment d'après
+				pan.numeroCourant = nouveauNumeroCourant+1-1-(pan.param.premierSegment-1);
 			} else {
-				if ( pan.textHandler.hasPreviousHoleInPhrase(pan.numeroCourant)) {
+				if (pan.textHandler.hasPreviousHoleInPhrase(pan.numeroCourant)) {
 					n = pan.pilot.getCurrentPhraseIndex();
 				} else {
 					n = numeroSegment;
 					String s = null;
 					while (s == null) {
-						if(n < 0) {
+						if (n < 0) {
 							break;
 						}
 						try {
@@ -237,28 +245,27 @@ public class ControlPanel extends JPanel {
 						}
 					}
 				}
+				pan.numeroCourant--;
 			}
-			pan.numeroCourant--;
 			// phrase = le numero de segment
 			pan.pilot.phrase = n;
-	
+
 			int page = -1;
 			for (int i = 1; i <= pan.segmentsEnFonctionDeLaPage.size(); i++) {
 				if (pan.segmentsEnFonctionDeLaPage.get(i).contains(n)) {
 					page = i;
-					System.out.println("Nouvelle page : "+page+" /  Page actuelle : "+pan.pageActuelle);
+					System.out.println("Nouvelle page : " + page + " /  Page actuelle : " + pan.pageActuelle);
 					break;
 				}
 			}
-			
-	
-	
+
 			for (Mask m : pan.fenetreMasque) {
 				if (m.jtf.getBackground().equals(Color.CYAN)) {
 					m.jtf.setBackground(Color.white);
 				}
 				if (pan.getNumero(m) >= pan.numeroCourant && m.page == pan.pageActuelle) {
-					System.out.println(" ( "+pan.fenetreMasque.indexOf(m)+" ) Masque numero " + pan.getNumero(m) + " est rendu visible. Valeur : " + m.motCouvert);
+					System.out.println(" ( " + pan.fenetreMasque.indexOf(m) + " ) Masque numero " + pan.getNumero(m)
+							+ " est rendu visible. Valeur : " + m.motCouvert);
 					m.setVisible(true);
 				}
 			}
@@ -269,10 +276,12 @@ public class ControlPanel extends JPanel {
 				pan.pilot.controler.showPage(pan.pilot.controler.getPageOfPhrase(n));
 				for (Mask m : pan.fenetreMasque) {
 					if (pan.getNumero(m) >= pan.numeroCourant && m.page == page) {
-						System.out.println(" ( "+pan.fenetreMasque.indexOf(m)+" ) Masque numero " + pan.getNumero(m) + " est rendu visible. Valeur : " + m.motCouvert);
+						System.out.println(" ( " + pan.fenetreMasque.indexOf(m) + " ) Masque numero " + pan.getNumero(m)
+								+ " est rendu visible. Valeur : " + m.motCouvert);
 						m.setVisible(true);
 					} else if (m.page == page) {
-						System.out.println(" ( "+pan.fenetreMasque.indexOf(m)+" ) Masque numero " + pan.getNumero(m) + " est rendu visible. Valeur : " + m.motCouvert);
+						System.out.println(" ( " + pan.fenetreMasque.indexOf(m) + " ) Masque numero " + pan.getNumero(m)
+								+ " est rendu visible. Valeur : " + m.motCouvert);
 						String temp = pan.editorPane.getText();
 						String r = "";
 						char[] tab = temp.toCharArray();
@@ -290,8 +299,6 @@ public class ControlPanel extends JPanel {
 				}
 			}
 
-
-
 			// on replace les masques visibles
 			pan.replaceAllMask();
 
@@ -304,14 +311,14 @@ public class ControlPanel extends JPanel {
 				pan.lecteur.notified = true;
 			}
 
-			pan.lecteur = new Lecteur(pan, n);
+			pan.lecteur = new LectorFixFrame(pan.controlerGlobal, n);
 			pan.lecteur.start();
 
 		} catch (IllegalArgumentException ex) {
 			JOptionPane.showMessageDialog(null, "Numéro de segment incorrect : " + goToField.getText());
 		}
 		updateButtons();
-	}
+	}*/
 
 	/**
 	 * Méthode qui s'exécute lorsque les contrôles sont prêts à être effectifs.
