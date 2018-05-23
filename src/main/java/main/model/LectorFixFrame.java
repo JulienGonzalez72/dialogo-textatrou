@@ -54,7 +54,7 @@ public class LectorFixFrame extends ReaderThread {
 		
 		//lire les phrases qui restent
 		//Pour tous les segments après le dernier trou
-		for (int i = controler.getPhraseOf(controler.getHolesCount()-1)+1;controler.getPageOfPhrase(i) != controler.getPhrasesCount()-1; i++) {
+		for (int i = controler.getPhraseOf(controler.getHolesCount()-1)+1;i != controler.getPhrasesCount()-1; i++) {
 			//on montre la page du segment
 			controler.showPage(controler.getPageOfPhrase(i));
 			// lire le fichier audio correspondant à ce segment
@@ -62,6 +62,7 @@ public class LectorFixFrame extends ReaderThread {
 			// attendre le temps de pause nécessaire
 			controler.doWait(controler.getCurrentWaitTime(), Constants.CURSOR_LISTEN);
 		}
+		//afficher le compte rendu
 		controler.showReport();
 
 	}
