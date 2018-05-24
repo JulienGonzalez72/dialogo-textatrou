@@ -26,7 +26,7 @@ public class Pilot {
 	 * Se place sur le trou de numero h et démarre le lecteur.
 	 */
 	public void goTo(int h) throws IllegalArgumentException {
-		if (h < 0 || h >= p.textHandler.getHolesCount() - 1) {
+		if (h < 0 || h >= p.textHandler.getHolesCount()) {
 			throw new IllegalArgumentException("Numéro de trou invalide : " + h);
 		}
 
@@ -38,7 +38,7 @@ public class Pilot {
 		/// désactive les boutons de contrôle pour éviter le spam ///
 		p.controlPanel.disableAll(Constants.DISABLE_TIME);
 		
-		updateBar();
+		p.updateBar(hole);
 		
 		if (activeThread != null) {
 			activeThread.doStop();
@@ -47,7 +47,7 @@ public class Pilot {
 		activeThread.onHoleEnd.add(new Runnable() {
 			public void run() {
 				hole = activeThread.h;
-				updateBar();
+				p.updateBar(hole);
 			}
 		});
 		activeThread.start();
@@ -55,11 +55,6 @@ public class Pilot {
 	
 	public ReaderThread getReaderThread(int h) {
 		return p.param.fixedField ? new LectorFixFrame(p.controlerGlobal, h) : new ReaderInside(p.controlerGlobal, h);
-	}
-
-	private void updateBar() {
-		p.progressBar.setValue(getCurrentHoleIndex());
-		p.progressBar.setString((getCurrentHoleIndex() + 1) + "/" + (p.textHandler.getHolesCount() - 1));
 	}
 
 	/**
@@ -91,25 +86,7 @@ public class Pilot {
 	 * le début.
 	 */
 	public void doPlay() {
-		//showAllHoleInPages();
-
 		goTo(hole);
-
-		//si c'est la première fois qu'on appuie sur play
-		/*if (p.player.getCurrentPhraseIndex() == p.param.premierSegment-1 && !p.lecteur.isAlive()) {
-			
-			//on recupere le numero courant
-			int numeroCourant = 0;
-			for (int i =0; i < p.textHandler.motsParSegment.size();i++) {
-				if ( i == p.param.premierSegment-1) {
-					break;
-				}
-				numeroCourant += p.textHandler.motsParSegment.get(i).size();	
-			}	
-			p.numeroCourant =  numeroCourant;
-			p.lecteur.start();
-		}*/
-
 	}
 
 	public int getCurrentPhraseIndex() {
@@ -126,6 +103,14 @@ public class Pilot {
 
 	public boolean hasPreviousPhrase() {
 		return p.player.hasPreviousPhrase();
+	}
+	
+	public boolean hasPreviousHole() {
+		return hole > 0;
+	}
+	
+	public boolean hasNextHole() {
+		return hole < p.textHandler.getHolesCount() - 1;
 	}
 	
 }

@@ -1,12 +1,12 @@
 #Sauvegarde
-#Thu May 24 11:44:55 CEST 2018
+#Thu May 24 13:59:59 CEST 2018
 taillePolice=42
 typePolice=Times New Roman Gras
 h=400
 tempsAttente=0
-premierSegment=7
+premierSegment=33
 y=63
 x=538
 w=1038
-rejouerSon=false
+fenetreFixe=false
 couleurFond=255/175/175

@@ -84,7 +84,7 @@ public class Panneau extends JDesktopPane {
 
 		panelSud = new JPanel();
 
-		progressBar = new JProgressBar(0, (textHandler.getPhrasesCount() - 1));
+		progressBar = new JProgressBar(0, (textHandler.getHolesCount()));
 		progressBar.setStringPainted(true);
 		progressBar.setForeground(Color.GREEN);
 
@@ -98,8 +98,7 @@ public class Panneau extends JDesktopPane {
 	public void init() {
 		param.appliquerPreferenceTaillePosition(fenetre);
 		fenetreParam.editorPane = editorPane;
-		progressBar.setString(param.premierSegment + "/" + (textHandler.getPhrasesCount() - 1));
-		progressBar.setValue(param.premierSegment);
+		updateBar(param.premierSegment);
 		editorPane.setBackground(param.bgColor);
 		editorPane.setFont(param.police);
 		pageActuelle = 0;
@@ -128,6 +127,11 @@ public class Panneau extends JDesktopPane {
 
 	public String getCursorName() {
 		return getCursor().getName();
+	}
+
+	public void updateBar(int hole) {
+		progressBar.setValue(hole);
+		progressBar.setString((hole + 1) + "/" + (textHandler.getHolesCount()));
 	}
 
 	/**
@@ -326,6 +330,8 @@ public class Panneau extends JDesktopPane {
 		JTextField jtf = new JTextField();
 		jtf.addActionListener(controlerMask);
 		jtf.setEnabled(false);
+		jtf.setFont(param.police.deriveFont(param.police.getSize() / 1.5f));
+		jtf.setHorizontalAlignment(SwingConstants.CENTER);
 		frame.jtf = jtf;
 		frame.add(jtf);
 

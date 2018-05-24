@@ -19,10 +19,9 @@ public class Mask extends JInternalFrame {
 	public int phrase;
 	public String motCouvert;
 	
-
 	public Mask() {
 	}
-
+	
 	public Mask(int start, int end, JTextField jtf) {
 		this.start = start;
 		this.end = end;
