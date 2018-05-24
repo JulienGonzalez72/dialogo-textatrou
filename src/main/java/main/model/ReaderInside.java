@@ -10,9 +10,8 @@ public class ReaderInside extends ReaderThread {
 	
 	public void run() {
 		while (h < controler.getHolesCount() && !needToDead) {
-			int n = controler.getPhraseOf(h);
 			/// affiche la page orrespondante ///
-			int page = controler.getPageOfPhrase(n);
+			int page = controler.getPageOf(h);
 			controler.showPage(page);
 			/// valide tous les trous de la page avant le trou actuel ///
 			for (int i = 0; i < h; i++) {
@@ -24,21 +23,30 @@ public class ReaderInside extends ReaderThread {
 			controler.showHolesInPage(h);
 			/// lit tous les segments à lire jusqu'au trou actuel ///
 			if (controler.isFirstInPhrase(h)) {
-				for (int i = h > 0 ? controler.getPhraseOf(h - 1) + 1 : controler.getPhraseOf(h); i <= controler.getPhraseOf(h) && !needToDead; i++) {
-					controler.readPhrase(i);
-				}
+				controler.readPhrase(controler.getPhraseOf(h));
 			}
 			if (needToDead) {
 				return;
 			}
 			/// attends une saisie de l'utilisateur ///
 			while (!controler.waitForFill(h)) {
+				if (needToDead) {
+					return;
+				}
 				controler.doError();
 			}
 			h++;
 			/// appel des écouteurs de fin de trou ///
 			for (Runnable r : onHoleEnd) {
 				r.run();
+			}
+			/// si le trou était le dernier du segment lit tous les segments sans trou après ///
+			if (controler.isLastInPhrase(h - 1)) {
+				controler.showHolesInPage(h, controler.getPageOf(h - 1));
+				controler.fillHole(h - 1);
+				for (int i = controler.getPhraseOf(h - 1) + 1; !controler.hasHole(i) && !needToDead; i++) {
+					controler.readPhrase(i);
+				}
 			}
 		}
 		/// lit les segments restants après le dernier trou ///

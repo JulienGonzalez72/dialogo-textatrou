@@ -1,24 +1,12 @@
 #Sauvegarde
-<<<<<<< HEAD
-#Thu May 24 10:20:14 CEST 2018
-=======
-#Thu May 24 10:37:28 CEST 2018
->>>>>>> 4745051b0790877fe382c231899b9f07487334a9
+#Thu May 24 11:44:55 CEST 2018
 taillePolice=42
 typePolice=Times New Roman Gras
 h=400
 tempsAttente=0
-<<<<<<< HEAD
-premierSegment=23
-y=227
-x=602
-w=800
+premierSegment=7
+y=63
+x=538
+w=1038
 rejouerSon=false
-=======
-premierSegment=2
-y=98
-x=541
-w=1179
-rejouerSon=true
->>>>>>> 4745051b0790877fe382c231899b9f07487334a9
 couleurFond=255/175/175

@@ -35,6 +35,7 @@ public class ControlPanel extends JPanel {
 		previousButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pan.pilot.doPrevious();
+				updateButtons();
 			}
 		});
 
@@ -43,7 +44,13 @@ public class ControlPanel extends JPanel {
 		playButton.setEnabled(false);
 		playButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pan.pilot.doPlay();
+				if (pan.player.isPlaying()) {
+					pan.pilot.doStop();
+				}
+				else {
+					pan.pilot.doPlay();
+				}
+				updateButtons();
 			}
 		});
 
@@ -53,6 +60,7 @@ public class ControlPanel extends JPanel {
 		nextButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pan.pilot.doNext();
+				updateButtons();
 			}
 		});
 
@@ -61,7 +69,8 @@ public class ControlPanel extends JPanel {
 		repeatButton.setEnabled(false);
 		repeatButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-	
+				pan.pilot.doPlay();
+				updateButtons();
 			}
 		});
 
@@ -73,8 +82,14 @@ public class ControlPanel extends JPanel {
 		goToField.setEnabled(false);
 		goToField.addActionListener(new ActionListener() {			
 			public void actionPerformed(ActionEvent e) {
-				int h = Integer.parseInt(goToField.getText());
-				pan.pilot.goTo(h);
+				int h;
+				try {
+					h = Integer.parseInt(goToField.getText()) - 1;
+					pan.pilot.goTo(h);
+				} catch (IllegalArgumentException ex) {
+					JOptionPane.showMessageDialog(null, "Numéro de trou incorrect : " + goToField.getText());
+				}
+				updateButtons();
 			}
 		});
 	}
