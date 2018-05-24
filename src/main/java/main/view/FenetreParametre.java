@@ -124,8 +124,10 @@ public class FenetreParametre extends JFrame {
 				}
 			};
 
-			segmentDeDepart = fastTextField(String.valueOf(param.premierSegment),
+			segmentDeDepart = fastTextField("1",
 					new Font("OpenDyslexic", Font.PLAIN, 15), "1");
+			segmentDeDepart.setEnabled(false);
+			segments.setEnabled(false);
 			segmentDeDepart.addActionListener(controleur);
 
 			JPanel midPanel = new JPanel(new GridLayout(7, 2));
@@ -177,9 +179,11 @@ public class FenetreParametre extends JFrame {
 			fontSizeComboBox.setSelectedItem(param.police.getSize());
 			fontFamilyComboBox.setSelectedItem(getCorrectFontName(param.police.getFontName()));
 			
-			segmentDeDepart.setText(String.valueOf(param.premierSegment));
+			segmentDeDepart.setText("1");
 			
 			appliquerCouleur(param.bgColor, colorComboBox);
+			
+			fixedField.setSelected(param.fixedField);
 			
 			waitSlider.setValue(param.tempsPauseEnPourcentageDuTempsDeLecture);
 		}

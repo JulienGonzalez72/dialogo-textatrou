@@ -13,7 +13,7 @@ public class Parametres {
 	public String titre;
 	public int tailleX;
 	public int tailleY;
-	public int premierSegment;
+	public int premierSegment = 1;
 	public char mysterCarac = '_';
 	public int tempsPauseEnPourcentageDuTempsDeLecture;
 	public boolean fixedField = true;
@@ -42,7 +42,7 @@ public class Parametres {
 		prop.put("typePolice", police.getFontName());
 		prop.put("couleurFond", fromColorToString(bgColor));
 		prop.put("tempsAttente", String.valueOf(tempsPauseEnPourcentageDuTempsDeLecture));
-		prop.put("rejouerSon", String.valueOf(fixedField));
+		prop.put("fenetreFixe", String.valueOf(fixedField));
 		prop.put("premierSegment", String.valueOf(premierSegment));
 		String fichier = "./ressources/preferences/preference_" + Constants.NOM_ELEVE + ".txt";
 		OutputStream ops = null;
@@ -106,7 +106,8 @@ public class Parametres {
 		p.panY = Integer.valueOf(pro.getProperty("y"));
 		p.panWidth = Integer.valueOf(pro.getProperty("w"));
 		p.panHeight = Integer.valueOf(pro.getProperty("h"));
-		p.premierSegment = Integer.valueOf(pro.getProperty("premierSegment"));
+		//p.premierSegment = Integer.valueOf(pro.getProperty("premierSegment"));
+		p.fixedField = Boolean.valueOf(pro.getProperty("fenetreFixe"));
 		
 		return p;
 	}

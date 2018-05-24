@@ -9,7 +9,7 @@ public class ReaderInside extends ReaderThread {
 	}
 	
 	public void run() {
-		while (h < controler.getHolesCount() && !needToDead) {
+		while (h < controler.getHolesCount() - 1 && !needToDead) {
 			/// affiche la page orrespondante ///
 			int page = controler.getPageOf(h);
 			controler.showPage(page);
@@ -44,17 +44,13 @@ public class ReaderInside extends ReaderThread {
 			if (controler.isLastInPhrase(h - 1)) {
 				controler.showHolesInPage(h, controler.getPageOf(h - 1));
 				controler.fillHole(h - 1);
-				for (int i = controler.getPhraseOf(h - 1) + 1; !controler.hasHole(i) && !needToDead; i++) {
+				for (int i = controler.getPhraseOf(h - 1) + 1; !controler.hasHole(i) && i < controler.getPhrasesCount() - 1 && !needToDead; i++) {
 					controler.readPhrase(i);
 				}
 			}
 		}
-		/// lit les segments restants après le dernier trou ///
-		for (int i = controler.getPhraseOf(controler.getHolesCount() - 1 + 1); i != controler.getPhrasesCount() - 1 && !needToDead; i++) {
-			controler.readPhrase(i);
-		}
 		/// à la fin, affiche le compte rendu ///
-		if (h == controler.getHolesCount() - 1) {
+		if (h == controler.getHolesCount() - 1 && !needToDead) {
 			controler.showReport();
 		}
 	}
