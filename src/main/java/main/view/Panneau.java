@@ -204,14 +204,13 @@ public class Panneau extends JDesktopPane {
 			}
 			int off = textHandler.getAbsoluteOffset(lastPhrase,
 					editorPane.viewToModel(new Point((int) (editorPane.getWidth() - Constants.TEXTPANE_MARGING),
-							(int) (editorPane.getHeight() - h))));
+							(int) (editorPane.getHeight() - h -( param.fixedField ? panelFenetreFixe.getHeight() : 0)))));
 			for (int i = lastOffset; i < off; i++) {
 				int phraseIndex = textHandler.getPhraseIndex(i);
 				if (phraseIndex == -1) {
 					lastOffset = textHandler.getShowText().length();
 				}
-				if (!phrases.contains(phraseIndex) && phraseIndex > lastPhrase
-						&& phraseIndex != textHandler.getPhraseIndex(off)) {
+				if (!phrases.contains(phraseIndex) && phraseIndex > lastPhrase && phraseIndex != textHandler.getPhraseIndex(off)) {
 					lastPhrase = phraseIndex;
 					phrases.add(phraseIndex);
 					lastOffset = i;
@@ -221,6 +220,7 @@ public class Panneau extends JDesktopPane {
 				segmentsEnFonctionDeLaPage.put(page, phrases);
 				page++;
 			}
+
 			String newText = textHandler.getShowText().substring(lastOffset);
 			/// dernière page ///
 			if (newText.equals(text)) {

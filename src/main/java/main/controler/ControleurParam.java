@@ -30,18 +30,6 @@ public class ControleurParam implements ActionListener, ChangeListener {
 		if (arg0.getSource() instanceof JComboBox) {
 			jcb = (JComboBox<?>) arg0.getSource();
 		}
-		/*if (jcb == panneau.colorComboBox) {
-			String s = (String) jcb.getSelectedItem();
-			Color color = FenetreParametre.stringToColor(s);
-			((JComboBox<?>) jcb).setBackground(color);
-			if (jcb == panneau.colorComboBox) {
-				if (fen.editorPane != null) {
-					fen.editorPane.setBackground(color);
-				}
-				param.bgColor = color;
-			}
-			panneau.grabFocus();
-		}*/
 		if (jcb == panneau.fontSizeComboBox) {
 			int taille = (Integer) jcb.getSelectedItem();
 			Font font = new Font(panneau.fontFamilyComboBox.getFont().getFontName(), Constants.DEFAULT_FONT_STYLE, taille);

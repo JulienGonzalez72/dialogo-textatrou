@@ -8,23 +8,37 @@ import main.controler.ControlerText;
 public class LectorFixFrame extends ReaderThread {
 
 	public Object lock = new Object();
-	public boolean notified;
+	public boolean needToDead = false;
 
 	public LectorFixFrame(ControlerText controler, int h) {
 		super(controler, h);
 	}
 
 	public void run() {
+<<<<<<< HEAD
+=======
+		
+		//en cas de suivant on remplace tous les trous avant le trou actuel par le mot
+		for (int i = 0; i < h; i++) {
+			controler.fillWord(i);
+		}
+		
+>>>>>>> 4745051b0790877fe382c231899b9f07487334a9
 		// pour chaque trou
 		for (int h = this.h; h < controler.getHolesCount(); h++) {
 			// si le trou est le premier de son segment
 			if (controler.isFirstInPhrase(h)) {
 				// Pour tous les segments après le précédent trou, jusqu'au segment de ce trou compris
+<<<<<<< HEAD
 				for (int i = h > 0 ? controler.getPhraseOf(h - 1) + 1 : controler.getPhraseOf(h); i <= controler.getPhraseOf(h); i++) {
+=======
+				for (int i = h > 0 ? controler.getPhraseOf(h - 1) + 1 : controler.getPhraseOf(h); i <= controler
+						.getPhraseOf(h); i++) {
+>>>>>>> 4745051b0790877fe382c231899b9f07487334a9
 					// on montre la page du segment
 					controler.showPage(controler.getPageOfPhrase(i));
 					// on montre uniquement les trous à partir du trou actuel et de cette page
-					controler.showHolesInPage(h,controler.getPageOfPhrase(i));
+					controler.showHolesInPage(h, controler.getPageOfPhrase(i));
 					// lire le fichier audio correspondant à ce segment
 					controler.play(i);
 					// attendre le temps de pause nécessaire

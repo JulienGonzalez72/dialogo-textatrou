@@ -59,11 +59,7 @@ public class ControlerText {
 	 * Affiche la page indiquée.
 	 */
 	public void showPage(int page) {
-		try {
-			p.showPage(page);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		p.showPage(page);
 	}
 
 	/**
@@ -168,6 +164,10 @@ public class ControlerText {
 	}
 
 	private void showHole(int h) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4745051b0790877fe382c231899b9f07487334a9
 		int startPhrase = p.segmentsEnFonctionDeLaPage.get(getPageOf(h)).get(0);
 		
 		int start = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleStartOffset(h));
@@ -232,7 +232,7 @@ public class ControlerText {
 
 				Mask m = getFenetreFixe();
 
-				if (m.correctWord()) {
+				if (m.jtf.getText().equals(getMask(h).motCouvert)) {
 					return true;
 				} else {
 					return false;
