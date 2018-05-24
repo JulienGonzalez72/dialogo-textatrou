@@ -118,6 +118,7 @@ public class Panneau extends JDesktopPane {
 		controlerKey = new ControlerKey(pilot);
 		editorPane.addKeyListener(controlerKey);
 		editorPane.requestFocus();
+		System.out.println(segmentsEnFonctionDeLaPage.toString());
 	}
 
 	public void setCursor(String fileName) {
@@ -211,8 +212,7 @@ public class Panneau extends JDesktopPane {
 				if (phraseIndex == -1) {
 					lastOffset = textHandler.getShowText().length();
 				}
-				if (!phrases.contains(phraseIndex) && phraseIndex > lastPhrase
-						&& phraseIndex != textHandler.getPhraseIndex(off)) {
+				if (!phrases.contains(phraseIndex) && phraseIndex > lastPhrase && phraseIndex != textHandler.getPhraseIndex(off)) {
 					lastPhrase = phraseIndex;
 					phrases.add(phraseIndex);
 					lastOffset = i;
@@ -222,6 +222,7 @@ public class Panneau extends JDesktopPane {
 				segmentsEnFonctionDeLaPage.put(page, phrases);
 				page++;
 			}
+
 			String newText = textHandler.getShowText().substring(lastOffset);
 			/// dernière page ///
 			if (newText.equals(text)) {

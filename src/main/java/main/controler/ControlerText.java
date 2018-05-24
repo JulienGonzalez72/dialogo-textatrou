@@ -65,11 +65,7 @@ public class ControlerText {
 	 * Affiche la page indiquée.
 	 */
 	public void showPage(int page) {
-		try {
-			p.showPage(page);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		p.showPage(page);
 	}
 
 	/**
