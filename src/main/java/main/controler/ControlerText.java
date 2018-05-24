@@ -164,20 +164,12 @@ public class ControlerText {
 	}
 
 	private void showHole(int h) {
-<<<<<<< HEAD
+
 		int startPhrase = p.segmentsEnFonctionDeLaPage.get(getPageOf(h)).get(0);
 		
 		int start = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleStartOffset(h));
 		int end = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleEndOffset(h));
 		
-=======
-
-
-		int startPhrase = p.segmentsEnFonctionDeLaPage.get(getPageOf(h)).get(0);
-	 
-		int start = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleStartOffset(h));
-		int end = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleEndOffset(h));
->>>>>>> 9f56689b3a0b9ae93eb4be7adcfd759ba894133f
 		try {
 			p.afficherFrame(start, end, h);
 		} catch (BadLocationException e) {
@@ -237,7 +229,7 @@ public class ControlerText {
 
 				Mask m = getFenetreFixe();
 
-				if (m.correctWord()) {
+				if (m.jtf.getText().equals(getMask(h).motCouvert)) {
 					return true;
 				} else {
 					return false;
@@ -245,13 +237,6 @@ public class ControlerText {
 			}
 		}
 	}
-<<<<<<< HEAD
-=======
-
-	public void validCurrentHole() {
-		// p.validHole(p.pilot.getCurrentPhraseIndex(), p.currentHole);
-	}
->>>>>>> 9f56689b3a0b9ae93eb4be7adcfd759ba894133f
 
 	public void removeAllMasks() {
 		p.removeAllMasks();
@@ -352,7 +337,6 @@ public class ControlerText {
 
 	}
 
-<<<<<<< HEAD
 	/**
 	 * Montre la page du segment i, lis le segment i et attends
 	 * 
@@ -367,8 +351,4 @@ public class ControlerText {
 		doWait(getCurrentWaitTime(), Constants.CURSOR_LISTEN);
 	}
 	
-=======
-	
-
->>>>>>> 9f56689b3a0b9ae93eb4be7adcfd759ba894133f
 }

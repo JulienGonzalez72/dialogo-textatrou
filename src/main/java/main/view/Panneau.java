@@ -117,7 +117,6 @@ public class Panneau extends JDesktopPane {
 		controlerKey = new ControlerKey(pilot);
 		editorPane.addKeyListener(controlerKey);
 		editorPane.requestFocus();
-		System.out.println(segmentsEnFonctionDeLaPage.toString());
 	}
 
 	public void setCursor(String fileName) {
@@ -205,7 +204,7 @@ public class Panneau extends JDesktopPane {
 			}
 			int off = textHandler.getAbsoluteOffset(lastPhrase,
 					editorPane.viewToModel(new Point((int) (editorPane.getWidth() - Constants.TEXTPANE_MARGING),
-							(int) (editorPane.getHeight() - h))));
+							(int) (editorPane.getHeight() - h -( param.fixedField ? panelFenetreFixe.getHeight() : 0)))));
 			for (int i = lastOffset; i < off; i++) {
 				int phraseIndex = textHandler.getPhraseIndex(i);
 				if (phraseIndex == -1) {
