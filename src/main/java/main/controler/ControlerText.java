@@ -3,13 +3,16 @@ package main.controler;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JInternalFrame;
 import javax.swing.JTextField;
 import javax.swing.text.BadLocationException;
 
 import main.Constants;
+import main.model.LectorFixFrame;
 import main.view.Mask;
 import main.view.Panneau;
 
@@ -139,13 +142,13 @@ public class ControlerText {
 	 * Désaffiche au préalable tous les trous.
 	 */
 	public void showHolesInPage(int h) {
-		showHolesInPage(h,getPageOf(h));
+		showHolesInPage(h, getPageOf(h));
 	}
-	
+
 	/**
 	 * 
-	 * Affiche tous les trous correspondant à la page indiqué et à partir du trou indiquée.
-	 * Désaffiche au préalable tous les trous.
+	 * Affiche tous les trous correspondant à la page indiqué et à partir du trou
+	 * indiquée. Désaffiche au préalable tous les trous.
 	 */
 	public void showHolesInPage(int h, int page) {
 		// réinitialisation des trous
@@ -164,15 +167,12 @@ public class ControlerText {
 	}
 
 	private void showHole(int h) {
-<<<<<<< HEAD
-=======
 
->>>>>>> 4745051b0790877fe382c231899b9f07487334a9
 		int startPhrase = p.segmentsEnFonctionDeLaPage.get(getPageOf(h)).get(0);
-		
+
 		int start = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleStartOffset(h));
 		int end = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleEndOffset(h));
-		
+
 		try {
 			p.afficherFrame(start, end, h);
 		} catch (BadLocationException e) {
@@ -225,14 +225,20 @@ public class ControlerText {
 	}
 
 	public boolean waitForFillFenetreFixe(int h) {
+
+		Mask m = getFenetreFixe();
+		
 		while (true) {
+			
+			if(getFenetreFixe() != m) {
+				return true;
+			}
+
 			Thread.yield();
 			if (p.controlerMask.enter) {
 				p.controlerMask.enter = false;
 
-				Mask m = getFenetreFixe();
-
-				if (m.jtf.getText().equals(getMask(h).motCouvert)) {
+				if (m.jtf.getText().equals(m.motCouvert)) {
 					return true;
 				} else {
 					return false;
@@ -278,7 +284,9 @@ public class ControlerText {
 	 * @param h
 	 * @return
 	 */
-	public Mask activateInputFenetreFixe(int h) {
+	public void activateInputFenetreFixe(int h) {
+
+		System.out.println("Fenetre activé avec h = " + h);
 
 		Mask frame = new Mask();
 		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
@@ -296,12 +304,14 @@ public class ControlerText {
 
 		frame.add(jtf);
 		frame.jtf = jtf;
+		frame.n = h;
+		frame.motCouvert = p.textHandler.getHidedWord(h);
 		frame.toFront();
 		frame.setVisible(true);
 		jtf.setEnabled(true);
 		jtf.requestFocus();
-
-		return frame;
+		
+		p.fenetreFixe = frame;
 
 	}
 
@@ -311,18 +321,22 @@ public class ControlerText {
 	}
 
 	public void desactiverFenetreFixe() {
-		getFenetreFixe().dispose();
-
+		if (getFenetreFixe() != null) {
+			System.out.println("Fenetre fixe de "+getFenetreFixe().n+" desactivée.");
+			getFenetreFixe().dispose();
+		}
 	}
 
 	private Mask getFenetreFixe() {
-		return p.getFenetreFixe();
+		return p.fenetreFixe;
 	}
 
 	public void replaceMaskByWord(int h) {
 		Mask m = getMask(h);
-		if (m == null)
+		if (m == null) {
+			fillHole(h);
 			return;
+		}
 		String temp = "";
 		int j = 0;
 		for (int i = 0; i < p.editorPane.getText().length(); i++) {
@@ -339,28 +353,27 @@ public class ControlerText {
 		p.replaceAllMask();
 
 	}
-	
+
 	/**
 	 * Remplace le trou h par le bon mot.
 	 */
 	public void fillHole(int h) {
 		int startPhrase = p.segmentsEnFonctionDeLaPage.get(getPageOf(h)).get(0);
-		
+
 		int start = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleStartOffset(h));
 		int end = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleEndOffset(h));
-		
+
 		String temp = "";
 		for (int i = 0; i < p.editorPane.getText().length(); i++) {
 			if (i == start) {
 				temp += p.textHandler.getHidedWord(h);
-			}
-			else if (i < start || i >= end) {
+			} else if (i < start || i >= end) {
 				temp += p.editorPane.getText().charAt(i);
 			}
 		}
-		
+
 		p.editorPane.setText(temp);
-		
+
 		p.replaceAllMask();
 	}
 
@@ -377,5 +390,5 @@ public class ControlerText {
 		// attendre le temps de pause nécessaire
 		doWait(getCurrentWaitTime(), Constants.CURSOR_LISTEN);
 	}
-	
+
 }

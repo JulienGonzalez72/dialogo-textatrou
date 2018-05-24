@@ -46,6 +46,7 @@ public class Panneau extends JDesktopPane {
 	public Parametres param;
 	public LectorFixFrame lecteur;
 	public int numeroCourant = 0;
+	public Mask fenetreFixe;
 	int nbMotsDansLaPage;
 
 	/**
@@ -466,14 +467,5 @@ public class Panneau extends JDesktopPane {
 		fenetreMasque.clear();
 	}
 
-	public Mask getFenetreFixe() {
-		Mask m = null;
-		for (Component c : panelFenetreFixe.getComponents()) {
-			if (c instanceof Mask) {
-				m = (Mask) c;
-			}
-		}
-		return m;
-	}
 
 }

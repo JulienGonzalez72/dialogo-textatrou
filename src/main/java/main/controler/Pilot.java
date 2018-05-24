@@ -63,17 +63,16 @@ public class Pilot {
 	}
 
 	/**
-	 * Essaye de passer au segment suivant, passe à la page suivante si c'était le
-	 * dernier segment de la page. Affiche le compte rendu si on était au dernier
-	 * segment du texte.
+	 * Essaye de passer au trou suivant, passe à la page suivante si c'était le
+	 * dernier trou de la page. 
 	 */
 	public void doNext() {
 		goTo(hole + 1);
 	}
 
 	/**
-	 * Essaye de passer au segment précédent. Déclenche une erreur si on était au
-	 * premier segment du texte.
+	 * Essaye de passer au trou précédent. Déclenche une erreur si on était au
+	 * premier trou du texte.
 	 */
 	public void doPrevious() {
 		goTo(hole - 1);
