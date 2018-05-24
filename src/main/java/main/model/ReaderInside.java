@@ -12,10 +12,13 @@ public class ReaderInside extends ReaderThread {
 		while (h < controler.getHolesCount() && !needToDead) {
 			int n = controler.getPhraseOf(h);
 			/// affiche la page orrespondante ///
-			controler.showPage(controler.getPageOfPhrase(n));
-			/// valide tous les trous avant le trou actuel ///
+			int page = controler.getPageOfPhrase(n);
+			controler.showPage(page);
+			/// valide tous les trous de la page avant le trou actuel ///
 			for (int i = 0; i < h; i++) {
-				controler.replaceMaskByWord(i);
+				if (controler.getPageOf(i) == page) {
+					controler.fillHole(i);
+				}
 			}
 			/// affiche tous les trous de la page à partir du trou actuel ///
 			controler.showHolesInPage(h);

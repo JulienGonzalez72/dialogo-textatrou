@@ -363,6 +363,13 @@ public class TextHandler {
 		return -1;
 	}
 	
+	/**
+	 * Retourne le mot associé au trou indiqué.
+	 */
+	public String getHidedWord(int hole) {
+		return mots.get(hole);
+	}
+	
 	public boolean isHole(int offset) {
 		return getShowText().charAt(offset) == '_';
 	}

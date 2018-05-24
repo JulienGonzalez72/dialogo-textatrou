@@ -168,20 +168,11 @@ public class ControlerText {
 	}
 
 	private void showHole(int h) {
-<<<<<<< HEAD
 		int startPhrase = p.segmentsEnFonctionDeLaPage.get(getPageOf(h)).get(0);
 		
 		int start = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleStartOffset(h));
 		int end = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleEndOffset(h));
 		
-=======
-
-
-		int startPhrase = p.segmentsEnFonctionDeLaPage.get(getPageOf(h)).get(0);
-	 
-		int start = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleStartOffset(h));
-		int end = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleEndOffset(h));
->>>>>>> 9f56689b3a0b9ae93eb4be7adcfd759ba894133f
 		try {
 			p.afficherFrame(start, end, h);
 		} catch (BadLocationException e) {
@@ -249,13 +240,6 @@ public class ControlerText {
 			}
 		}
 	}
-<<<<<<< HEAD
-=======
-
-	public void validCurrentHole() {
-		// p.validHole(p.pilot.getCurrentPhraseIndex(), p.currentHole);
-	}
->>>>>>> 9f56689b3a0b9ae93eb4be7adcfd759ba894133f
 
 	public void removeAllMasks() {
 		p.removeAllMasks();
@@ -355,8 +339,31 @@ public class ControlerText {
 		p.replaceAllMask();
 
 	}
+	
+	/**
+	 * Remplace le trou h par le bon mot.
+	 */
+	public void fillHole(int h) {
+		int startPhrase = p.segmentsEnFonctionDeLaPage.get(getPageOf(h)).get(0);
+		
+		int start = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleStartOffset(h));
+		int end = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleEndOffset(h));
+		
+		String temp = "";
+		for (int i = 0; i < p.editorPane.getText().length(); i++) {
+			if (i == start) {
+				temp += p.textHandler.getHidedWord(h);
+			}
+			else if (i < start || i >= end) {
+				temp += p.editorPane.getText().charAt(i);
+			}
+		}
+		
+		p.editorPane.setText(temp);
+		
+		p.replaceAllMask();
+	}
 
-<<<<<<< HEAD
 	/**
 	 * Montre la page du segment i, lis le segment i et attends
 	 * 
@@ -371,8 +378,4 @@ public class ControlerText {
 		doWait(getCurrentWaitTime(), Constants.CURSOR_LISTEN);
 	}
 	
-=======
-	
-
->>>>>>> 9f56689b3a0b9ae93eb4be7adcfd759ba894133f
 }

@@ -93,7 +93,7 @@ public class Pilot {
 	public void doPlay() {
 		//showAllHoleInPages();
 
-		goTo(p.player.getCurrentPhraseIndex());
+		goTo(hole);
 
 		//si c'est la première fois qu'on appuie sur play
 		/*if (p.player.getCurrentPhraseIndex() == p.param.premierSegment-1 && !p.lecteur.isAlive()) {
@@ -113,7 +113,7 @@ public class Pilot {
 	}
 
 	public int getCurrentPhraseIndex() {
-		return p.textHandler.getPhraseOf(hole);
+		return p.player.getCurrentPhraseIndex();
 	}
 	
 	public int getCurrentHoleIndex() {
