@@ -50,6 +50,10 @@ public class ControlerText {
 	public boolean isFirstInPhrase(int h) {
 		return !p.textHandler.hasPreviousHoleInPhrase(h);
 	}
+	
+	public boolean isLastInPhrase(int h) {
+		return !p.textHandler.hasNextHoleInPhrase(h);
+	}
 
 	/**
 	 * Affiche le compte rendu
@@ -168,6 +172,7 @@ public class ControlerText {
 
 	private void showHole(int h) {
 
+		
 		int startPhrase = p.segmentsEnFonctionDeLaPage.get(getPageOf(h)).get(0);
 
 		int start = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleStartOffset(h));
@@ -214,12 +219,15 @@ public class ControlerText {
 	}
 
 	public boolean waitForFill(int h) {
-		getMask(h).activate();
+		Mask m = getMask(h);
+		if (m == null)
+			return true;
+		m.activate();
 		p.controlerMask.enter = false;
 		while (true) {
 			Thread.yield();
 			if (p.controlerMask.enter) {
-				return getMask(h).correctWord();
+				return m != null && m.n == h ? m.correctWord() : true;
 			}
 		}
 	}
@@ -389,6 +397,14 @@ public class ControlerText {
 		play(i);
 		// attendre le temps de pause nécessaire
 		doWait(getCurrentWaitTime(), Constants.CURSOR_LISTEN);
+	}
+
+	
+	/**
+	 * Retourne <code>true</code> si le segment n contient au moins un trou.
+	 */
+	public boolean hasHole(int n) {
+		return getHolesCount(n) > 0;
 	}
 
 }
