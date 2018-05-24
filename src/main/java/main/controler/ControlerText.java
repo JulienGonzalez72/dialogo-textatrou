@@ -59,7 +59,11 @@ public class ControlerText {
 	 * Affiche la page indiquée.
 	 */
 	public void showPage(int page) {
-		p.showPage(page);
+		try {
+			p.showPage(page);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -135,16 +139,25 @@ public class ControlerText {
 
 	/**
 	 * 
-	 * Affiche tous les trous correspondant à la page indiquée et à partir du trou
-	 * passé en paramètre. Désaffiche au préalable tous les trous.
+	 * Affiche tous les trous correspondant à la page et à partir du trou indiquée.
+	 * Désaffiche au préalable tous les trous.
 	 */
 	public void showHolesInPage(int h) {
-		//réinitialisation des trous
+		showHolesInPage(h,getPageOf(h));
+	}
+	
+	/**
+	 * 
+	 * Affiche tous les trous correspondant à la page indiqué et à partir du trou indiquée.
+	 * Désaffiche au préalable tous les trous.
+	 */
+	public void showHolesInPage(int h, int page) {
+		// réinitialisation des trous
 		removeAllMasks();
 		// pour tous les trous
 		for (int i = 0; i < p.textHandler.getHolesCount(); i++) {
 			// si ce trou est dans la meme page que h
-			if (getPageOf(i) == getPageOf(h)) {
+			if (getPageOf(i) == page) {
 				// si ce trou est après le trou h ou est le trou h
 				if (i >= h) {
 					// on affiche ce trou
@@ -155,11 +168,20 @@ public class ControlerText {
 	}
 
 	private void showHole(int h) {
+<<<<<<< HEAD
 		int startPhrase = p.segmentsEnFonctionDeLaPage.get(getPageOf(h)).get(0);
 		
 		int start = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleStartOffset(h));
 		int end = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleEndOffset(h));
 		
+=======
+
+
+		int startPhrase = p.segmentsEnFonctionDeLaPage.get(getPageOf(h)).get(0);
+	 
+		int start = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleStartOffset(h));
+		int end = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleEndOffset(h));
+>>>>>>> 9f56689b3a0b9ae93eb4be7adcfd759ba894133f
 		try {
 			p.afficherFrame(start, end, h);
 		} catch (BadLocationException e) {
@@ -199,7 +221,7 @@ public class ControlerText {
 	public int getHolesCount() {
 		return p.textHandler.getHolesCount();
 	}
-	
+
 	public boolean waitForFill(int h) {
 		getMask(h).activate();
 		p.controlerMask.enter = false;
@@ -227,6 +249,13 @@ public class ControlerText {
 			}
 		}
 	}
+<<<<<<< HEAD
+=======
+
+	public void validCurrentHole() {
+		// p.validHole(p.pilot.getCurrentPhraseIndex(), p.currentHole);
+	}
+>>>>>>> 9f56689b3a0b9ae93eb4be7adcfd759ba894133f
 
 	public void removeAllMasks() {
 		p.removeAllMasks();
@@ -327,6 +356,7 @@ public class ControlerText {
 
 	}
 
+<<<<<<< HEAD
 	/**
 	 * Montre la page du segment i, lis le segment i et attends
 	 * 
@@ -341,4 +371,8 @@ public class ControlerText {
 		doWait(getCurrentWaitTime(), Constants.CURSOR_LISTEN);
 	}
 	
+=======
+	
+
+>>>>>>> 9f56689b3a0b9ae93eb4be7adcfd759ba894133f
 }

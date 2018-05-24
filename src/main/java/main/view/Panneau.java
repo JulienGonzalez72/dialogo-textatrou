@@ -88,7 +88,6 @@ public class Panneau extends JDesktopPane {
 		progressBar.setStringPainted(true);
 		progressBar.setForeground(Color.GREEN);
 
-
 	}
 
 	public JDesktopPane panelFenetreFixe = null;
@@ -259,20 +258,13 @@ public class Panneau extends JDesktopPane {
 			texteAfficher += string;
 		}
 		editorPane.setText(texteAfficher.replaceAll("_", param.mysterCarac + ""));
-		
-		/*for (Mask m : fenetreMasque) {
-			if (m.page == page && fenetreMasque.indexOf(m) >= numeroCourant) {
-				m.setVisible(true);
-				try {
-					replacerMasque(m);
-				} catch (BadLocationException e) {
-					e.printStackTrace();
-				}
-			} else {
-				m.jtf.setBackground(Color.white);
-				m.setVisible(false);
-			}
-		}*/
+
+		/*
+		 * for (Mask m : fenetreMasque) { if (m.page == page && fenetreMasque.indexOf(m)
+		 * >= numeroCourant) { m.setVisible(true); try { replacerMasque(m); } catch
+		 * (BadLocationException e) { e.printStackTrace(); } } else {
+		 * m.jtf.setBackground(Color.white); m.setVisible(false); } }
+		 */
 	}
 
 	public boolean pageFinis() {
@@ -320,7 +312,6 @@ public class Panneau extends JDesktopPane {
 		fenetreParam.stopExercice();
 	}
 
-
 	/**
 	 * Affiche une fenetre correspondant au mot délimité par start et end, d'indice
 	 * numeroCourant, et met le masque correspondant dans la liste des masques
@@ -329,31 +320,32 @@ public class Panneau extends JDesktopPane {
 		Mask frame = new Mask(start, end, null);
 		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
 		frame.setBorder(null);
-		
+
 		setLayout(null);
-		
+
 		JTextField jtf = new JTextField();
 		jtf.addActionListener(controlerMask);
 		jtf.setEnabled(false);
 		frame.jtf = jtf;
 		frame.add(jtf);
-		
+
 		frame.setVisible(true);
 		frame.motCouvert = textHandler.mots.get(h);
 		frame.page = controlerGlobal.getPageOf(h);
 		frame.n = h;
 		fenetreMasque.add(frame);
-		
+
 		Rectangle r = editorPane.modelToView(start).union(editorPane.modelToView(end));
+
 		frame.setBounds(r.x, r.y, r.width, r.height / 2);
-		add(frame);	
-		
+		add(frame);
+
 		for (Component c : fenetre.pan.getComponents()) {
-			if ( c instanceof JInternalFrame) {
+			if (c instanceof JInternalFrame) {
 				((JInternalFrame) c).toFront();
 			}
 		}
-							
+
 	}
 
 	public boolean changementSegment() {
@@ -433,7 +425,7 @@ public class Panneau extends JDesktopPane {
 		}
 		return occur;
 	}
-	
+
 	/*
 	 * replace une fenetre invisible, la rendnat visible
 	 */
@@ -464,7 +456,7 @@ public class Panneau extends JDesktopPane {
 	public int getNumero(Mask m) {
 		return fenetreMasque.indexOf(m);
 	}
-	
+
 	public void removeAllMasks() {
 		for (int i = 0; i < fenetreMasque.size(); i++) {
 			Mask m = fenetreMasque.get(i);
@@ -477,7 +469,7 @@ public class Panneau extends JDesktopPane {
 	public Mask getFenetreFixe() {
 		Mask m = null;
 		for (Component c : panelFenetreFixe.getComponents()) {
-			if ( c instanceof Mask) {
+			if (c instanceof Mask) {
 				m = (Mask) c;
 			}
 		}

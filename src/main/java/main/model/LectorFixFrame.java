@@ -2,6 +2,7 @@ package main.model;
 
 import java.awt.Color;
 
+import main.Constants;
 import main.controler.ControlerText;
 
 public class LectorFixFrame extends ReaderThread {
@@ -14,24 +15,37 @@ public class LectorFixFrame extends ReaderThread {
 	}
 
 	public void run() {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9f56689b3a0b9ae93eb4be7adcfd759ba894133f
 		// pour chaque trou
 		for (int h = this.h; h < controler.getHolesCount(); h++) {
-			// on montre uniquement les trous à partir du trou actuel et de cette page
-			controler.showHolesInPage(h);
 			// si le trou est le premier de son segment
 			if (controler.isFirstInPhrase(h)) {
+<<<<<<< HEAD
 				// Pour tous les segments après le précédent trou, jusqu'au segment de ce trou compris
 				for (int i = h > 0 ? controler.getPhraseOf(h - 1) + 1 : controler.getPhraseOf(h); i <= controler.getPhraseOf(h); i++) {
 					controler.readPhrase(i);
+=======
+				// Pour tous les segments après le précédent trou, jusqu'au segment de ce trou comprise t
+				for (int i = h > 0 ? controler.getPhraseOf(h - 1) + 1 : controler.getPhraseOf(h); i <= controler.getPhraseOf(h); i++) {
+					// on montre la page du segment
+					controler.showPage(controler.getPageOfPhrase(i));
+					// on montre uniquement les trous à partir du trou actuel et de cette page
+					controler.showHolesInPage(h,controler.getPageOfPhrase(i));
+					// lire le fichier audio correspondant à ce segment
+					controler.play(i);
+					// attendre le temps de pause nécessaire
+					controler.doWait(controler.getCurrentWaitTime(), Constants.CURSOR_LISTEN);
+>>>>>>> 9f56689b3a0b9ae93eb4be7adcfd759ba894133f
 				}
 			}
+			// on montre uniquement les trous à partir du trou actuel et de cette page
+			controler.showHolesInPage(h);
 			// colorier le trou actuel en bleu
 			controler.color(h, Color.cyan);
 			// active la fenêtre de saisie avec le trou actuel
-			controler.activateInputFenetreFixe(h);
-			/*while (!controler.waitForFill()) {
-				System.out.println("FAUX");
-			}*/
 			controler.activateInputFenetreFixe(h);
 			// tant que la saisie n'est pas juste
 			while (!controler.waitForFillFenetreFixe(h)) {
@@ -47,10 +61,14 @@ public class LectorFixFrame extends ReaderThread {
 		// on enlève le dernier trou
 		controler.removeAllMasks();
 
-		// lire les phrases qui restent
-		// Pour tous les segments après le dernier trou
+		// lire les phrases qui restent : pour tous les segments après le dernier trou
 		for (int i = controler.getPhraseOf(controler.getHolesCount() - 1) + 1; i != controler.getPhrasesCount()- 1; i++) {
-			controler.readPhrase(i);
+			// on montre la page du segment
+			controler.showPage(controler.getPageOfPhrase(i));
+			// lire le fichier audio correspondant à ce segment
+			controler.play(i);
+			// attendre le temps de pause nécessaire
+			controler.doWait(controler.getCurrentWaitTime(), Constants.CURSOR_LISTEN);
 		}
 		// afficher le compte rendu
 		controler.showReport();
