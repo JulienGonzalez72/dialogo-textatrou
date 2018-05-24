@@ -1,5 +1,21 @@
 #Sauvegarde
+<<<<<<< HEAD
 #Thu May 24 09:59:01 CEST 2018
+=======
+<<<<<<< HEAD
+#Wed May 23 16:48:11 CEST 2018
+taillePolice=42
+typePolice=Times New Roman Gras
+h=531
+tempsAttente=0
+premierSegment=8
+y=68
+x=580
+w=800
+rejouerSon=false
+=======
+#Wed May 23 16:47:17 CEST 2018
+>>>>>>> f20b17abadb3fde9dbb394c5329e78798de7f597
 taillePolice=42
 typePolice=Times New Roman Gras
 h=400
@@ -9,4 +25,5 @@ y=430
 x=1021
 w=800
 rejouerSon=true
+>>>>>>> 9f56689b3a0b9ae93eb4be7adcfd759ba894133f
 couleurFond=255/175/175

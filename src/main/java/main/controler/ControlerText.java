@@ -1,17 +1,11 @@
 package main.controler;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
-//import java.util.List;
 import java.util.Map;
 
-import javax.swing.JInternalFrame;
 import javax.swing.JTextField;
 import javax.swing.text.BadLocationException;
 
@@ -70,8 +64,7 @@ public class ControlerText {
 
 	/**
 	 * Joue un fichier .wav correspondant à un segment de phrase. On sortira de
-	 * cette fonction lorsque le fichier .wav aura été totalement joué. METHODE DE
-	 * TEST
+	 * cette fonction lorsque le fichier .wav aura été totalement joué.
 	 */
 	public void play(int phrase) {
 		p.setCursor(Constants.CURSOR_LISTEN);
@@ -171,12 +164,20 @@ public class ControlerText {
 	}
 
 	private void showHole(int h) {
+<<<<<<< HEAD
+		int startPhrase = p.segmentsEnFonctionDeLaPage.get(getPageOf(h)).get(0);
+		
+		int start = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleStartOffset(h));
+		int end = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleEndOffset(h));
+		
+=======
 
 
 		int startPhrase = p.segmentsEnFonctionDeLaPage.get(getPageOf(h)).get(0);
 	 
 		int start = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleStartOffset(h));
 		int end = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleEndOffset(h));
+>>>>>>> 9f56689b3a0b9ae93eb4be7adcfd759ba894133f
 		try {
 			p.afficherFrame(start, end, h);
 		} catch (BadLocationException e) {
@@ -203,17 +204,6 @@ public class ControlerText {
 		return p.textHandler.getPhraseOf(h);
 	}
 
-	public void nextHole() {
-		// p.currentHole++;
-	}
-
-	/**
-	 * Initialise le premier trou du segment.
-	 */
-	public void firstHole() {
-		// p.currentHole = 0;
-	}
-
 	/**
 	 * Retourne le nombre de trous associés au segment n.
 	 */
@@ -234,7 +224,7 @@ public class ControlerText {
 		while (true) {
 			Thread.yield();
 			if (p.controlerMask.enter) {
-				return true;
+				return getMask(h).correctWord();
 			}
 		}
 	}
@@ -247,7 +237,7 @@ public class ControlerText {
 
 				Mask m = getFenetreFixe();
 
-				if (m.jtf.getText().equals(getMask(h).motCouvert)) {
+				if (m.correctWord()) {
 					return true;
 				} else {
 					return false;
@@ -255,10 +245,13 @@ public class ControlerText {
 			}
 		}
 	}
+<<<<<<< HEAD
+=======
 
 	public void validCurrentHole() {
 		// p.validHole(p.pilot.getCurrentPhraseIndex(), p.currentHole);
 	}
+>>>>>>> 9f56689b3a0b9ae93eb4be7adcfd759ba894133f
 
 	public void removeAllMasks() {
 		p.removeAllMasks();
@@ -340,6 +333,8 @@ public class ControlerText {
 
 	public void replaceMaskByWord(int h) {
 		Mask m = getMask(h);
+		if (m == null)
+			return;
 		String temp = "";
 		int j = 0;
 		for (int i = 0; i < p.editorPane.getText().length(); i++) {
@@ -357,6 +352,23 @@ public class ControlerText {
 
 	}
 
+<<<<<<< HEAD
+	/**
+	 * Montre la page du segment i, lis le segment i et attends
+	 * 
+	 * @param i
+	 */
+	public void readPhrase(int i) {
+		// on montre la page du segment
+		showPage(getPageOfPhrase(i));
+		// lire le fichier audio correspondant à ce segment
+		play(i);
+		// attendre le temps de pause nécessaire
+		doWait(getCurrentWaitTime(), Constants.CURSOR_LISTEN);
+	}
+	
+=======
 	
 
+>>>>>>> 9f56689b3a0b9ae93eb4be7adcfd759ba894133f
 }

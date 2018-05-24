@@ -6,7 +6,6 @@ import java.io.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import main.*;
-import main.model.LectorFixFrame;
 
 public class ControlPanel extends JPanel {
 
@@ -35,7 +34,7 @@ public class ControlPanel extends JPanel {
 		previousButton.setEnabled(false);
 		previousButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			
+				pan.pilot.doPrevious();
 			}
 		});
 
@@ -53,7 +52,7 @@ public class ControlPanel extends JPanel {
 		nextButton.setEnabled(false);
 		nextButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				pan.pilot.doNext();
 			}
 		});
 
@@ -66,14 +65,17 @@ public class ControlPanel extends JPanel {
 			}
 		});
 
-		JLabel goToLabel = new JLabel("Passer au segment :");
+		JLabel goToLabel = new JLabel("Passer au trou :");
 		goToLabel.setFont(goToLabel.getFont().deriveFont(Font.ITALIC));
 		add(goToLabel);
 		add(goToField);
 		goToField.setPreferredSize(new Dimension(40, 20));
 		goToField.setEnabled(false);
-		goToField.addActionListener((ActionEvent e) -> {
-	
+		goToField.addActionListener(new ActionListener() {			
+			public void actionPerformed(ActionEvent e) {
+				int h = Integer.parseInt(goToField.getText());
+				pan.pilot.goTo(h);
+			}
 		});
 	}
 

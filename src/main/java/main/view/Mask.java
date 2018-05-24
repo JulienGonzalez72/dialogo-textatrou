@@ -37,6 +37,13 @@ public class Mask extends JInternalFrame {
 	public void desactivate() {
 		jtf.setEnabled(false);
 	}
+	
+	/**
+	 * Retourne true si le mot rentré par l'utilisateur correspond bien au mot caché.
+	 */
+	public boolean correctWord() {
+		return jtf.getText().equals(motCouvert);
+	}
 
 	public static class PositionComparator implements Comparator<Mask> {
 		@Override
