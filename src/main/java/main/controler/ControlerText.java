@@ -1,17 +1,11 @@
 package main.controler;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
-//import java.util.List;
 import java.util.Map;
 
-import javax.swing.JInternalFrame;
 import javax.swing.JTextField;
 import javax.swing.text.BadLocationException;
 
@@ -70,8 +64,7 @@ public class ControlerText {
 
 	/**
 	 * Joue un fichier .wav correspondant à un segment de phrase. On sortira de
-	 * cette fonction lorsque le fichier .wav aura été totalement joué. METHODE DE
-	 * TEST
+	 * cette fonction lorsque le fichier .wav aura été totalement joué.
 	 */
 	public void play(int phrase) {
 		p.setCursor(Constants.CURSOR_LISTEN);
@@ -162,38 +155,11 @@ public class ControlerText {
 	}
 
 	private void showHole(int h) {
+		int startPhrase = p.segmentsEnFonctionDeLaPage.get(getPageOf(h)).get(0);
 		
-		int start = -1;
-		int end = -1;
-
-		// fenetres pas fixes
-		if (!p.param.fixedField) {
-			/*for (Mask m : p.fenetreMasque) {
-				if (m.isVisible()) {
-					m.setVisible(false);
-					start = m.start;
-					end = m.end;
-					break;
-				}
-			}*/
-		// fenetre fixe
-		} else {
-			String bonMot = p.textHandler.mots.get(h);
-			int indexDeDebut = p.fenetreMasque.isEmpty() ? 0 : p.fenetreMasque.get(p.fenetreMasque.size()-1).end;
-			start = p.editorPane.getText().substring(indexDeDebut).indexOf(" " + p.param.mysterCarac) +1+indexDeDebut;
-			end = -1;
-			if (bonMot != null) {
-				end = start + bonMot.length();
-			}
-			try {
-				p.afficherFrame(start, end,h);
-			} catch (BadLocationException e) {
-				e.printStackTrace();
-			}
-		}
+		int start = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleStartOffset(h));
+		int end = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleEndOffset(h));
 		
-		start = p.textHandler.getHoleStartOffset(h);
-		end = p.textHandler.getHoleEndOffset(h);
 		try {
 			p.afficherFrame(start, end, h);
 		} catch (BadLocationException e) {
@@ -220,17 +186,6 @@ public class ControlerText {
 		return p.textHandler.getPhraseOf(h);
 	}
 
-	public void nextHole() {
-		// p.currentHole++;
-	}
-
-	/**
-	 * Initialise le premier trou du segment.
-	 */
-	public void firstHole() {
-		// p.currentHole = 0;
-	}
-
 	/**
 	 * Retourne le nombre de trous associés au segment n.
 	 */
@@ -251,7 +206,7 @@ public class ControlerText {
 		while (true) {
 			Thread.yield();
 			if (p.controlerMask.enter) {
-				return true;
+				return getMask(h).correctWord();
 			}
 		}
 	}
@@ -264,17 +219,13 @@ public class ControlerText {
 
 				Mask m = getFenetreFixe();
 
-				if (m.jtf.getText().equals(getMask(h).motCouvert)) {
+				if (m.correctWord()) {
 					return true;
 				} else {
 					return false;
 				}
 			}
 		}
-	}
-	
-	public void validCurrentHole() {
-		// p.validHole(p.pilot.getCurrentPhraseIndex(), p.currentHole);
 	}
 
 	public void removeAllMasks() {
@@ -357,6 +308,8 @@ public class ControlerText {
 
 	public void replaceMaskByWord(int h) {
 		Mask m = getMask(h);
+		if (m == null)
+			return;
 		String temp = "";
 		int j = 0;
 		for (int i = 0; i < p.editorPane.getText().length(); i++) {
@@ -387,5 +340,5 @@ public class ControlerText {
 		// attendre le temps de pause nécessaire
 		doWait(getCurrentWaitTime(), Constants.CURSOR_LISTEN);
 	}
-
+	
 }

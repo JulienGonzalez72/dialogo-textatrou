@@ -1,16 +1,7 @@
 package main.controler;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.swing.*;
-import javax.swing.text.BadLocationException;
 import main.Constants;
 import main.model.*;
-import main.view.Mask;
 import main.view.Panneau;
 
 public class Pilot {
@@ -22,9 +13,9 @@ public class Pilot {
 	private Panneau p;
 	public ControlerText controler;
 	/**
-	 * Segment actuel
+	 * Trou actuel
 	 */
-	public int phrase;
+	private int hole;
 
 	public Pilot(Panneau p) {
 		this.p = p;
@@ -32,14 +23,14 @@ public class Pilot {
 	}
 
 	/**
-	 * Se place sur le segment de numero n et démarre le lecteur.
+	 * Se place sur le trou de numero h et démarre le lecteur.
 	 */
-	public void goTo(int n) throws IllegalArgumentException {
-		if (n < p.param.premierSegment - 1 || n >= p.textHandler.getPhrasesCount() - 1) {
-			throw new IllegalArgumentException("Numéro de segment invalide : " + n);
+	public void goTo(int h) throws IllegalArgumentException {
+		if (h < 0 || h >= p.textHandler.getHolesCount() - 1) {
+			throw new IllegalArgumentException("Numéro de trou invalide : " + h);
 		}
 
-		phrase = n;
+		hole = h;
 		/// désacive la taille et la police et le segment de départ
 		p.fenetreParam.pan.fontFamilyComboBox.setEnabled(false);
 		p.fenetreParam.pan.fontSizeComboBox.setEnabled(false);
@@ -52,7 +43,13 @@ public class Pilot {
 		if (activeThread != null) {
 			activeThread.doStop();
 		}
-		activeThread = getReaderThread(n);
+		activeThread = getReaderThread(h);
+		activeThread.onHoleEnd.add(new Runnable() {
+			public void run() {
+				hole = activeThread.h;
+				updateBar();
+			}
+		});
 		activeThread.start();
 	}
 	
@@ -61,8 +58,8 @@ public class Pilot {
 	}
 
 	private void updateBar() {
-		p.progressBar.setValue(getCurrentPhraseIndex());
-		p.progressBar.setString((getCurrentPhraseIndex() + 1) + "/" + (p.textHandler.getPhrasesCount() - 1));
+		p.progressBar.setValue(getCurrentHoleIndex());
+		p.progressBar.setString((getCurrentHoleIndex() + 1) + "/" + (p.textHandler.getHolesCount() - 1));
 	}
 
 	/**
@@ -71,13 +68,7 @@ public class Pilot {
 	 * segment du texte.
 	 */
 	public void doNext() {
-
-		try {
-			goTo(p.player.getCurrentPhraseIndex() + 1);
-		} catch (IllegalArgumentException e) {
-			p.afficherCompteRendu();
-		}
-
+		goTo(hole + 1);
 	}
 
 	/**
@@ -85,7 +76,7 @@ public class Pilot {
 	 * premier segment du texte.
 	 */
 	public void doPrevious() {
-		goTo(p.player.getCurrentPhraseIndex() - 1);
+		goTo(hole - 1);
 	}
 
 	/**
@@ -122,7 +113,11 @@ public class Pilot {
 	}
 
 	public int getCurrentPhraseIndex() {
-		return phrase;
+		return p.textHandler.getPhraseOf(hole);
+	}
+	
+	public int getCurrentHoleIndex() {
+		return hole;
 	}
 
 	public boolean isPlaying() {
