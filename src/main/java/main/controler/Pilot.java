@@ -47,6 +47,7 @@ public class Pilot {
 		activeThread = getReaderThread(h);
 		activeThread.onHoleEnd.add(new Runnable() {
 			public void run() {
+				controler.updateHG(hole+1);
 				hole = activeThread.h;
 				p.updateBar(hole);
 			}

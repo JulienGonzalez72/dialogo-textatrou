@@ -3,8 +3,6 @@ package main.controler;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
-import java.util.List;
-import java.util.Map;
 
 import javax.swing.JTextField;
 import javax.swing.text.BadLocationException;
@@ -354,18 +352,22 @@ public class ControlerText {
 	 * Remplace le trou h par le bon mot.
 	 */
 	public void fillHole(int h) {
-		p.textHandler.fillHole(h);
-		p.updateText();
-		p.replaceAllMask();
+		if (p.textHandler.isHidden(h)) {
+			p.textHandler.fillHole(h);
+			p.updateText();
+			p.replaceAllMask();
+		}
 	}
 
 	/**
 	 * Cache le trou h.
 	 */
-	public void hideHole(int h) {
-		p.textHandler.hideHole(h);
-		p.updateText();
-		p.replaceAllMask();
+	public void hideHole(int h) {		
+		if (!p.textHandler.isHidden(h)) {
+			p.textHandler.hideHole(h);
+			p.updateText();
+			p.replaceAllMask();
+		}
 	}
 
 	/**

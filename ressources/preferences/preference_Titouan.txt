@@ -1,9 +1,9 @@
 #Sauvegarde
-#Fri May 25 15:24:58 CEST 2018
+#Fri May 25 15:30:18 CEST 2018
 taillePolice=42
 surlignage=true
 typePolice=Times New Roman Gras
-h=552
+h=530
 tempsAttente=0
 oneHole=true
 y=80
