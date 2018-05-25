@@ -347,7 +347,12 @@ public class Panneau extends JDesktopPane {
 		frame.n = h;
 		fenetreMasque.add(frame);
 
-		Rectangle r = editorPane.modelToView(start).union(editorPane.modelToView(end));
+		System.out.println("start = " + start + ", end = " + end + " du trou " + h);
+		Rectangle r = editorPane.
+				modelToView(start).
+				union(
+						editorPane.
+						modelToView(end));
 
 		frame.setBounds(r.x, r.y, r.width, r.height / 2);
 		add(frame);

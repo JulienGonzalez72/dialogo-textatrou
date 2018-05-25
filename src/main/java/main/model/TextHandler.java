@@ -410,7 +410,11 @@ public class TextHandler {
 	
 	@Override
 	public String toString() {
-		return txt;
+		String str = "";
+		for (int i = 0; i < getPhrasesCount(); i++) {
+			str += phrases.get(i);
+		}
+		return str;
 	}
 	
 }

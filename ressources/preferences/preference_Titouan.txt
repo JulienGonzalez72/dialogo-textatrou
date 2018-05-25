@@ -1,12 +1,12 @@
 #Sauvegarde
-#Fri May 25 14:06:25 CEST 2018
+#Fri May 25 14:42:31 CEST 2018
 taillePolice=42
 typePolice=Times New Roman Gras
-h=515
+h=552
 tempsAttente=0
 oneHole=false
-y=70
-x=423
+y=80
+x=548
 w=1007
-fenetreFixe=true
+fenetreFixe=false
 couleurFond=255/255/150

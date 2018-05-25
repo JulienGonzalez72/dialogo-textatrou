@@ -28,11 +28,11 @@ public class TextPane extends JTextPane {
 
 
 
-	@Override
+	/*@Override
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.YELLOW);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		super.paintComponent(g);
-	}
+	}*/
 
 }
