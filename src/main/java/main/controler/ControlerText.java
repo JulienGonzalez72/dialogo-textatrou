@@ -129,13 +129,13 @@ public class ControlerText {
 	 * Désaffiche au préalable tous les trous.
 	 */
 	public void showHolesInPage(int h) {
-		showHolesInPage(h,getPageOf(h));
+		showHolesInPage(h, getPageOf(h));
 	}
-	
+
 	/**
 	 * 
-	 * Affiche tous les trous correspondant à la page indiqué et à partir du trou indiquée.
-	 * Désaffiche au préalable tous les trous.
+	 * Affiche tous les trous correspondant à la page indiqué et à partir du trou
+	 * indiquée. Désaffiche au préalable tous les trous.
 	 */
 	public void showHolesInPage(int h, int page) {
 		// réinitialisation des trous
@@ -152,16 +152,16 @@ public class ControlerText {
 			}
 		}
 	}
-
+	
 	private void showHole(int h) {
 		/// on cache le trou avant de montrer la fenêtre ///
 		hideHole(h);
 		
 		int startPhrase = p.segmentsEnFonctionDeLaPage.get(getPageOf(h)).get(0);
-		
+
 		int start = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleStartOffset(h));
 		int end = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleEndOffset(h));
-		
+
 		try {
 			p.afficherFrame(start, end, h);
 		} catch (BadLocationException e) {
@@ -216,14 +216,20 @@ public class ControlerText {
 	}
 
 	public boolean waitForFillFenetreFixe(int h) {
+
+		Mask m = getFenetreFixe();
+		
 		while (true) {
+			
+			if(getFenetreFixe() != m) {
+				return true;
+			}
+
 			Thread.yield();
 			if (p.controlerMask.enter) {
 				p.controlerMask.enter = false;
 
-				Mask m = getFenetreFixe();
-
-				if (m.jtf.getText().equals(getMask(h).motCouvert)) {
+				if (m.jtf.getText().equals(m.motCouvert)) {
 					return true;
 				} else {
 					return false;
@@ -252,6 +258,10 @@ public class ControlerText {
 	public void color(int h, Color c) {
 		getMask(h).jtf.setBackground(c);
 	}
+	
+	public Color getColorBackground() {
+		return p.editorPane.getBackground();
+	}
 
 	private Mask getMask(int h) {
 		for (int i = 0; i < p.fenetreMasque.size(); i++) {
@@ -269,7 +279,7 @@ public class ControlerText {
 	 * @param h
 	 * @return
 	 */
-	public Mask activateInputFenetreFixe(int h) {
+	public void activateInputFenetreFixe(int h) {
 
 		Mask frame = new Mask();
 		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
@@ -287,12 +297,14 @@ public class ControlerText {
 
 		frame.add(jtf);
 		frame.jtf = jtf;
+		frame.n = h;
+		frame.motCouvert = p.textHandler.getHidedWord(h);
 		frame.toFront();
 		frame.setVisible(true);
 		jtf.setEnabled(true);
 		jtf.requestFocus();
-
-		return frame;
+		
+		p.fenetreFixe = frame;
 
 	}
 
@@ -302,18 +314,22 @@ public class ControlerText {
 	}
 
 	public void desactiverFenetreFixe() {
-		getFenetreFixe().dispose();
-
+		if (getFenetreFixe() != null) {
+			getFenetreFixe().dispose();
+		}
 	}
 
 	private Mask getFenetreFixe() {
-		return p.getFenetreFixe();
+		return p.fenetreFixe;
 	}
 
 	public void replaceMaskByWord(int h) {
+		
 		Mask m = getMask(h);
-		if (m == null)
+		if (m == null) {
+			fillHole(h);
 			return;
+		}
 		String temp = "";
 		int j = 0;
 		for (int i = 0; i < p.editorPane.getText().length(); i++) {
@@ -326,11 +342,13 @@ public class ControlerText {
 		}
 
 		p.editorPane.setText(temp);
-
+		
+		m.setVisible(false);
+		
 		p.replaceAllMask();
 
 	}
-	
+
 	/**
 	 * Remplace le trou h par le bon mot.
 	 */
@@ -348,14 +366,6 @@ public class ControlerText {
 		p.updateText();
 		p.replaceAllMask();
 	}
-	
-	private boolean isFilled(int h) {
-		int startPhrase = p.segmentsEnFonctionDeLaPage.get(getPageOf(h)).get(0);
-		
-		int start = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleStartOffset(h));
-		
-		return p.editorPane.getText().charAt(start) != '_';
-	}
 
 	/**
 	 * Montre la page du segment i, lis le segment i et attends
@@ -370,6 +380,7 @@ public class ControlerText {
 		// attendre le temps de pause nécessaire
 		doWait(getCurrentWaitTime(), Constants.CURSOR_LISTEN);
 	}
+
 	
 	/**
 	 * Retourne <code>true</code> si le segment n contient au moins un trou.
@@ -377,5 +388,10 @@ public class ControlerText {
 	public boolean hasHole(int n) {
 		return getHolesCount(n) > 0;
 	}
-	
+
+	public void showJustHole(int h) {
+		removeAllMasks();
+		showHole(h);	
+	}
+
 }

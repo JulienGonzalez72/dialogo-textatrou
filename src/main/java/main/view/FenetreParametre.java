@@ -60,6 +60,7 @@ public class FenetreParametre extends JFrame {
 		public JTextField segmentDeDepart;
 		public JButton valider;
 		public JCheckBox fixedField;
+		public JCheckBox oneHole;
 		public JSlider waitSlider;
 		public final Object[] fontFamilies;
 		public FenetreParametre fen;
@@ -151,13 +152,20 @@ public class FenetreParametre extends JFrame {
 			waitSlider.setMajorTickSpacing(50);
 			waitSlider.addChangeListener(controleur);
 
-			JPanel panelSud = new JPanel(new GridLayout(6, 1));
+			JPanel panelSud = new JPanel(new GridLayout(7, 1));
 			fixedField = fastCheckBox("Fenêtre de saisie fixe", controleur);
 			fixedField.setSelected(true);
 
 			JPanel temp = new JPanel();
 			temp.add(fixedField);
 			panelSud.add(temp);
+			
+			oneHole = fastCheckBox("Un trou par un trou ?", controleur);
+			oneHole.setSelected(true);
+			JPanel temp2 = new JPanel();
+			temp2.add(oneHole);
+			panelSud.add(temp2);
+			
 			
 			panelSud.add(new JLabel());
 			panelSud.add(add(attente));
@@ -184,6 +192,7 @@ public class FenetreParametre extends JFrame {
 			appliquerCouleur(param.bgColor, colorComboBox);
 			
 			fixedField.setSelected(param.fixedField);
+			oneHole.setSelected(param.oneHole);
 			
 			waitSlider.setValue(param.tempsPauseEnPourcentageDuTempsDeLecture);
 		}
@@ -290,10 +299,11 @@ public class FenetreParametre extends JFrame {
 		Panneau.defautNBEssaisParSegment = param.mysterCarac;
 		
 		if ( param.fixedField) {
-			fenetre.pan.panelSud.setLayout(new GridLayout(2, 1));
+			fenetre.pan.panelSud.setLayout(new BorderLayout());
 			fenetre.pan.panelFenetreFixe = new JDesktopPane();
+			fenetre.pan.panelFenetreFixe.setPreferredSize(new Dimension(fenetre.getWidth(),param.police.getSize()));
 			fenetre.pan.panelSud.add(fenetre.pan.panelFenetreFixe);
-			fenetre.pan.panelSud.add(fenetre.pan.progressBar);	
+			fenetre.pan.panelSud.add(fenetre.pan.progressBar,BorderLayout.SOUTH);	
 		} else {
 			fenetre.pan.panelSud.setLayout(new GridLayout(1, 1));
 			fenetre.pan.panelSud.add(fenetre.pan.progressBar);	

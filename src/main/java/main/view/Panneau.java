@@ -16,7 +16,7 @@ import main.controler.Pilot;
 import main.Parametres;
 import main.controler.ControlerKey;
 import main.controler.ControlerMask;
-import main.model.LectorFixFrame;
+import main.model.ReaderAllHoleFF;
 import main.model.Player;
 import main.model.TextHandler;
 
@@ -44,8 +44,9 @@ public class Panneau extends JDesktopPane {
 	public FenetreParametre fenetreParam;
 	public List<Mask> fenetreMasque = new ArrayList<>();
 	public Parametres param;
-	public LectorFixFrame lecteur;
+	public ReaderAllHoleFF lecteur;
 	public int numeroCourant = 0;
+	public Mask fenetreFixe;
 	int nbMotsDansLaPage;
 
 	/**
@@ -78,7 +79,7 @@ public class Panneau extends JDesktopPane {
 		this.setLayout(new BorderLayout());
 		editorPane = new TextPane(param);
 		editorPane.setEditable(false);
-		add(editorPane, BorderLayout.CENTER);
+		add(editorPane);
 
 		nbMotsDansLaPage = Panneau.stringOccur(textHandler.txt, " _");
 
@@ -103,7 +104,7 @@ public class Panneau extends JDesktopPane {
 		editorPane.setFont(param.police);
 		pageActuelle = 0;
 		nbEssaisRestantPourLeSegmentCourant = nbEssaisParSegment = param.mysterCarac;
-
+		
 		/// construit la mise en page virtuelle ///
 		rebuildPages();
 
@@ -266,6 +267,7 @@ public class Panneau extends JDesktopPane {
 		String texteAfficher = "";
 		// on recupere les segments a afficher dans la page
 		List<String> liste = new ArrayList<String>();
+		
 		for (Integer i : segmentsEnFonctionDeLaPage.get(pageActuelle)) {
 			liste.add(textHandler.getPhrase(i));
 		}
@@ -455,14 +457,5 @@ public class Panneau extends JDesktopPane {
 		fenetreMasque.clear();
 	}
 
-	public Mask getFenetreFixe() {
-		Mask m = null;
-		for (Component c : panelFenetreFixe.getComponents()) {
-			if (c instanceof Mask) {
-				m = (Mask) c;
-			}
-		}
-		return m;
-	}
 
 }

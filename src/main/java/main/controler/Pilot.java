@@ -54,21 +54,27 @@ public class Pilot {
 	}
 	
 	public ReaderThread getReaderThread(int h) {
-		return p.param.fixedField ? new LectorFixFrame(p.controlerGlobal, h) : new ReaderInside(p.controlerGlobal, h);
+		
+		return p.param.oneHole ? 
+				
+				p.param.fixedField ? new ReaderOneHoleFF(p.controlerGlobal, h) : new ReaderOneHoleUF(p.controlerGlobal, h)
+						
+				:
+					
+				p.param.fixedField ? new ReaderAllHoleFF(p.controlerGlobal, h) : new ReaderAllHoleUF(p.controlerGlobal, h);
 	}
 
 	/**
-	 * Essaye de passer au segment suivant, passe à la page suivante si c'était le
-	 * dernier segment de la page. Affiche le compte rendu si on était au dernier
-	 * segment du texte.
+	 * Essaye de passer au trou suivant, passe à la page suivante si c'était le
+	 * dernier trou de la page. 
 	 */
 	public void doNext() {
 		goTo(hole + 1);
 	}
 
 	/**
-	 * Essaye de passer au segment précédent. Déclenche une erreur si on était au
-	 * premier segment du texte.
+	 * Essaye de passer au trou précédent. Déclenche une erreur si on était au
+	 * premier trou du texte.
 	 */
 	public void doPrevious() {
 		goTo(hole - 1);
