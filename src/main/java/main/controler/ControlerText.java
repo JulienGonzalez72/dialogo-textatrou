@@ -304,8 +304,9 @@ public class ControlerText {
 
 		JTextField jtf = new JTextField();
 		Font f = new Font(p.editorPane.getFont().getFontName(), p.editorPane.getFont().getStyle(),
-				p.editorPane.getFont().getSize() / 2);
+				p.editorPane.getFont().getSize()*7/10);
 		jtf.setFont(f);
+		
 		jtf.setHorizontalAlignment(JTextField.CENTER);
 		jtf.addActionListener(p.controlerMask);
 
@@ -408,9 +409,41 @@ public class ControlerText {
 		return getHolesCount(n) > 0;
 	}
 
+	/**
+	 * Desaffiche tous les trous puis montre uniquement le trou h
+	 */
 	public void showJustHole(int h) {
 		removeAllMasks();
 		showHole(h);	
+	}
+	
+	/**
+	 * Surligne tout depuis le début de la page jusqu'au segment de phrase indiqué.
+	 */
+	public void highlightUntilPhrase(Color c, int n) {
+		p.surlignerJusquaSegment(c, n);
+	}
+
+	/**
+	 * Colorie le segment numero n en couleur c
+	 */
+	public void highlightPhrase(Color c, int n) {
+		if (p.textHandler.getPhrase(n) != null) {
+			int debutRelatifSegment = p.textHandler.getRelativeStartPhrasePosition(p.getNumeroPremierSegmentAffiché(),
+					n);
+			int finRelativeSegment = debutRelatifSegment + p.textHandler.getPhrase(n).length();
+			p.editorPane.surlignerPhrase(debutRelatifSegment, finRelativeSegment, c);
+		}
+	}
+
+	/**
+	 * Supprime le surlignage qui se trouve sur le segment n. Ne fait rien si ce
+	 * segment n'est pas surligné.
+	 */
+	public void removeHighlightPhrase(int n) {
+		int debutRelatifSegment = p.textHandler.getRelativeStartPhrasePosition(p.getNumeroPremierSegmentAffiché(), n);
+		int finRelativeSegment = debutRelatifSegment + p.textHandler.getPhrase(n).length();
+		p.editorPane.removeHighlight(debutRelatifSegment, finRelativeSegment);
 	}
 
 }

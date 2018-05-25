@@ -1,5 +1,6 @@
 package main.controler;
 
+import java.awt.Color;
 import main.Constants;
 import main.model.*;
 import main.view.Panneau;
@@ -37,36 +38,42 @@ public class Pilot {
 		p.fenetreParam.pan.segmentDeDepart.setEnabled(false);
 		/// désactive les boutons de contrôle pour éviter le spam ///
 		p.controlPanel.disableAll(Constants.DISABLE_TIME);
-		
+
 		p.updateBar(hole);
-		
+
 		if (activeThread != null) {
 			activeThread.doStop();
 		}
 		activeThread = getReaderThread(h);
 		activeThread.onHoleEnd.add(new Runnable() {
 			public void run() {
+				//si surlignage activé et que le trou est le dernier du segment on colore le segment
+				if(p.param.surlignage && controler.isLastInPhrase(hole)) {
+					controler.highlightUntilPhrase(Color.GREEN, hole);								
+				}
 				hole = activeThread.h;
 				p.updateBar(hole);
 			}
 		});
 		activeThread.start();
 	}
-	
+
 	public ReaderThread getReaderThread(int h) {
-		
-		return p.param.oneHole ? 
-				
-				p.param.fixedField ? new ReaderOneHoleFF(p.controlerGlobal, h) : new ReaderOneHoleUF(p.controlerGlobal, h)
-						
+
+		return p.param.oneHole ?
+
+				p.param.fixedField ? new ReaderOneHoleFF(p.controlerGlobal, h)
+						: new ReaderOneHoleUF(p.controlerGlobal, h)
+
 				:
-					
-				p.param.fixedField ? new ReaderAllHoleFF(p.controlerGlobal, h) : new ReaderAllHoleUF(p.controlerGlobal, h);
+
+				p.param.fixedField ? new ReaderAllHoleFF(p.controlerGlobal, h)
+						: new ReaderAllHoleUF(p.controlerGlobal, h);
 	}
 
 	/**
 	 * Essaye de passer au trou suivant, passe à la page suivante si c'était le
-	 * dernier trou de la page. 
+	 * dernier trou de la page.
 	 */
 	public void doNext() {
 		goTo(hole + 1);
@@ -98,7 +105,7 @@ public class Pilot {
 	public int getCurrentPhraseIndex() {
 		return p.player.getCurrentPhraseIndex();
 	}
-	
+
 	public int getCurrentHoleIndex() {
 		return hole;
 	}
@@ -110,13 +117,13 @@ public class Pilot {
 	public boolean hasPreviousPhrase() {
 		return p.player.hasPreviousPhrase();
 	}
-	
+
 	public boolean hasPreviousHole() {
 		return hole > 0;
 	}
-	
+
 	public boolean hasNextHole() {
 		return hole < p.textHandler.getHolesCount() - 1;
 	}
-	
+
 }

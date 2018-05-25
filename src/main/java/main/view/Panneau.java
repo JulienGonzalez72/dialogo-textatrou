@@ -466,6 +466,17 @@ public class Panneau extends JDesktopPane {
 		}
 		fenetreMasque.clear();
 	}
+	
+	/**
+	 * Colorie tout jusqu'au segment n en couleur c
+	 */
+	public void surlignerJusquaSegment(Color c, int n) {
+		if (textHandler.getPhrase(n) != null) {
+			int debutRelatifSegment = textHandler.getRelativeStartPhrasePosition(getNumeroPremierSegmentAffiché(), n);
+			int finRelativeSegment = debutRelatifSegment + textHandler.getPhrase(n).length();
+			editorPane.surlignerPhrase(0, finRelativeSegment, param.rightColor);
+		}
+	}
 
 
 }

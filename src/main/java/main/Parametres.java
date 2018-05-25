@@ -19,6 +19,8 @@ public class Parametres {
 	public int tempsPauseEnPourcentageDuTempsDeLecture;
 	public boolean fixedField = true;
 	public int panWidth, panHeight, panX, panY;
+	public boolean surlignage;
+	public Color rightColor = Color.green;
 
 	public Parametres() {
 
@@ -46,6 +48,7 @@ public class Parametres {
 		prop.put("fenetreFixe", String.valueOf(fixedField));
 		//prop.put("premierSegment", String.valueOf(premierSegment));
 		prop.put("oneHole", String.valueOf(oneHole));
+		prop.put("surlignage", String.valueOf(surlignage));
 		String fichier = "./ressources/preferences/preference_" + Constants.NOM_ELEVE + ".txt";
 		OutputStream ops = null;
 		try {
@@ -111,6 +114,7 @@ public class Parametres {
 		//p.premierSegment = Integer.valueOf(pro.getProperty("premierSegment"));
 		p.fixedField = Boolean.valueOf(pro.getProperty("fenetreFixe"));
 		p.oneHole = Boolean.valueOf(pro.getProperty("oneHole"));
+		p.surlignage = Boolean.valueOf(pro.getProperty("surlignage"));
 		
 		return p;
 	}

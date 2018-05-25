@@ -1,7 +1,5 @@
 package main.model;
 
-import java.awt.Color;
-
 import main.Constants;
 import main.controler.ControlerText;
 
@@ -9,8 +7,6 @@ public class ReaderOneHoleFF extends ReaderThread {
 
 	// TODO
 	// travailler par segment
-	// fenetre initialise : visualiser avec le texte initial possible
-	// fenetre a remplir que sur le segment en cours
 	// surlignage possible
 	// ajouter la possibilité de choisir le temps d'apparition du mot en fonction du
 	// nombre de caractères
@@ -51,8 +47,6 @@ public class ReaderOneHoleFF extends ReaderThread {
 
 			// on montre uniquement le trou actuel
 			controler.showJustHole(h);
-			// colorier le trou actuel en bleu
-			controler.color(h, controler.getColorBackground() != Color.cyan ? Color.cyan : Color.YELLOW);
 			// active la fenêtre de saisie avec le trou actuel
 			controler.activateInputFenetreFixe(h);
 

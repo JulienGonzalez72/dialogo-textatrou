@@ -53,6 +53,9 @@ public class ControleurParam implements ActionListener, ChangeListener {
 		if (arg0.getSource() == panneau.oneHole) {
 			param.oneHole = panneau.oneHole.isSelected();
 		}
+		if (arg0.getSource() == panneau.surlignage) {
+			param.surlignage = panneau.surlignage.isSelected();
+		}
 		if (arg0.getSource() == panneau.valider) {
 			panneau.savePreferences();
 			fen.eMenuItem2.setEnabled(true);

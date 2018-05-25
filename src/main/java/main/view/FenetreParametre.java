@@ -61,6 +61,7 @@ public class FenetreParametre extends JFrame {
 		public JButton valider;
 		public JCheckBox fixedField;
 		public JCheckBox oneHole;
+		public JCheckBox surlignage;
 		public JSlider waitSlider;
 		public final Object[] fontFamilies;
 		public FenetreParametre fen;
@@ -131,7 +132,7 @@ public class FenetreParametre extends JFrame {
 			segments.setEnabled(false);
 			segmentDeDepart.addActionListener(controleur);
 
-			JPanel midPanel = new JPanel(new GridLayout(7, 2));
+			JPanel midPanel = new JPanel(new GridLayout(8, 2));
 
 			midPanel.add(police);
 			midPanel.add(taillePolice);
@@ -152,20 +153,33 @@ public class FenetreParametre extends JFrame {
 			waitSlider.setMajorTickSpacing(50);
 			waitSlider.addChangeListener(controleur);
 
-			JPanel panelSud = new JPanel(new GridLayout(7, 1));
 			fixedField = fastCheckBox("Fenêtre de saisie fixe", controleur);
-			fixedField.setSelected(true);
+			fixedField.setSelected(false);
 
 			JPanel temp = new JPanel();
 			temp.add(fixedField);
-			panelSud.add(temp);
+			midPanel.add(temp);
 			
 			oneHole = fastCheckBox("Un trou par un trou ?", controleur);
-			oneHole.setSelected(true);
+			oneHole.setSelected(false);
 			JPanel temp2 = new JPanel();
 			temp2.add(oneHole);
-			panelSud.add(temp2);
+			midPanel.add(temp2);
 			
+			midPanel.add(new JLabel());
+			midPanel.add(new JLabel());
+			
+			surlignage = fastCheckBox("Surlignage", controleur);
+			surlignage.setSelected(false);
+			JPanel temp3 = new JPanel();
+			temp3.add(surlignage);
+			midPanel.add(temp3);
+			
+			
+			
+			JPanel panelSud = new JPanel(new GridLayout(5, 1));
+			
+	
 			
 			panelSud.add(new JLabel());
 			panelSud.add(add(attente));
@@ -193,6 +207,7 @@ public class FenetreParametre extends JFrame {
 			
 			fixedField.setSelected(param.fixedField);
 			oneHole.setSelected(param.oneHole);
+			surlignage.setSelected(param.surlignage);
 			
 			waitSlider.setValue(param.tempsPauseEnPourcentageDuTempsDeLecture);
 		}
