@@ -105,7 +105,6 @@ public class TextHandler {
 		String temp = originText.replace(" /", "/");
 		char[] tab = temp.toCharArray();
 		boolean dansCrochet = false;
-		int tailleTrou = 0;
 		int numeroTrou = 0;
 		
 		for (int i = 0; i < tab.length; i++) {
@@ -113,18 +112,12 @@ public class TextHandler {
 				dansCrochet = true;
 				i++;
 			} else if (tab[i] == ']') {
-				/*for (int j = 0; j < holeLength(tailleTrou); j++) {
-					r += '_';
-				}*/
 				r += holes.get(numeroTrou);
 				dansCrochet = false;
-				tailleTrou = 0;
 				numeroTrou++;
 				i++;
 			}
-			if (dansCrochet) {
-				tailleTrou++;
-			} else {
+			if (!dansCrochet) {
 				r += tab[i];
 			}
 		}
@@ -392,7 +385,6 @@ public class TextHandler {
 		}
 	}
 	
-	
 	public void hideHole(int hole) {
 		Hole h = holes.get(hole);
 		
@@ -406,6 +398,10 @@ public class TextHandler {
 			
 			updateText();
 		}
+	}
+	
+	public boolean isHidden(int hole) {
+		return holes.get(hole).isHidden();
 	}
 	
 	@Override
