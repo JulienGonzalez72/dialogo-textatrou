@@ -25,20 +25,6 @@ public class ControlerText {
 	}
 
 	/**
-	 * Retourne la map des mots en fonction des segments
-	 */
-	public Map<Integer, List<String>> getWordByPhrases() {
-		return p.textHandler.motsParSegment;
-	}
-
-	/**
-	 * Retourne la map des mots en fonction de leur numero
-	 */
-	public Map<Integer, String> getWords() {
-		return p.textHandler.mots;
-	}
-
-	/**
 	 * Retourne true si le trou est le premier de son segment
 	 * 
 	 * @param h
@@ -47,7 +33,7 @@ public class ControlerText {
 	public boolean isFirstInPhrase(int h) {
 		return !p.textHandler.hasPreviousHoleInPhrase(h);
 	}
-	
+
 	public boolean isLastInPhrase(int h) {
 		return !p.textHandler.hasNextHoleInPhrase(h);
 	}
@@ -167,9 +153,10 @@ public class ControlerText {
 		}
 	}
 
-	public void showHole(int h) {
+	private void showHole(int h) {
+		/// on cache le trou avant de montrer la fenêtre ///
+		hideHole(h);
 
-		
 		int startPhrase = p.segmentsEnFonctionDeLaPage.get(getPageOf(h)).get(0);
 
 		int start = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleStartOffset(h));
@@ -180,7 +167,6 @@ public class ControlerText {
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	/**
@@ -232,10 +218,10 @@ public class ControlerText {
 	public boolean waitForFillFenetreFixe(int h) {
 
 		Mask m = getFenetreFixe();
-		
+
 		while (true) {
-			
-			if(getFenetreFixe() != m) {
+
+			if (getFenetreFixe() != m) {
 				return true;
 			}
 
@@ -272,7 +258,7 @@ public class ControlerText {
 	public void color(int h, Color c) {
 		getMask(h).jtf.setBackground(c);
 	}
-	
+
 	public Color getColorBackground() {
 		return p.editorPane.getBackground();
 	}
@@ -304,9 +290,9 @@ public class ControlerText {
 
 		JTextField jtf = new JTextField();
 		Font f = new Font(p.editorPane.getFont().getFontName(), p.editorPane.getFont().getStyle(),
-				p.editorPane.getFont().getSize()*7/10);
+				p.editorPane.getFont().getSize() * 7 / 10);
 		jtf.setFont(f);
-		
+
 		jtf.setHorizontalAlignment(JTextField.CENTER);
 		jtf.addActionListener(p.controlerMask);
 
@@ -318,7 +304,7 @@ public class ControlerText {
 		frame.setVisible(true);
 		jtf.setEnabled(true);
 		jtf.requestFocus();
-		
+
 		p.fenetreFixe = frame;
 
 	}
@@ -339,7 +325,7 @@ public class ControlerText {
 	}
 
 	public void replaceMaskByWord(int h) {
-		
+
 		Mask m = getMask(h);
 		if (m == null) {
 			fillHole(h);
@@ -357,9 +343,9 @@ public class ControlerText {
 		}
 
 		p.editorPane.setText(temp);
-		
+
 		m.setVisible(false);
-		
+
 		p.replaceAllMask();
 
 	}
@@ -368,22 +354,17 @@ public class ControlerText {
 	 * Remplace le trou h par le bon mot.
 	 */
 	public void fillHole(int h) {
-		int startPhrase = p.segmentsEnFonctionDeLaPage.get(getPageOf(h)).get(0);
+		p.textHandler.fillHole(h);
+		p.updateText();
+		p.replaceAllMask();
+	}
 
-		int start = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleStartOffset(h));
-		int end = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleEndOffset(h));
-
-		String temp = "";
-		for (int i = 0; i < p.editorPane.getText().length(); i++) {
-			if (i == start) {
-				temp += p.textHandler.getHidedWord(h);
-			} else if (i < start || i >= end) {
-				temp += p.editorPane.getText().charAt(i);
-			}
-		}
-
-		p.editorPane.setText(temp);
-
+	/**
+	 * Cache le trou h.
+	 */
+	public void hideHole(int h) {
+		p.textHandler.hideHole(h);
+		p.updateText();
 		p.replaceAllMask();
 	}
 
@@ -401,7 +382,6 @@ public class ControlerText {
 		doWait(getCurrentWaitTime(), Constants.CURSOR_LISTEN);
 	}
 
-	
 	/**
 	 * Retourne <code>true</code> si le segment n contient au moins un trou.
 	 */
@@ -414,9 +394,9 @@ public class ControlerText {
 	 */
 	public void showJustHole(int h) {
 		removeAllMasks();
-		showHole(h);	
+		showHole(h);
 	}
-	
+
 	/**
 	 * Surligne tout depuis le début de la page jusqu'au segment de phrase indiqué.
 	 */
@@ -444,6 +424,10 @@ public class ControlerText {
 		int debutRelatifSegment = p.textHandler.getRelativeStartPhrasePosition(p.getNumeroPremierSegmentAffiché(), n);
 		int finRelativeSegment = debutRelatifSegment + p.textHandler.getPhrase(n).length();
 		p.editorPane.removeHighlight(debutRelatifSegment, finRelativeSegment);
+	}
+
+	public void updateHG(int h) {
+		p.updateHG(h);
 	}
 
 }

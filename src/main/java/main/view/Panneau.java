@@ -104,7 +104,7 @@ public class Panneau extends JDesktopPane {
 		editorPane.setFont(param.police);
 		pageActuelle = 0;
 		nbEssaisRestantPourLeSegmentCourant = nbEssaisParSegment = param.mysterCarac;
-		
+
 		/// construit la mise en page virtuelle ///
 		rebuildPages();
 
@@ -207,15 +207,16 @@ public class Panneau extends JDesktopPane {
 				e.printStackTrace();
 			} catch (NullPointerException e) {
 			}
-			int off = textHandler.getAbsoluteOffset(lastPhrase,
-					editorPane.viewToModel(new Point((int) (editorPane.getWidth() - Constants.TEXTPANE_MARGING),
-							(int) (editorPane.getHeight() - h -( param.fixedField ? panelFenetreFixe.getHeight() : 0)))));
+			int off = textHandler.getAbsoluteOffset(lastPhrase, editorPane.viewToModel(new Point(
+					(int) (editorPane.getWidth() - Constants.TEXTPANE_MARGING),
+					(int) (editorPane.getHeight() - h - (param.fixedField ? panelFenetreFixe.getHeight() : 0)))));
 			for (int i = lastOffset; i < off; i++) {
 				int phraseIndex = textHandler.getPhraseIndex(i);
 				if (phraseIndex == -1) {
 					lastOffset = textHandler.getShowText().length();
 				}
-				if (!phrases.contains(phraseIndex) && phraseIndex > lastPhrase && phraseIndex != textHandler.getPhraseIndex(off)) {
+				if (!phrases.contains(phraseIndex) && phraseIndex > lastPhrase
+						&& phraseIndex != textHandler.getPhraseIndex(off)) {
 					lastPhrase = phraseIndex;
 					phrases.add(phraseIndex);
 					lastOffset = i;
@@ -253,17 +254,25 @@ public class Panneau extends JDesktopPane {
 		pageActuelle = page;
 		// mise a jour du titre de la fenêtre
 		fenetre.setTitle("Lexidia - Texte à Trou - Page " + page);
+		updateText();
+	}
+
+	public void updateText() {
 		String texteAfficher = "";
 		// on recupere les segments a afficher dans la page
 		List<String> liste = new ArrayList<String>();
-		
+
 		for (Integer i : segmentsEnFonctionDeLaPage.get(pageActuelle)) {
 			liste.add(textHandler.getPhrase(i));
 		}
 		for (String string : liste) {
 			texteAfficher += string;
 		}
-		editorPane.setText(texteAfficher.replaceAll("_", param.mysterCarac + ""));
+		editorPane.setText(texteAfficher);
+
+		if (editorPane.lastPhraseToHG != -1) {
+			controlerGlobal.highlightUntilPhrase(param.rightColor, editorPane.lastPhraseToHG);
+		}
 	}
 
 	public boolean pageFinis() {
@@ -331,7 +340,7 @@ public class Panneau extends JDesktopPane {
 		frame.add(jtf);
 
 		frame.setVisible(true);
-		frame.motCouvert = textHandler.mots.get(h);
+		frame.motCouvert = textHandler.getHidedWord(h);
 		frame.page = controlerGlobal.getPageOf(h);
 		frame.n = h;
 		fenetreMasque.add(frame);
@@ -347,27 +356,6 @@ public class Panneau extends JDesktopPane {
 			}
 		}
 
-	}
-
-	public boolean changementSegment() {
-
-		int segmentMotPrecedent = -1;
-		for (int i = 0; i < textHandler.motsParSegment.size(); i++) {
-			if (textHandler.motsParSegment.get(i).contains(textHandler.mots.get(numeroCourant - 1))) {
-				segmentMotPrecedent = i;
-				break;
-			}
-		}
-
-		int segmentMotActuel = -1;
-		for (int i = 0; i < textHandler.motsParSegment.size(); i++) {
-			if (textHandler.motsParSegment.get(i).contains(textHandler.mots.get(numeroCourant))) {
-				segmentMotActuel = i;
-				break;
-			}
-		}
-
-		return segmentMotPrecedent != segmentMotActuel;
 	}
 
 	public void blink() {
@@ -466,7 +454,7 @@ public class Panneau extends JDesktopPane {
 		}
 		fenetreMasque.clear();
 	}
-	
+
 	/**
 	 * Colorie tout jusqu'au segment n en couleur c
 	 */
@@ -478,5 +466,12 @@ public class Panneau extends JDesktopPane {
 		}
 	}
 
+	public void updateHG(int h) {
+		int n = controlerGlobal.getPhraseOf(h);
+		if (param.surlignage) {
+			editorPane.lastPhraseToHG = n - 1;
+		}
+
+	}
 
 }

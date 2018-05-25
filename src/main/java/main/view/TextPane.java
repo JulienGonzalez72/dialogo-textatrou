@@ -21,6 +21,8 @@ public class TextPane extends JTextPane {
 
 	public String textReel;
 
+	public int lastPhraseToHG = -1;
+
 	public TextPane(Parametres param) {
 		this.param = param;
 
@@ -95,17 +97,6 @@ public class TextPane extends JTextPane {
 		return (float) (1f + fm.getHeight() / getTextBounds("|").getHeight());
 	}
 
-	public void updateColors() throws BadLocationException {
-		List<Object> newGreen = new ArrayList<>();
-		for (Object object : greenHighlightTags) {
-			Highlight g = (Highlight) object;
-			object = getHighlighter().addHighlight(g.getStartOffset(), g.getEndOffset(),
-					new DefaultHighlighter.DefaultHighlightPainter(param.rightColor));
-			newGreen.add(object);
-		}
-		enleverSurlignageVert();
-		greenHighlightTags = newGreen;
-	}
 
 	@Override
 	public void paintComponent(Graphics g) {

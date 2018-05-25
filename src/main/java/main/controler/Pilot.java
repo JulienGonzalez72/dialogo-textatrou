@@ -47,10 +47,6 @@ public class Pilot {
 		activeThread = getReaderThread(h);
 		activeThread.onHoleEnd.add(new Runnable() {
 			public void run() {
-				//si surlignage activé et que le trou est le dernier du segment on colore le segment
-				if(p.param.surlignage && controler.isLastInPhrase(hole)) {
-					controler.highlightUntilPhrase(Color.GREEN, controler.getPhraseOf(hole));								
-				}
 				hole = activeThread.h;
 				p.updateBar(hole);
 			}
