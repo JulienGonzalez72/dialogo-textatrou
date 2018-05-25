@@ -47,15 +47,6 @@ public class ControleurParam implements ActionListener, ChangeListener {
 				fen.fenetre.pan.rebuildPages();
 			}
 		}
-		if (arg0.getSource() == panneau.fixedField) {
-			param.fixedField = panneau.fixedField.isSelected();
-		}
-		if (arg0.getSource() == panneau.oneHole) {
-			param.oneHole = panneau.oneHole.isSelected();
-		}
-		if (arg0.getSource() == panneau.surlignage) {
-			param.surlignage = panneau.surlignage.isSelected();
-		}
 		if (arg0.getSource() == panneau.valider) {
 			panneau.savePreferences();
 			fen.eMenuItem2.setEnabled(true);
@@ -146,7 +137,8 @@ public class ControleurParam implements ActionListener, ChangeListener {
 		boolean r = true;
 		List<Color> couleursUtilisées = new ArrayList<Color>();
 		couleursUtilisées.add(param.bgColor);
-		if (occurence(param.bgColor, couleursUtilisées) != 1) {
+		couleursUtilisées.add(param.rightColor);
+		if (occurence(param.bgColor, couleursUtilisées) != 1 || occurence(param.rightColor,couleursUtilisées) != 1) {
 			r = false;
 		}
 		return r;

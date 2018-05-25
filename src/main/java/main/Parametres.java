@@ -44,6 +44,7 @@ public class Parametres {
 		prop.put("taillePolice", String.valueOf(police.getSize()));
 		prop.put("typePolice", police.getFontName());
 		prop.put("couleurFond", fromColorToString(bgColor));
+		prop.put("couleurJuste", fromColorToString(rightColor));
 		prop.put("tempsAttente", String.valueOf(tempsPauseEnPourcentageDuTempsDeLecture));
 		prop.put("fenetreFixe", String.valueOf(fixedField));
 		//prop.put("premierSegment", String.valueOf(premierSegment));
@@ -106,6 +107,7 @@ public class Parametres {
 		}
 		p.police = ControleurParam.getFont(police, index, Font.BOLD, taillePolice);
 		p.bgColor = fromStringToColor(pro.getProperty("couleurFond"));
+		p.rightColor = fromStringToColor(pro.getProperty("couleurJuste"));
 		p.tempsPauseEnPourcentageDuTempsDeLecture = Integer.valueOf(pro.getProperty("tempsAttente"));
 		p.panX = Integer.valueOf(pro.getProperty("x"));
 		p.panY = Integer.valueOf(pro.getProperty("y"));

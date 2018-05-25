@@ -1,5 +1,6 @@
 #Sauvegarde
-#Fri May 25 15:30:18 CEST 2018
+#Fri May 25 16:09:23 CEST 2018
+couleurJuste=0/255/0
 taillePolice=42
 surlignage=true
 typePolice=Times New Roman Gras
@@ -9,5 +10,5 @@ oneHole=true
 y=80
 x=548
 w=1007
-fenetreFixe=false
+fenetreFixe=true
 couleurFond=255/255/150

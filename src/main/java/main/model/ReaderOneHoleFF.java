@@ -7,11 +7,9 @@ public class ReaderOneHoleFF extends ReaderThread {
 
 	// TODO
 	// travailler par segment
-	// surlignage possible
 	// ajouter la possibilité de choisir le temps d'apparition du mot en fonction du
 	// nombre de caractères
-	// flash = 15 ms*caractère, 40,80,600, illimité = jusqu'à la saisie du premier
-	// caractère
+	// flash = 15 ms*caractère, 40,80,600, illimité = jusqu'à la saisie du premier caractère
 
 	public Object lock = new Object();
 

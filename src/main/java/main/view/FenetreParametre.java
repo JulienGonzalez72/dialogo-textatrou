@@ -56,7 +56,8 @@ public class FenetreParametre extends JFrame {
 
 		public JComboBox<Object> fontFamilyComboBox;
 		public JComboBox<Integer> fontSizeComboBox;
-		public ColorComboBox colorComboBox;
+		public ColorComboBox bgColorComboBox;
+		public ColorComboBox rightColorComboBox;
 		public JTextField segmentDeDepart;
 		public JButton valider;
 		public JCheckBox fixedField;
@@ -75,9 +76,10 @@ public class FenetreParametre extends JFrame {
 
 			valider = fastButton("Valider les parametres", new Font("OpenDyslexic", Font.BOLD, 18), Color.green);
 			JLabel police = fastLabel("Police : ");
+			JLabel couleurSurlignage = fastLabel("Couleur de surlignage : ");
 			JLabel taillePolice = fastLabel("Taille de la police : ");
 			JLabel couleurDeFond = fastLabel("Couleur de fond : ");
-			JLabel segments = fastLabel("Segment de départ ");
+			JLabel segments = fastLabel("Segment de départ : ");
 			JLabel attente = fastLabel("Temps d'attente en % du temps de lecture");
 
 			fontFamilies = new Object[] { "OpenDyslexic", "Andika", "Lexia", "Arial", "Times New Roman" };
@@ -97,8 +99,8 @@ public class FenetreParametre extends JFrame {
 					return renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				}
 			});
-			fontFamilyComboBox.setFont(ControleurParam.getFont((String) fontFamilyComboBox.getSelectedItem(), 0, Font.BOLD,
-					Constants.DEFAULT_FONT_SIZE));
+			fontFamilyComboBox.setFont(ControleurParam.getFont((String) fontFamilyComboBox.getSelectedItem(), 0,
+					Font.BOLD, Constants.DEFAULT_FONT_SIZE));
 			fontFamilyComboBox.addActionListener(controleur);
 
 			fontSizeComboBox = new JComboBox<Integer>(Constants.FONT_SIZES);
@@ -115,8 +117,8 @@ public class FenetreParametre extends JFrame {
 			fontSizeComboBox.addActionListener(controleur);
 			fontSizeComboBox.setFont(new Font("OpenDyslexic", Font.PLAIN, 15));
 
-			colorComboBox = new ColorComboBox(Constants.COLORS, true);
-			colorComboBox.colorListener = new ColorComboBox.ColorChangeListener() {
+			bgColorComboBox = new ColorComboBox(Constants.COLORS, true);
+			bgColorComboBox.colorListener = new ColorComboBox.ColorChangeListener() {
 				@Override
 				public void colorChanged(Color newColor) {
 					if (fenetre != null && fenetre.pan.editorPane != null) {
@@ -125,23 +127,60 @@ public class FenetreParametre extends JFrame {
 					grabFocus();
 				}
 			};
+			
+			rightColorComboBox = new ColorComboBox(Constants.COLORS, true);
+			rightColorComboBox.colorListener = new ColorComboBox.ColorChangeListener() {
+				@Override
+				public void colorChanged(Color newColor) {
+					if (fenetre != null && fenetre.pan.editorPane != null) {
+						param.rightColor = rightColorComboBox.getBackground();
+						fenetre.pan.updateHG(fenetre.pan.pilot.getCurrentHoleIndex());
+					}
+					grabFocus();
+				}
+			};
 
-			segmentDeDepart = fastTextField("1",
-					new Font("OpenDyslexic", Font.PLAIN, 15), "1");
+		
+
+			segmentDeDepart = fastTextField("1", new Font("OpenDyslexic", Font.PLAIN, 15), "1");
 			segmentDeDepart.setEnabled(false);
 			segments.setEnabled(false);
 			segmentDeDepart.addActionListener(controleur);
 
-			JPanel midPanel = new JPanel(new GridLayout(8, 2));
+			JPanel midPanel = new JPanel(new GridLayout(1, 2));
+			JPanel midRightPanel = new JPanel(new GridLayout(7, 1));
+			JPanel midLeftPanel = new JPanel(new GridLayout(7, 1));
+			midPanel.add(midRightPanel);
+			midPanel.add(midLeftPanel);
 
-			midPanel.add(police);
-			midPanel.add(taillePolice);
-			fastCentering(fontFamilyComboBox, midPanel, "   ");
-			fastCentering(fontSizeComboBox, midPanel, "   ");
-			midPanel.add(couleurDeFond);
-			midPanel.add(segments);
-			fastCentering(colorComboBox, midPanel, "   ");
-			fastCentering(segmentDeDepart, midPanel, "   ");
+			// MID RIGHT
+			midRightPanel.add(police);
+			fastCentering(fontFamilyComboBox, midRightPanel, "   ");
+			midRightPanel.add(taillePolice);
+			fastCentering(fontSizeComboBox, midRightPanel, "   ");
+			midRightPanel.add(couleurSurlignage);
+			fastCentering(rightColorComboBox, midRightPanel, "   ");
+			surlignage = fastCheckBox("Surlignage", controleur);
+			surlignage.setSelected(false);
+			JPanel temp3 = new JPanel();
+			temp3.add(surlignage);
+			midRightPanel.add(temp3);
+
+			// MID LEFT
+			midLeftPanel.add(couleurDeFond);
+			fastCentering(bgColorComboBox, midLeftPanel, "   ");
+			midLeftPanel.add(segments);
+			fastCentering(segmentDeDepart, midLeftPanel, "   ");
+			oneHole = fastCheckBox("Un trou par un trou ?", controleur);
+			oneHole.setSelected(false);
+			JPanel temp2 = new JPanel();
+			temp2.add(oneHole);
+			midLeftPanel.add(temp2);
+			fixedField = fastCheckBox("Fenêtre de saisie fixe", controleur);
+			fixedField.setSelected(false);
+			JPanel temp = new JPanel();
+			temp.add(fixedField);
+			midLeftPanel.add(temp);
 
 			waitSlider = new JSlider();
 			waitSlider.setMaximum(Constants.MAX_WAIT_TIME_PERCENT);
@@ -153,34 +192,8 @@ public class FenetreParametre extends JFrame {
 			waitSlider.setMajorTickSpacing(50);
 			waitSlider.addChangeListener(controleur);
 
-			fixedField = fastCheckBox("Fenêtre de saisie fixe", controleur);
-			fixedField.setSelected(false);
-
-			JPanel temp = new JPanel();
-			temp.add(fixedField);
-			midPanel.add(temp);
-			
-			oneHole = fastCheckBox("Un trou par un trou ?", controleur);
-			oneHole.setSelected(false);
-			JPanel temp2 = new JPanel();
-			temp2.add(oneHole);
-			midPanel.add(temp2);
-			
-			midPanel.add(new JLabel());
-			midPanel.add(new JLabel());
-			
-			surlignage = fastCheckBox("Surlignage", controleur);
-			surlignage.setSelected(false);
-			JPanel temp3 = new JPanel();
-			temp3.add(surlignage);
-			midPanel.add(temp3);
-			
-			
-			
 			JPanel panelSud = new JPanel(new GridLayout(5, 1));
-			
-	
-			
+
 			panelSud.add(new JLabel());
 			panelSud.add(add(attente));
 			panelSud.add(waitSlider);
@@ -189,40 +202,46 @@ public class FenetreParametre extends JFrame {
 
 			add(midPanel, BorderLayout.CENTER);
 			add(panelSud, BorderLayout.SOUTH);
-			
+
 			applyPreferences();
 		}
-		
+
 		/**
-		 * Applique les préférences chargées aux pré-sélections de la fenêtre de paramètres
-		 * et à la fenêtre principale si elle existe.
+		 * Applique les préférences chargées aux pré-sélections de la fenêtre de
+		 * paramètres et à la fenêtre principale si elle existe.
 		 */
 		public void applyPreferences() {
 			fontSizeComboBox.setSelectedItem(param.police.getSize());
 			fontFamilyComboBox.setSelectedItem(getCorrectFontName(param.police.getFontName()));
-			
+
 			segmentDeDepart.setText("1");
-			
-			appliquerCouleur(param.bgColor, colorComboBox);
-			
+
+			appliquerCouleur(param.bgColor, bgColorComboBox);
+			appliquerCouleur(param.rightColor, rightColorComboBox);
+
 			fixedField.setSelected(param.fixedField);
 			oneHole.setSelected(param.oneHole);
 			surlignage.setSelected(param.surlignage);
-			
+
 			waitSlider.setValue(param.tempsPauseEnPourcentageDuTempsDeLecture);
 		}
-		
+
 		/**
 		 * Enregistre les préférences en fonction de la sélection de l'utilisateur.
 		 */
-		public void savePreferences() {
-			param.bgColor = colorComboBox.getBackground();
+		public void savePreferences() {	
+			param.fixedField = fixedField.isSelected();
+			param.oneHole = oneHole.isSelected();
+			param.surlignage = surlignage.isSelected();
+			param.rightColor = rightColorComboBox.getBackground();
+			param.bgColor = bgColorComboBox.getBackground();
 			param.police = param.police.deriveFont(Float.valueOf((Integer) fontSizeComboBox.getSelectedItem()));
-			param.police = ControleurParam.getFont((String) fontFamilyComboBox.getSelectedItem(), fontFamilyComboBox.getSelectedIndex(), Font.BOLD,
-					(Integer) fontSizeComboBox.getSelectedItem());
+			param.police = ControleurParam.getFont((String) fontFamilyComboBox.getSelectedItem(),
+					fontFamilyComboBox.getSelectedIndex(), Font.BOLD, (Integer) fontSizeComboBox.getSelectedItem());
 			try {
 				param.premierSegment = Integer.parseInt(segmentDeDepart.getText());
-			} catch (NumberFormatException e) {}
+			} catch (NumberFormatException e) {
+			}
 			param.tempsPauseEnPourcentageDuTempsDeLecture = waitSlider.getValue();
 		}
 
@@ -309,24 +328,24 @@ public class FenetreParametre extends JFrame {
 	}
 
 	public void lancerExercice() {
-		
+
 		Panneau.premierSegment = param.premierSegment;
 		Panneau.defautNBEssaisParSegment = param.mysterCarac;
-		
-		if ( param.fixedField) {
+
+		if (param.fixedField) {
 			fenetre.pan.panelSud.setLayout(new BorderLayout());
 			fenetre.pan.panelFenetreFixe = new JDesktopPane();
-			fenetre.pan.panelFenetreFixe.setPreferredSize(new Dimension(fenetre.getWidth(),param.police.getSize()));
+			fenetre.pan.panelFenetreFixe.setPreferredSize(new Dimension(fenetre.getWidth(), param.police.getSize()));
 			fenetre.pan.panelSud.add(fenetre.pan.panelFenetreFixe);
-			fenetre.pan.panelSud.add(fenetre.pan.progressBar,BorderLayout.SOUTH);	
+			fenetre.pan.panelSud.add(fenetre.pan.progressBar, BorderLayout.SOUTH);
 		} else {
 			fenetre.pan.panelSud.setLayout(new GridLayout(1, 1));
-			fenetre.pan.panelSud.add(fenetre.pan.progressBar);	
+			fenetre.pan.panelSud.add(fenetre.pan.progressBar);
 		}
-		
+
 		fenetre.pan.add(fenetre.pan.panelSud, BorderLayout.SOUTH);
 		fenetre.start();
-		
+
 	}
 
 	public JMenuItem eMenuItem2;
@@ -369,11 +388,11 @@ public class FenetreParametre extends JFrame {
 		controlPanel.disableAll();
 		fenetre.pan.pilot.doStop();
 	}
-	
+
 	public static Color stringToColor(String name) {
 		return Constants.COLORS.get(name);
 	}
-	
+
 	public static String colorToString(Color color) {
 		Set<String> keys = Constants.COLORS.keySet();
 		Iterator<String> it = keys.iterator();
@@ -385,13 +404,13 @@ public class FenetreParametre extends JFrame {
 		}
 		return null;
 	}
-	
+
 	public static String[] getColorNames() {
 		return Constants.COLORS.keySet().toArray(new String[0]);
 	}
-	
+
 	public static String getCorrectFontName(String font) {
-		String[] deletions = {" Bold", " Basic", " Gras", " Italic"};
+		String[] deletions = { " Bold", " Basic", " Gras", " Italic" };
 		for (int i = 0; i < deletions.length; i++) {
 			font = font.replaceAll(deletions[i], "");
 		}
