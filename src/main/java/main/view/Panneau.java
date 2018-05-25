@@ -76,7 +76,7 @@ public class Panneau extends JDesktopPane {
 			fenetreParam.pan.fixedField.setEnabled(false);
 		}
 
-		this.setLayout(null);
+		this.setLayout(new BorderLayout());
 		editorPane = new TextPane(param);
 		editorPane.setEditable(false);
 		add(editorPane);
@@ -84,7 +84,6 @@ public class Panneau extends JDesktopPane {
 		nbMotsDansLaPage = Panneau.stringOccur(textHandler.txt, " _");
 
 		panelSud = new JPanel();
-
 
 		progressBar = new JProgressBar(0, (textHandler.getHolesCount()));
 		progressBar.setStringPainted(true);
@@ -103,8 +102,6 @@ public class Panneau extends JDesktopPane {
 		updateBar(param.premierSegment);
 		editorPane.setBackground(param.bgColor);
 		editorPane.setFont(param.police);
-		editorPane.setBounds(0, 0, fenetre.getWidth(), fenetre.getHeight()*8/10);
-		panelSud.setBounds(0,fenetre.getHeight()*8/10,fenetre.getWidth(),2*fenetre.getHeight()/10);
 		pageActuelle = 0;
 		nbEssaisRestantPourLeSegmentCourant = nbEssaisParSegment = param.mysterCarac;
 
@@ -259,6 +256,7 @@ public class Panneau extends JDesktopPane {
 		String texteAfficher = "";
 		// on recupere les segments a afficher dans la page
 		List<String> liste = new ArrayList<String>();
+		
 		for (Integer i : segmentsEnFonctionDeLaPage.get(pageActuelle)) {
 			liste.add(textHandler.getPhrase(i));
 		}

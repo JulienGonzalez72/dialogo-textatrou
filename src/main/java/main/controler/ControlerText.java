@@ -167,7 +167,7 @@ public class ControlerText {
 		}
 	}
 
-	private void showHole(int h) {
+	public void showHole(int h) {
 
 		
 		int startPhrase = p.segmentsEnFonctionDeLaPage.get(getPageOf(h)).get(0);
@@ -338,6 +338,7 @@ public class ControlerText {
 	}
 
 	public void replaceMaskByWord(int h) {
+		
 		Mask m = getMask(h);
 		if (m == null) {
 			fillHole(h);
@@ -355,7 +356,9 @@ public class ControlerText {
 		}
 
 		p.editorPane.setText(temp);
-
+		
+		m.setVisible(false);
+		
 		p.replaceAllMask();
 
 	}
@@ -403,6 +406,11 @@ public class ControlerText {
 	 */
 	public boolean hasHole(int n) {
 		return getHolesCount(n) > 0;
+	}
+
+	public void showJustHole(int h) {
+		removeAllMasks();
+		showHole(h);	
 	}
 
 }

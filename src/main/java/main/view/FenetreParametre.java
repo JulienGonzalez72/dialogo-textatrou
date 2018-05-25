@@ -292,8 +292,8 @@ public class FenetreParametre extends JFrame {
 		if ( param.fixedField) {
 			fenetre.pan.panelSud.setLayout(new GridLayout(2, 1));
 			fenetre.pan.panelFenetreFixe = new JDesktopPane();
-			fenetre.pan.panelSud.add(fenetre.pan.panelFenetreFixe);
-			fenetre.pan.panelSud.add(fenetre.pan.progressBar);	
+			fenetre.pan.panelSud.add(fenetre.pan.panelFenetreFixe,BorderLayout.CENTER);
+			fenetre.pan.panelSud.add(fenetre.pan.progressBar,BorderLayout.SOUTH);	
 		} else {
 			fenetre.pan.panelSud.setLayout(new GridLayout(1, 1));
 			fenetre.pan.panelSud.add(fenetre.pan.progressBar);	
