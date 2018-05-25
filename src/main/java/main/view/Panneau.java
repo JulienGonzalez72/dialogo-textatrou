@@ -16,7 +16,7 @@ import main.controler.Pilot;
 import main.Parametres;
 import main.controler.ControlerKey;
 import main.controler.ControlerMask;
-import main.model.LectorFixFrame;
+import main.model.ReaderAllHoleFF;
 import main.model.Player;
 import main.model.TextHandler;
 
@@ -44,7 +44,7 @@ public class Panneau extends JDesktopPane {
 	public FenetreParametre fenetreParam;
 	public List<Mask> fenetreMasque = new ArrayList<>();
 	public Parametres param;
-	public LectorFixFrame lecteur;
+	public ReaderAllHoleFF lecteur;
 	public int numeroCourant = 0;
 	public Mask fenetreFixe;
 	int nbMotsDansLaPage;
@@ -104,7 +104,7 @@ public class Panneau extends JDesktopPane {
 		editorPane.setFont(param.police);
 		pageActuelle = 0;
 		nbEssaisRestantPourLeSegmentCourant = nbEssaisParSegment = param.mysterCarac;
-
+		
 		/// construit la mise en page virtuelle ///
 		rebuildPages();
 

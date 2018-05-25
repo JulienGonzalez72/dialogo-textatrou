@@ -8,6 +8,7 @@ import main.view.Fenetre;
 
 public class Parametres {
 
+	public boolean oneHole = false;
 	public Font police = ControleurParam.getFont(null, 0, Font.BOLD, Constants.DEFAULT_FONT_SIZE);
 	public Color bgColor = Constants.BG_COLOR;
 	public String titre;
@@ -43,7 +44,8 @@ public class Parametres {
 		prop.put("couleurFond", fromColorToString(bgColor));
 		prop.put("tempsAttente", String.valueOf(tempsPauseEnPourcentageDuTempsDeLecture));
 		prop.put("fenetreFixe", String.valueOf(fixedField));
-		prop.put("premierSegment", String.valueOf(premierSegment));
+		//prop.put("premierSegment", String.valueOf(premierSegment));
+		prop.put("oneHole", String.valueOf(oneHole));
 		String fichier = "./ressources/preferences/preference_" + Constants.NOM_ELEVE + ".txt";
 		OutputStream ops = null;
 		try {
@@ -108,6 +110,7 @@ public class Parametres {
 		p.panHeight = Integer.valueOf(pro.getProperty("h"));
 		//p.premierSegment = Integer.valueOf(pro.getProperty("premierSegment"));
 		p.fixedField = Boolean.valueOf(pro.getProperty("fenetreFixe"));
+		p.oneHole = Boolean.valueOf(pro.getProperty("oneHole"));
 		
 		return p;
 	}

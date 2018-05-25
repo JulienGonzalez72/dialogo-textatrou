@@ -54,7 +54,14 @@ public class Pilot {
 	}
 	
 	public ReaderThread getReaderThread(int h) {
-		return p.param.fixedField ? new LectorFixFrame(p.controlerGlobal, h) : new ReaderInside(p.controlerGlobal, h);
+		
+		return p.param.oneHole ? 
+				
+				p.param.fixedField ? new ReaderOneHoleFF(p.controlerGlobal, h) : new ReaderOneHoleUF(p.controlerGlobal, h)
+						
+				:
+					
+				p.param.fixedField ? new ReaderAllHoleFF(p.controlerGlobal, h) : new ReaderAllHoleUF(p.controlerGlobal, h);
 	}
 
 	/**

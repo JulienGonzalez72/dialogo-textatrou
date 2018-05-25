@@ -2,25 +2,27 @@ package main.model;
 
 import main.controler.ControlerText;
 
-public class ReaderInside extends ReaderThread {
+public class ReaderOneHoleUF extends ReaderThread {
 	
-	public ReaderInside(ControlerText controler, int h) {
+	public ReaderOneHoleUF(ControlerText controler, int h) {
 		super(controler, h);
 	}
 	
 	public void run() {
+		
+		
 		while (h < controler.getHolesCount() - 1 && !needToDead) {
-			/// affiche la page orrespondante ///
+			/// affiche la page correspondante ///
 			int page = controler.getPageOf(h);
 			controler.showPage(page);
-			/// valide tous les trous de la page avant le trou actuel ///
-			for (int i = 0; i < h; i++) {
+			/// remplace tous les trous de la page///
+			for (int i = 0; i < controler.getPhrasesCount(); i++) {
 				if (controler.getPageOf(i) == page) {
 					controler.fillHole(i);
 				}
 			}
-			/// affiche tous les trous de la page à partir du trou actuel ///
-			controler.showHolesInPage(h);
+			/// affiche le trou actuel ///
+			controler.showJustHole(h);
 			/// lit tous les segments à lire jusqu'au trou actuel ///
 			if (controler.isFirstInPhrase(h)) {
 				controler.readPhrase(controler.getPhraseOf(h));
@@ -42,7 +44,6 @@ public class ReaderInside extends ReaderThread {
 			}
 			/// si le trou était le dernier du segment lit tous les segments sans trou après ///
 			if (controler.isLastInPhrase(h - 1)) {
-				controler.showHolesInPage(h, controler.getPageOf(h - 1));
 				controler.fillHole(h - 1);
 				for (int i = controler.getPhraseOf(h - 1) + 1; !controler.hasHole(i) && i < controler.getPhrasesCount() - 1 && !needToDead; i++) {
 					controler.readPhrase(i);
@@ -51,6 +52,9 @@ public class ReaderInside extends ReaderThread {
 		}
 		/// à la fin, affiche le compte rendu ///
 		if (h == controler.getHolesCount() - 1 && !needToDead) {
+			//efface tous les trous
+			controler.removeAllMasks();
+			
 			controler.showReport();
 		}
 	}
