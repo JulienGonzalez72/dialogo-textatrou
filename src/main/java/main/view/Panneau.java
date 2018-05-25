@@ -252,6 +252,17 @@ public class Panneau extends JDesktopPane {
 		pageActuelle = page;
 		// mise a jour du titre de la fenêtre
 		fenetre.setTitle("Lexidia - Texte à Trou - Page " + page);
+		updateText();
+
+		/*
+		 * for (Mask m : fenetreMasque) { if (m.page == page && fenetreMasque.indexOf(m)
+		 * >= numeroCourant) { m.setVisible(true); try { replacerMasque(m); } catch
+		 * (BadLocationException e) { e.printStackTrace(); } } else {
+		 * m.jtf.setBackground(Color.white); m.setVisible(false); } }
+		 */
+	}
+	
+	public void updateText() {
 		String texteAfficher = "";
 		// on recupere les segments a afficher dans la page
 		List<String> liste = new ArrayList<String>();
@@ -261,14 +272,7 @@ public class Panneau extends JDesktopPane {
 		for (String string : liste) {
 			texteAfficher += string;
 		}
-		editorPane.setText(texteAfficher.replaceAll("_", param.mysterCarac + ""));
-
-		/*
-		 * for (Mask m : fenetreMasque) { if (m.page == page && fenetreMasque.indexOf(m)
-		 * >= numeroCourant) { m.setVisible(true); try { replacerMasque(m); } catch
-		 * (BadLocationException e) { e.printStackTrace(); } } else {
-		 * m.jtf.setBackground(Color.white); m.setVisible(false); } }
-		 */
+		editorPane.setText(texteAfficher);
 	}
 
 	public boolean pageFinis() {
@@ -336,7 +340,7 @@ public class Panneau extends JDesktopPane {
 		frame.add(jtf);
 
 		frame.setVisible(true);
-		frame.motCouvert = textHandler.mots.get(h);
+		frame.motCouvert = textHandler.getHidedWord(h);
 		frame.page = controlerGlobal.getPageOf(h);
 		frame.n = h;
 		fenetreMasque.add(frame);
@@ -352,27 +356,6 @@ public class Panneau extends JDesktopPane {
 			}
 		}
 
-	}
-
-	public boolean changementSegment() {
-
-		int segmentMotPrecedent = -1;
-		for (int i = 0; i < textHandler.motsParSegment.size(); i++) {
-			if (textHandler.motsParSegment.get(i).contains(textHandler.mots.get(numeroCourant - 1))) {
-				segmentMotPrecedent = i;
-				break;
-			}
-		}
-
-		int segmentMotActuel = -1;
-		for (int i = 0; i < textHandler.motsParSegment.size(); i++) {
-			if (textHandler.motsParSegment.get(i).contains(textHandler.mots.get(numeroCourant))) {
-				segmentMotActuel = i;
-				break;
-			}
-		}
-
-		return segmentMotPrecedent != segmentMotActuel;
 	}
 
 	public void blink() {

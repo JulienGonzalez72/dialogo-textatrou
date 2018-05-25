@@ -25,20 +25,6 @@ public class ControlerText {
 	}
 
 	/**
-	 * Retourne la map des mots en fonction des segments
-	 */
-	public Map<Integer, List<String>> getWordByPhrases() {
-		return p.textHandler.motsParSegment;
-	}
-
-	/**
-	 * Retourne la map des mots en fonction de leur numero
-	 */
-	public Map<Integer, String> getWords() {
-		return p.textHandler.mots;
-	}
-
-	/**
 	 * Retourne true si le trou est le premier de son segment
 	 * 
 	 * @param h
@@ -168,6 +154,9 @@ public class ControlerText {
 	}
 
 	private void showHole(int h) {
+		/// on cache le trou avant de montrer la fenêtre ///
+		hideHole(h);
+		
 		int startPhrase = p.segmentsEnFonctionDeLaPage.get(getPageOf(h)).get(0);
 		
 		int start = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleStartOffset(h));
@@ -178,7 +167,6 @@ public class ControlerText {
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	/**
@@ -347,24 +335,26 @@ public class ControlerText {
 	 * Remplace le trou h par le bon mot.
 	 */
 	public void fillHole(int h) {
+		p.textHandler.fillHole(h);
+		p.updateText();
+		p.replaceAllMask();
+	}
+	
+	/**
+	 * Cache le trou h.
+	 */
+	public void hideHole(int h) {		
+		p.textHandler.hideHole(h);
+		p.updateText();
+		p.replaceAllMask();
+	}
+	
+	private boolean isFilled(int h) {
 		int startPhrase = p.segmentsEnFonctionDeLaPage.get(getPageOf(h)).get(0);
 		
 		int start = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleStartOffset(h));
-		int end = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleEndOffset(h));
 		
-		String temp = "";
-		for (int i = 0; i < p.editorPane.getText().length(); i++) {
-			if (i == start) {
-				temp += p.textHandler.getHidedWord(h);
-			}
-			else if (i < start || i >= end) {
-				temp += p.editorPane.getText().charAt(i);
-			}
-		}
-		
-		p.editorPane.setText(temp);
-		
-		p.replaceAllMask();
+		return p.editorPane.getText().charAt(start) != '_';
 	}
 
 	/**
