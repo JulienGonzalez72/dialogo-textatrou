@@ -3,16 +3,13 @@ package main.controler;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JInternalFrame;
 import javax.swing.JTextField;
 import javax.swing.text.BadLocationException;
 
 import main.Constants;
-import main.model.LectorFixFrame;
 import main.view.Mask;
 import main.view.Panneau;
 
@@ -275,6 +272,10 @@ public class ControlerText {
 	public void color(int h, Color c) {
 		getMask(h).jtf.setBackground(c);
 	}
+	
+	public Color getColorBackground() {
+		return p.editorPane.getBackground();
+	}
 
 	private Mask getMask(int h) {
 		for (int i = 0; i < p.fenetreMasque.size(); i++) {
@@ -293,8 +294,6 @@ public class ControlerText {
 	 * @return
 	 */
 	public void activateInputFenetreFixe(int h) {
-
-		System.out.println("Fenetre activé avec h = " + h);
 
 		Mask frame = new Mask();
 		((javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI()).setNorthPane(null);
@@ -330,7 +329,6 @@ public class ControlerText {
 
 	public void desactiverFenetreFixe() {
 		if (getFenetreFixe() != null) {
-			System.out.println("Fenetre fixe de "+getFenetreFixe().n+" desactivée.");
 			getFenetreFixe().dispose();
 		}
 	}

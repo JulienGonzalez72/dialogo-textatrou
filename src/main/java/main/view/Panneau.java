@@ -76,14 +76,15 @@ public class Panneau extends JDesktopPane {
 			fenetreParam.pan.fixedField.setEnabled(false);
 		}
 
-		this.setLayout(new BorderLayout());
+		this.setLayout(null);
 		editorPane = new TextPane(param);
 		editorPane.setEditable(false);
-		add(editorPane, BorderLayout.CENTER);
+		add(editorPane);
 
 		nbMotsDansLaPage = Panneau.stringOccur(textHandler.txt, " _");
 
 		panelSud = new JPanel();
+
 
 		progressBar = new JProgressBar(0, (textHandler.getHolesCount()));
 		progressBar.setStringPainted(true);
@@ -102,6 +103,8 @@ public class Panneau extends JDesktopPane {
 		updateBar(param.premierSegment);
 		editorPane.setBackground(param.bgColor);
 		editorPane.setFont(param.police);
+		editorPane.setBounds(0, 0, fenetre.getWidth(), fenetre.getHeight()*8/10);
+		panelSud.setBounds(0,fenetre.getHeight()*8/10,fenetre.getWidth(),2*fenetre.getHeight()/10);
 		pageActuelle = 0;
 		nbEssaisRestantPourLeSegmentCourant = nbEssaisParSegment = param.mysterCarac;
 
@@ -263,13 +266,6 @@ public class Panneau extends JDesktopPane {
 			texteAfficher += string;
 		}
 		editorPane.setText(texteAfficher.replaceAll("_", param.mysterCarac + ""));
-
-		/*
-		 * for (Mask m : fenetreMasque) { if (m.page == page && fenetreMasque.indexOf(m)
-		 * >= numeroCourant) { m.setVisible(true); try { replacerMasque(m); } catch
-		 * (BadLocationException e) { e.printStackTrace(); } } else {
-		 * m.jtf.setBackground(Color.white); m.setVisible(false); } }
-		 */
 	}
 
 	public boolean pageFinis() {

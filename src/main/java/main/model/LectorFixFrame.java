@@ -1,13 +1,20 @@
 package main.model;
 
 import java.awt.Color;
-import java.util.Random;
 
 import main.Constants;
 import main.controler.ControlerText;
 
 public class LectorFixFrame extends ReaderThread {
-
+	
+	//TODO
+	//travailler par segment
+	//fenetre initialise : visualiser avec le texte initial possible
+	//fenetre a remplir que sur le segment en cours
+	//surlignage possible
+	//ajouter la possibilité de choisir le temps d'apparition du mot en fonction du nombre de caractères 
+	//flash = 15 ms*caractère, 40,80,600, illimité = jusqu'à la saisie du premier caractère
+	
 	public Object lock = new Object();
 
 	public LectorFixFrame(ControlerText controler, int h) {
@@ -37,7 +44,7 @@ public class LectorFixFrame extends ReaderThread {
 					controler.showHolesInPage(h, controler.getPageOfPhrase(i));
 					
 					if(needToDead) {
-						System.out.println("MORT DU THREAD "+getName());return;
+						return;
 					}
 						
 					
@@ -45,31 +52,31 @@ public class LectorFixFrame extends ReaderThread {
 					controler.play(i);
 					
 					if(needToDead) {
-						System.out.println("MORT DU THREAD "+getName());return;
+						return;
 					}
 					
 					// attendre le temps de pause nécessaire
 					controler.doWait(controler.getCurrentWaitTime(), Constants.CURSOR_LISTEN);
 					
 					if(needToDead) {
-						System.out.println("MORT DU THREAD "+getName());return;
+						return;
 					}
 				}
 			}
 			
 			if(needToDead) {
-				System.out.println("MORT DU THREAD "+getName());return;
+				return;
 			}
 			
 			// on montre uniquement les trous à partir du trou actuel et de cette page
 			controler.showHolesInPage(h);
 			// colorier le trou actuel en bleu
-			controler.color(h, Color.cyan);
+			controler.color(h, controler.getColorBackground() != Color.cyan ? Color.cyan : Color.YELLOW);
 			// active la fenêtre de saisie avec le trou actuel
 			controler.activateInputFenetreFixe(h);
 			
 			if(needToDead) {
-				System.out.println("MORT DU THREAD "+getName());return;
+				return;
 			}
 			
 			// tant que la saisie n'est pas juste
@@ -79,7 +86,7 @@ public class LectorFixFrame extends ReaderThread {
 			}
 			
 			if(needToDead) {
-				System.out.println("MORT DU THREAD "+getName());return;
+				return;
 			}
 			
 			// désactiver la fenêtre de saisie
@@ -103,21 +110,21 @@ public class LectorFixFrame extends ReaderThread {
 			controler.showPage(controler.getPageOfPhrase(i));
 			
 			if(needToDead) {
-				System.out.println("MORT DU THREAD "+getName());return;
+				return;
 			}
 			
 			// lire le fichier audio correspondant à ce segment
 			controler.play(i);
 			
 			if(needToDead) {
-				System.out.println("MORT DU THREAD "+getName());return;
+				return;
 			}
 			
 			// attendre le temps de pause nécessaire
 			controler.doWait(controler.getCurrentWaitTime(), Constants.CURSOR_LISTEN);
 			
 			if(needToDead) {
-				System.out.println("MORT DU THREAD "+getName());return;
+				return;
 			}
 		}
 		// afficher le compte rendu
