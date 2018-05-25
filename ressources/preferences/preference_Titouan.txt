@@ -1,13 +1,13 @@
 #Sauvegarde
-#Fri May 25 14:43:48 CEST 2018
+#Fri May 25 15:24:58 CEST 2018
 taillePolice=42
 surlignage=true
-typePolice=Andika Basic
-h=515
+typePolice=Times New Roman Gras
+h=552
 tempsAttente=0
 oneHole=true
-y=52
-x=785
+y=80
+x=548
 w=1007
-fenetreFixe=true
+fenetreFixe=false
 couleurFond=255/255/150
