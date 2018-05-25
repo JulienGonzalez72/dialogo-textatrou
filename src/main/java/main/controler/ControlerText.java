@@ -3,8 +3,6 @@ package main.controler;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
-import java.util.List;
-import java.util.Map;
 
 import javax.swing.JTextField;
 import javax.swing.text.BadLocationException;
