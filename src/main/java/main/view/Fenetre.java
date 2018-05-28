@@ -30,7 +30,7 @@ public class Fenetre extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(true);
-		setMinimumSize(new Dimension(Constants.MIN_FENETRE_WIDTH, Constants.MIN_FENETRE_HEIGHT));
+		setMinimumSize(new Dimension(Constants.MIN_FRAME_WIDTH, Constants.MIN_FRAME_HEIGHT));
 		//setUndecorated(true);
 		
 		addComponentListener(new ComponentAdapter() {
@@ -61,7 +61,7 @@ public class Fenetre extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				param.premierSegment = pan.pilot.getCurrentPhraseIndex() + 1;
+				param.firstPhrase = pan.pilot.getCurrentPhraseIndex() + 1;
 				param.stockerPreference();
 			}
 		});

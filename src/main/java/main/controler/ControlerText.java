@@ -81,7 +81,7 @@ public class ControlerText {
 	 * courant.
 	 */
 	public long getCurrentWaitTime() {
-		return (long) (getCurrentPhraseDuration() * p.param.tempsPauseEnPourcentageDuTempsDeLecture / 100.);
+		return (long) (getCurrentPhraseDuration() * p.param.timeToWaitToLetStudentRepeat / 100.);
 	}
 
 	/**

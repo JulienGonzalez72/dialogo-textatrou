@@ -99,18 +99,17 @@ public class Panneau extends JDesktopPane {
 	public void init() {
 		param.appliquerPreferenceTaillePosition(fenetre);
 		fenetreParam.editorPane = editorPane;
-		updateBar(param.premierSegment);
+		updateBar(param.firstPhrase);
 		editorPane.setBackground(param.bgColor);
 		editorPane.setFont(param.police);
 		pageActuelle = 0;
-		nbEssaisRestantPourLeSegmentCourant = nbEssaisParSegment = param.mysterCarac;
 
 		/// construit la mise en page virtuelle ///
 		rebuildPages();
 
 		/// initialise le lecteur et le démarre ///
 		player = new Player(textHandler, param);
-		player.load(param.premierSegment - 1);
+		player.load(param.firstPhrase - 1);
 
 		controlPanel = fenetreParam.controlPanel;
 		fenetreParam.controlPanel.init();
@@ -166,7 +165,7 @@ public class Panneau extends JDesktopPane {
 	 * Construit les pages et affiche la première.
 	 */
 	public void rebuildPages() {
-		buildPages(param.premierSegment - 1);
+		buildPages(param.firstPhrase - 1);
 		pageActuelle = 0;
 		afficherPageSuivante();
 		/// calcule le nombre de pages total ///
@@ -468,7 +467,7 @@ public class Panneau extends JDesktopPane {
 
 	public void updateHG(int h) {
 		int n = controlerGlobal.getPhraseOf(h);
-		if (param.surlignage) {
+		if (param.highlight) {
 			editorPane.lastPhraseToHG = n - 1;
 		}
 

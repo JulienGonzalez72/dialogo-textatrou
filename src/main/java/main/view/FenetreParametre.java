@@ -24,7 +24,6 @@ public class FenetreParametre extends JFrame {
 		param = Parametres.load();
 		setIconImage(getToolkit().getImage("icone.jpg"));
 		editorPane = null;
-		param.mysterCarac = '_';
 		setTitle(titre);
 		setSize(tailleX, tailleY);
 		setLocationRelativeTo(null);
@@ -37,7 +36,7 @@ public class FenetreParametre extends JFrame {
 			e.printStackTrace();
 		}
 
-		fenetre = new Fenetre(param.titre, param.panWidth, param.panHeight, this, param);
+		fenetre = new Fenetre(param.title, param.panWidth, param.panHeight, this, param);
 		fenetre.setLocation(param.panX, param.panY);
 		controlPanel = new ControlPanel(fenetre.pan, this, param);
 
@@ -221,9 +220,9 @@ public class FenetreParametre extends JFrame {
 
 			fixedField.setSelected(param.fixedField);
 			oneHole.setSelected(param.oneHole);
-			surlignage.setSelected(param.surlignage);
+			surlignage.setSelected(param.highlight);
 
-			waitSlider.setValue(param.tempsPauseEnPourcentageDuTempsDeLecture);
+			waitSlider.setValue(param.timeToWaitToLetStudentRepeat);
 		}
 
 		/**
@@ -232,17 +231,17 @@ public class FenetreParametre extends JFrame {
 		public void savePreferences() {	
 			param.fixedField = fixedField.isSelected();
 			param.oneHole = oneHole.isSelected();
-			param.surlignage = surlignage.isSelected();
+			param.highlight = surlignage.isSelected();
 			param.rightColor = rightColorComboBox.getBackground();
 			param.bgColor = bgColorComboBox.getBackground();
 			param.police = param.police.deriveFont(Float.valueOf((Integer) fontSizeComboBox.getSelectedItem()));
 			param.police = ControleurParam.getFont((String) fontFamilyComboBox.getSelectedItem(),
 					fontFamilyComboBox.getSelectedIndex(), Font.BOLD, (Integer) fontSizeComboBox.getSelectedItem());
 			try {
-				param.premierSegment = Integer.parseInt(segmentDeDepart.getText());
+				param.firstPhrase = Integer.parseInt(segmentDeDepart.getText());
 			} catch (NumberFormatException e) {
 			}
-			param.tempsPauseEnPourcentageDuTempsDeLecture = waitSlider.getValue();
+			param.timeToWaitToLetStudentRepeat = waitSlider.getValue();
 		}
 
 		private void appliquerCouleur(Color color, ColorComboBox listeCouleurs) {
@@ -329,8 +328,7 @@ public class FenetreParametre extends JFrame {
 
 	public void lancerExercice() {
 
-		Panneau.premierSegment = param.premierSegment;
-		Panneau.defautNBEssaisParSegment = param.mysterCarac;
+		Panneau.premierSegment = param.firstPhrase;
 
 		if (param.fixedField) {
 			fenetre.pan.panelSud.setLayout(new BorderLayout());

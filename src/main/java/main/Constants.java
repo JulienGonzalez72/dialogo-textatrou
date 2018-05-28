@@ -26,19 +26,19 @@ public final class Constants {
 	/**
 	 * Nom de l'eleve courant
 	 */
-	public static String NOM_ELEVE = "Titouan";
+	public static String NAME_STUDENT = "Titouan";
 	/**
 	 * Largeur minimale de la fenetre principale
 	 */
-	public static int MIN_FENETRE_WIDTH = 800;
+	public static int MIN_FRAME_WIDTH = 800;
 	/**
 	 * Hauteur minimale de la fenetre principale
 	 */
-	public static int MIN_FENETRE_HEIGHT = 400;
+	public static int MIN_FRAME_HEIGHT = 400;
 	/**
 	 * Taille des images dans le controleur du player
 	 */
-	public static final int tailleImageFrame = 40;
+	public static final int SIZE_IMAGE_FRAME = 40;
 
 	/*
 	 * Valeurs par défaut des paramètres

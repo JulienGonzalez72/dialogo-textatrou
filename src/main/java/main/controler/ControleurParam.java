@@ -91,7 +91,7 @@ public class ControleurParam implements ActionListener, ChangeListener {
 	@Override
 	public void stateChanged(ChangeEvent arg0) {
 		if (arg0.getSource() == panneau.waitSlider) {
-			param.tempsPauseEnPourcentageDuTempsDeLecture = panneau.waitSlider.getValue();
+			param.timeToWaitToLetStudentRepeat = panneau.waitSlider.getValue();
 		}
 	}
 
@@ -126,7 +126,7 @@ public class ControleurParam implements ActionListener, ChangeListener {
 			panneau.segmentDeDepart.setText("1");
 			valide = false;
 		}
-		param.premierSegment = premierSegment;
+		param.firstPhrase = premierSegment;
 		return valide;
 	}
 
