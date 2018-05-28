@@ -3,7 +3,7 @@ package main.reading;
 import java.awt.Color;
 import main.controler.ControlerText;
 
-public class ReaderAllHoleFF extends ReaderThread {// extends ReaderHole{
+public class ReaderAllHoleFF extends HoleThread{
 
 	public ReaderAllHoleFF(ControlerText controler, int h) {
 		super(controler, h);

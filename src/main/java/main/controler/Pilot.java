@@ -72,28 +72,6 @@ public class Pilot {
 		activeThread = getReaderThread(n);
 		activeThread.start();
 	}
-	
-	/**
-	 * Lecteur de segments sans trous, lance un lecteur de trous dès qu'il rencontre un segment avec au moins un trou.
-	 */
-	private class PhraseThread extends ReaderThread {
-		private int n;
-		public PhraseThread(int n) {
-			super(p.controlerGlobal, -1);
-			this.n = n;
-		}
-		public void run() {
-			controler.removeAllMasks();
-			while (!p.textHandler.hasHole(n) && !needToDead) {
-				controler.readPhrase(n);
-				n++;
-			}
-			int h = p.textHandler.getFirstHole(n);
-			if (!needToDead) {
-				goTo(h);
-			}
-		}
-	}
 
 	public ReaderThread getReaderThread(int h) {
 

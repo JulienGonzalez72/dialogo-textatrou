@@ -2,7 +2,7 @@ package main.reading;
 
 import main.controler.ControlerText;
 
-public class ReaderAllHoleUF extends ReaderThread {//extends ReaderHole{
+public class ReaderAllHoleUF extends HoleThread{
 	
 	public ReaderAllHoleUF(ControlerText controler, int h) {
 		super(controler, h);
