@@ -1,6 +1,6 @@
 #Sauvegarde
-#Mon May 28 11:50:56 CEST 2018
-couleurJuste=147/112/219
+#Mon May 28 13:13:49 CEST 2018
+couleurJuste=255/255/150
 taillePolice=42
 tempsApparitionMot=999
 surlignage=true

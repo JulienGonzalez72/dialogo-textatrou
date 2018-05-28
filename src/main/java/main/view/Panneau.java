@@ -467,7 +467,6 @@ public class Panneau extends JDesktopPane {
 		if (param.highlight) {
 			editorPane.lastPhraseToHG = n - 1;
 		}
-
 	}
 
 }

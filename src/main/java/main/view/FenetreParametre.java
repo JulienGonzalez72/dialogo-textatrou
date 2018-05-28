@@ -427,12 +427,15 @@ public class FenetreParametre extends JFrame {
 		fenetre.setResizable(false);
 		//Ligne ci dessus = a supprimer quand le todo  ci dessus sera fait
 		
+		
 		fenetre.pan.nbErreurs = 0;
 		fenetre.pan.numeroCourant = 0;
+		
 		eMenuItem2.setEnabled(false);
 		fenetre.setVisible(false);
 		controlPanel.disableAll();
 		fenetre.pan.pilot.doStop();
+		fenetre.pan.pilot.initialiseHole();
 	}
 
 	public static Color stringToColor(String name) {
