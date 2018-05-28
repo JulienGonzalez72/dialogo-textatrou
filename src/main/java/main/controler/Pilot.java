@@ -1,6 +1,5 @@
 package main.controler;
 
-import main.Constants;
 import main.reading.*;
 import main.view.Panneau;
 
@@ -33,8 +32,9 @@ public class Pilot {
 		if (h < 0 || h >= p.textHandler.getHolesCount()) {
 			throw new IllegalArgumentException("Numéro de trou invalide : " + h);
 		}
+
 		
-		p.fenetre.setResizable(false);
+		/*p.fenetre.setResizable(false);
 
 		hole = h;
 		/// désacive la taille et la police et le segment de départ
@@ -59,7 +59,7 @@ public class Pilot {
 		});
 		activeThread.start();
 		
-		p.controlerGlobal.updateHG(hole);
+		p.controlerGlobal.updateHG(hole);*/
 	}
 	
 	/**
@@ -69,43 +69,8 @@ public class Pilot {
 		if (activeThread != null) {
 			activeThread.doStop();
 		}
-		activeThread = getReaderThread(n);
+		activeThread = new PhraseThread(controler, n);
 		activeThread.start();
-	}
-	
-	/**
-	 * Lecteur de segments sans trous, lance un lecteur de trous dès qu'il rencontre un segment avec au moins un trou.
-	 */
-	private class PhraseThread extends ReaderThread {
-		private int n;
-		public PhraseThread(int n) {
-			super(p.controlerGlobal, -1);
-			this.n = n;
-		}
-		public void run() {
-			controler.removeAllMasks();
-			while (!p.textHandler.hasHole(n) && !needToDead) {
-				controler.readPhrase(n);
-				n++;
-			}
-			int h = p.textHandler.getFirstHole(n);
-			if (!needToDead) {
-				goTo(h);
-			}
-		}
-	}
-
-	public ReaderThread getReaderThread(int h) {
-
-		return p.param.oneHole ?
-
-				p.param.fixedField ? new ReaderOneHoleFF(p.controlerGlobal, h)
-						: new ReaderOneHoleUF(p.controlerGlobal, h)
-
-				:
-
-				p.param.fixedField ? new ReaderAllHoleFF(p.controlerGlobal, h)
-						: new ReaderAllHoleUF(p.controlerGlobal, h);
 	}
 
 	/**
