@@ -318,6 +318,14 @@ public class ControlerText {
 	public void doError() {
 		blink();
 		p.nbErreurs++;
+		//on reaffiche le hint
+		if(p.param.fixedField) {
+			getFenetreFixe().jtf.setText("");	
+			hint(getFenetreFixe());
+		} else {
+			getMask(p.pilot.getCurrentHoleIndex()).jtf.setText("");
+			hint(getMask(p.pilot.getCurrentHoleIndex()));
+		}
 		if(p.param.replayPhrase) {
 			play(p.pilot.getCurrentPhraseIndex());
 			doWait(getCurrentWaitTime(), Constants.CURSOR_LISTEN);
