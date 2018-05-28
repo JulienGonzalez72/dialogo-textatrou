@@ -11,7 +11,7 @@ public class ReaderOneHoleUF extends HoleThread {
 	public void run() {
 
 		int page = controler.getPageOf(h);
-		showPage(page);
+		replaceHoleOfPage(page);
 
 		/// affiche uniquement le trou actuel ///
 		controler.showJustHole(h);
@@ -43,12 +43,11 @@ public class ReaderOneHoleUF extends HoleThread {
 	}
 
 	/**
-	 * Montre la page du trou h Remplace tous les trous de la page par le bon mot
+	 * Remplace tous les trous de la page par le bon mot
 	 * 
 	 * @param h
 	 */
-	public void showPage(int h) {
-		controler.showPage(controler.getPageOf(h));
+	public void replaceHoleOfPage(int h) {
 		for (int i = 0; i < controler.getPhrasesCount(); i++) {
 			if (controler.getPageOf(i) == controler.getPageOf(h)) {
 				controler.replaceMaskByWord(i);

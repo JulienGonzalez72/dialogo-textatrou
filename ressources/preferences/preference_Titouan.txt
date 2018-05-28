@@ -1,5 +1,5 @@
 #Sauvegarde
-#Mon May 28 15:21:55 CEST 2018
+#Mon May 28 15:26:34 CEST 2018
 couleurJuste=255/255/150
 sizeParamY=965
 sizeParamX=568
@@ -7,12 +7,12 @@ taillePolice=42
 tempsApparitionMot=999
 surlignage=true
 typePolice=Times New Roman Gras
-h=1038
+h=837
 tempsAttente=0
 oneHole=true
-y=0
-x=952
-w=976
+y=18
+x=643
+w=879
 rejouerSon=false
 fenetreFixe=false
 couleurFond=1/215/88
