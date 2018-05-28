@@ -203,11 +203,7 @@ public class ControlerText {
 		if (m == null)
 			return true;
 		m.activate();
-		if(p.param.timeToShowWord == -1) {
-			m.setHint();
-		} else {
-			m.setHint(p.param.timeToShowWord*m.getNbCarac());
-		}
+		hint(m);
 		p.controlerMask.enter = false;
 		while (true) {
 			Thread.yield();
@@ -218,14 +214,9 @@ public class ControlerText {
 	}
 
 	public boolean waitForFillFenetreFixe(int h) {
-
 		Mask m = getFenetreFixe();
 		m.activate();
-		if(p.param.timeToShowWord == -1) {
-			m.setHint();
-		} else {
-			m.setHint(p.param.timeToShowWord*m.getNbCarac());
-		}
+		hint(m);
 		while (true) {
 
 			if (getFenetreFixe() != m) {
@@ -242,6 +233,14 @@ public class ControlerText {
 					return false;
 				}
 			}
+		}
+	}
+	
+	private void hint(Mask m) {
+		if(p.param.timeToShowWord == -1) {
+			m.setHint();
+		} else {
+			m.setHint(p.param.timeToShowWord*m.getNbCarac());
 		}
 	}
 
