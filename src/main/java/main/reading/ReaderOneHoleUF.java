@@ -56,7 +56,7 @@ public class ReaderOneHoleUF extends HoleThread {
 	 * @param h
 	 */
 	public void replaceHoleOfPage(int p) {
-		for (int i = 0; i < controler.getPhrasesCount(); i++) {
+		for (int i = 0; i < controler.getHolesCount(); i++) {
 			if (controler.getPageOf(i) == p) {
 				controler.replaceMaskByWord(i);
 			}
