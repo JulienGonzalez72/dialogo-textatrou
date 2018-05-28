@@ -26,19 +26,19 @@ public final class Constants {
 	/**
 	 * Nom de l'eleve courant
 	 */
-	public static String NOM_ELEVE = "Titouan";
+	public static String NAME_STUDENT = "Titouan";
 	/**
 	 * Largeur minimale de la fenetre principale
 	 */
-	public static int MIN_FENETRE_WIDTH = 800;
+	public static int MIN_FRAME_WIDTH = 800;
 	/**
 	 * Hauteur minimale de la fenetre principale
 	 */
-	public static int MIN_FENETRE_HEIGHT = 400;
+	public static int MIN_FRAME_HEIGHT = 400;
 	/**
 	 * Taille des images dans le controleur du player
 	 */
-	public static final int tailleImageFrame = 40;
+	public static final int SIZE_IMAGE_FRAME = 40;
 
 	/*
 	 * Valeurs par défaut des paramètres
@@ -48,7 +48,7 @@ public final class Constants {
 	public static final int MIN_WAIT_TIME_PERCENT = 0;
 	public static final int MAX_WAIT_TIME_PERCENT = 300;
 	public static final int DEFAULT_WAIT_TIME_PERCENT = 0;
-	public static final int PARAM_FRAME_HEIGHT = 700;
+	public static final int PARAM_FRAME_HEIGHT = 900;
 	public static final int PARAM_FRAME_WIDTH = 500;
 	public static final String PARAM_FRAME_TITLE = "Dialogo by roman and julien";
 	public static final boolean LOAD_FIRST_PHRASE = false;
@@ -161,5 +161,12 @@ public final class Constants {
 	public static final String[] FONT_FAMILIES = {"OpenDyslexic", "Andika", "Lexia", "Arial", "Times New Roman"};
 	
 	public static final Integer[] FONT_SIZES = {12, 16, 18, 20, 22, 24, 30, 36, 42};
+
+	/**
+	 *  Temps d'apparition des mots a decouvrir tel que Temps = DEFAULT_TIME_APPARITION_BY_CARAC * N, avec N le nombre de caractère dans le mot actuel
+	 */
+	public static final int DEFAULT_TIME_APPARITION_BY_CARAC = 0;
+
+	public static final int MAX_APPARITION_TIME = 1200;
 
 }

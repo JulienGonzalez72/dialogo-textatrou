@@ -3,6 +3,7 @@ package main.view;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.Dictionary;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -24,7 +25,6 @@ public class FenetreParametre extends JFrame {
 		param = Parametres.load();
 		setIconImage(getToolkit().getImage("icone.jpg"));
 		editorPane = null;
-		param.mysterCarac = '_';
 		setTitle(titre);
 		setSize(tailleX, tailleY);
 		setLocationRelativeTo(null);
@@ -37,7 +37,7 @@ public class FenetreParametre extends JFrame {
 			e.printStackTrace();
 		}
 
-		fenetre = new Fenetre(param.titre, param.panWidth, param.panHeight, this, param);
+		fenetre = new Fenetre(param.title, param.panWidth, param.panHeight, this, param);
 		fenetre.setLocation(param.panX, param.panY);
 		controlPanel = new ControlPanel(fenetre.pan, this, param);
 
@@ -60,10 +60,12 @@ public class FenetreParametre extends JFrame {
 		public ColorComboBox rightColorComboBox;
 		public JTextField segmentDeDepart;
 		public JButton valider;
+		public JCheckBox replayPhrase;
 		public JCheckBox fixedField;
 		public JCheckBox oneHole;
 		public JCheckBox surlignage;
 		public JSlider waitSlider;
+		public JSlider timeToShowWord;
 		public final Object[] fontFamilies;
 		public FenetreParametre fen;
 
@@ -73,20 +75,22 @@ public class FenetreParametre extends JFrame {
 			JLabel titre = fastLabel("Choisissez vos parametres");
 			titre.setBorder(BorderFactory.createLineBorder(Color.blue, 2));
 			add(titre, BorderLayout.NORTH);
+			
+			ControleurParam controleur = new ControleurParam(fen, this);
 
+
+			replayPhrase = fastCheckBox("Rejouer les phrases si erreur", controleur);
 			valider = fastButton("Valider les parametres", new Font("OpenDyslexic", Font.BOLD, 18), Color.green);
+			valider.addActionListener(controleur);
 			JLabel police = fastLabel("Police : ");
 			JLabel couleurSurlignage = fastLabel("Couleur de surlignage : ");
 			JLabel taillePolice = fastLabel("Taille de la police : ");
 			JLabel couleurDeFond = fastLabel("Couleur de fond : ");
 			JLabel segments = fastLabel("Segment de départ : ");
 			JLabel attente = fastLabel("Temps d'attente en % du temps de lecture");
+			JLabel labelWordApparition = fastLabel("Temps d'apparition des mots par caracteres ( en ms )");
 
 			fontFamilies = new Object[] { "OpenDyslexic", "Andika", "Lexia", "Arial", "Times New Roman" };
-
-			ControleurParam controleur = new ControleurParam(fen, this);
-			valider.addActionListener(controleur);
-
 			fontFamilyComboBox = new JComboBox<Object>(fontFamilies);
 			fontFamilyComboBox.setRenderer(new ListCellRenderer<Object>() {
 				private DefaultListCellRenderer renderer = new DefaultListCellRenderer();
@@ -149,7 +153,7 @@ public class FenetreParametre extends JFrame {
 
 			JPanel midPanel = new JPanel(new GridLayout(1, 2));
 			JPanel midRightPanel = new JPanel(new GridLayout(7, 1));
-			JPanel midLeftPanel = new JPanel(new GridLayout(6, 1));
+			JPanel midLeftPanel = new JPanel(new GridLayout(7, 1));
 			midPanel.add(midRightPanel);
 			midPanel.add(midLeftPanel);
 
@@ -173,14 +177,19 @@ public class FenetreParametre extends JFrame {
 			fastCentering(segmentDeDepart, midLeftPanel, "   ");
 			oneHole = fastCheckBox("Un trou par un trou ?", controleur);
 			oneHole.setSelected(false);
-			JPanel temp2 = new JPanel();
-			temp2.add(oneHole);
-			midLeftPanel.add(temp2);
+			JPanel temp = new JPanel();
+			temp.add(oneHole);
+			midLeftPanel.add(temp);
 			fixedField = fastCheckBox("Fenêtre de saisie fixe", controleur);
 			fixedField.setSelected(false);
-			JPanel temp = new JPanel();
+			temp = new JPanel();
 			temp.add(fixedField);
 			midLeftPanel.add(temp);
+			temp = new JPanel();
+			temp.add(replayPhrase);
+			midLeftPanel.add(temp);
+		
+			
 
 			waitSlider = new JSlider();
 			waitSlider.setMaximum(Constants.MAX_WAIT_TIME_PERCENT);
@@ -191,12 +200,28 @@ public class FenetreParametre extends JFrame {
 			waitSlider.setMinorTickSpacing(10);
 			waitSlider.setMajorTickSpacing(50);
 			waitSlider.addChangeListener(controleur);
+			
+			timeToShowWord = new JSlider();
+			timeToShowWord.setMaximum(Constants.MAX_APPARITION_TIME);
+			timeToShowWord.setMinimum(0);
+			timeToShowWord.setValue(Constants.DEFAULT_TIME_APPARITION_BY_CARAC);
+			timeToShowWord.setPaintTicks(true);
+			timeToShowWord.setPaintLabels(true);
+			timeToShowWord.setMinorTickSpacing(40);
+			timeToShowWord.setMajorTickSpacing(200);
+			Dictionary<Integer, JComponent> labels = timeToShowWord.getLabelTable();
+			labels.put(Constants.MAX_APPARITION_TIME, fastLabel("Illimité"));
+			timeToShowWord.setLabelTable(labels);
+			timeToShowWord.addChangeListener(controleur);
 
-			JPanel panelSud = new JPanel(new GridLayout(5, 1));
+			JPanel panelSud = new JPanel(new GridLayout(8, 1));
 
 			panelSud.add(new JLabel());
 			panelSud.add(add(attente));
 			panelSud.add(waitSlider);
+			panelSud.add(new JLabel());
+			panelSud.add(add(labelWordApparition));
+			panelSud.add(timeToShowWord);
 			panelSud.add(new JLabel());
 			panelSud.add(valider);
 
@@ -219,30 +244,34 @@ public class FenetreParametre extends JFrame {
 			appliquerCouleur(param.bgColor, bgColorComboBox);
 			appliquerCouleur(param.rightColor, rightColorComboBox);
 
+			replayPhrase.setSelected(param.replayPhrase);
 			fixedField.setSelected(param.fixedField);
 			oneHole.setSelected(param.oneHole);
-			surlignage.setSelected(param.surlignage);
+			surlignage.setSelected(param.highlight);
 
-			waitSlider.setValue(param.tempsPauseEnPourcentageDuTempsDeLecture);
+			waitSlider.setValue(param.timeToWaitToLetStudentRepeat);
+			timeToShowWord.setValue(param.timeToShowWord);
 		}
 
 		/**
 		 * Enregistre les préférences en fonction de la sélection de l'utilisateur.
 		 */
 		public void savePreferences() {	
+			param.replayPhrase = replayPhrase.isSelected();
 			param.fixedField = fixedField.isSelected();
 			param.oneHole = oneHole.isSelected();
-			param.surlignage = surlignage.isSelected();
+			param.highlight = surlignage.isSelected();
 			param.rightColor = rightColorComboBox.getBackground();
 			param.bgColor = bgColorComboBox.getBackground();
 			param.police = param.police.deriveFont(Float.valueOf((Integer) fontSizeComboBox.getSelectedItem()));
 			param.police = ControleurParam.getFont((String) fontFamilyComboBox.getSelectedItem(),
 					fontFamilyComboBox.getSelectedIndex(), Font.BOLD, (Integer) fontSizeComboBox.getSelectedItem());
 			try {
-				param.premierSegment = Integer.parseInt(segmentDeDepart.getText());
+				param.firstPhrase = Integer.parseInt(segmentDeDepart.getText());
 			} catch (NumberFormatException e) {
 			}
-			param.tempsPauseEnPourcentageDuTempsDeLecture = waitSlider.getValue();
+			param.timeToWaitToLetStudentRepeat = waitSlider.getValue();
+			param.timeToShowWord = ( timeToShowWord.getValue() != Constants.MAX_APPARITION_TIME ) ? param.timeToShowWord = timeToShowWord.getValue() : -1;
 		}
 
 		private void appliquerCouleur(Color color, ColorComboBox listeCouleurs) {
@@ -329,8 +358,7 @@ public class FenetreParametre extends JFrame {
 
 	public void lancerExercice() {
 
-		Panneau.premierSegment = param.premierSegment;
-		Panneau.defautNBEssaisParSegment = param.mysterCarac;
+		Panneau.premierSegment = param.firstPhrase;
 
 		if (param.fixedField) {
 			fenetre.pan.panelSud.setLayout(new BorderLayout());

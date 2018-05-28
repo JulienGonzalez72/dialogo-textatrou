@@ -147,7 +147,7 @@ public class Player {
 
 			/// fin du blocage ///
 			if (blocked && time > clip.getMicrosecondLength() / 1000
-					* param.tempsPauseEnPourcentageDuTempsDeLecture / 100.) {
+					* param.timeToWaitToLetStudentRepeat / 100.) {
 				blocked = false;
 				cancel();
 				for (Runnable r : onBlockEnd) {
@@ -248,7 +248,7 @@ public class Player {
 	 * Retourne true si il y a au moins un segment avant le segment actuel.
 	 */
 	public boolean hasPreviousPhrase() {
-		return currentPhrase > param.premierSegment - 1;
+		return currentPhrase > param.firstPhrase - 1;
 	}
 
 	/**
