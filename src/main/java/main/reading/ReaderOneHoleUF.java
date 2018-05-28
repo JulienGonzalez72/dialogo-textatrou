@@ -25,7 +25,7 @@ public class ReaderOneHoleUF extends HoleThread {
 			if (needToDead) {
 				return;
 			}
-			controler.doError();
+			controler.doError(h);
 		}
 
 		if (needToDead) {

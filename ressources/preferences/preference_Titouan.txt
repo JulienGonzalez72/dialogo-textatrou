@@ -1,8 +1,8 @@
 #Sauvegarde
-#Mon May 28 15:04:25 CEST 2018
+#Mon May 28 15:21:55 CEST 2018
 couleurJuste=255/255/150
 sizeParamY=965
-sizeParamX=1661
+sizeParamX=568
 taillePolice=42
 tempsApparitionMot=999
 surlignage=true

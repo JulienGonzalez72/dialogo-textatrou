@@ -354,7 +354,7 @@ public class Panneau extends JDesktopPane {
 
 	}
 
-	public void blink() {
+	public void blink(Color c) {
 		Timer blinkTimer = new Timer();
 		final long interval = 250;
 		blinkTimer.scheduleAtFixedRate(new TimerTask() {
@@ -368,7 +368,7 @@ public class Panneau extends JDesktopPane {
 					return;
 				}
 				if (time % (interval * 2) != 0)
-					editorPane.setBackground(Constants.ALERT_COLOR);
+					editorPane.setBackground(c);
 				else
 					editorPane.setBackground(param.bgColor);
 			}

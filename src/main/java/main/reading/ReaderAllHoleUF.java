@@ -28,7 +28,7 @@ public class ReaderAllHoleUF extends HoleThread {
 			/// attends une saisie de l'utilisateur ///
 			while (!controler.waitForFill(h)) {
 				if (needToDead) {return;}
-				controler.doError();
+				controler.doError(h);
 			}
 
 			if (needToDead) {return;}
