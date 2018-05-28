@@ -70,6 +70,7 @@ public class Pilot {
 	 * Se place sur le segment n et démarre le lecteur.
 	 */
 	public void goToPhrase(int n) {
+		phrase = n;
 		if (activeThread != null) {
 			activeThread.doStop();
 		}

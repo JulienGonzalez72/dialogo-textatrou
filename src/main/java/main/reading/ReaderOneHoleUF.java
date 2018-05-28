@@ -11,7 +11,6 @@ public class ReaderOneHoleUF extends HoleThread {
 	public void run() {
 
 		int page = controler.getPageOf(h);
-		showPage(page);
 
 		/// affiche uniquement le trou actuel ///
 		controler.showJustHole(h);

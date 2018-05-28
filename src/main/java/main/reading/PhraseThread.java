@@ -22,15 +22,21 @@ public class PhraseThread extends ReaderThread {
 	public void run() {
 		while (n < controler.getPhrasesCount() - 1 && !needToDead) {
 			/// joue le segment ///
-			controler.readPhrase(n);
-			/// traite tous les trous du segment un par un ///
+			if (!controler.hasHole(n)) {
+				controler.readPhrase(n);
+			}
+ 			/// traite tous les trous du segment un par un ///
 			for (int h = 0; h < controler.getHolesCount(n) && !needToDead; h++) {
 				activeThread = controler.getHoleThread(controler.getFirstHole(n) + h);
 				activeThread.start();
+				//controler.readPhrase(n);
 				try {
 					activeThread.join();
 				} catch (InterruptedException e) {
 				}
+			}
+			if (needToDead) {
+				return;
 			}
 			n++;
 			/// appel les écouteurs de fin de segment ///

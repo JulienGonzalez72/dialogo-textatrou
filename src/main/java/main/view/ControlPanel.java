@@ -203,10 +203,10 @@ public class ControlPanel extends JPanel {
 			hrepeatButton.setEnabled(pan.player.isPlaying());
 			hgoToField.setEnabled(true);
 			
-			previousButton.setEnabled(pan.pilot.hasPreviousHole());
+			previousButton.setEnabled(pan.pilot.hasPreviousPhrase());
 			playButton.setEnabled(true);
 			playButton.setIcon(new ImageIcon(pan.player.isPlaying() ? pauseIcon : playIcon));
-			nextButton.setEnabled(pan.pilot.hasNextHole());
+			nextButton.setEnabled(pan.pilot.hasNextPhrase());
 			repeatButton.setEnabled(pan.player.isPlaying());
 			goToField.setEnabled(true);
 		} else {
