@@ -457,4 +457,10 @@ public class ControlerText {
 						: new ReaderAllHoleUF(p.controlerGlobal, h);
 	}
 
+	public int lastPhraseToHG() {
+		return p.editorPane.lastPhraseToHG;
+	}
+
+
+
 }

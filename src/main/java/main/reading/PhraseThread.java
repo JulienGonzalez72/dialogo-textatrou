@@ -21,19 +21,18 @@ public class PhraseThread extends ReaderThread {
 	
 	public void run() {
 		while (n < controler.getPhrasesCount() - 1 && !needToDead) {
+			controler.updateHG(n-1);
 			/// joue le segment ///
 			if (!controler.hasHole(n)) {
 				for (int i = 0; i < controler.getHolesCount(); i++) {
 					controler.replaceMaskByWord(i);
 				}
-				controler.updateHG(n);
 				controler.readPhrase(n);
 			}
  			/// traite tous les trous du segment un par un ///
 			for (int h = 0; h < controler.getHolesCount(n) && !needToDead; h++) {
 				activeThread = controler.getHoleThread(controler.getFirstHole(n) + h);
 				activeThread.start();
-				//controler.readPhrase(n);
 				try {
 					activeThread.join();
 				} catch (InterruptedException e) {

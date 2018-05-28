@@ -30,7 +30,6 @@ public class Pilot {
 	 * Se place sur le segment n et démarre le lecteur.
 	 */
 	public void goToPhrase(int n) {
-		controler.updateHG(n - 1);
 		phrase = n;
 		if (activeThread != null) {
 			activeThread.doStop();
@@ -39,7 +38,6 @@ public class Pilot {
 		activeThread.onPhraseEnd.add(new Runnable() {
 			public void run() {
 				phrase = activeThread.n;
-				controler.updateHG(n);
 			}
 		});
 		activeThread.start();

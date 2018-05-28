@@ -468,5 +468,5 @@ public class Panneau extends JDesktopPane {
 			editorPane.repaint();
 		}
 	}
-
+	
 }
