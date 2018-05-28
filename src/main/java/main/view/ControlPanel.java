@@ -196,10 +196,10 @@ public class ControlPanel extends JPanel {
 	 */
 	public void updateButtons() {
 		if (usable) {
-			hpreviousButton.setEnabled(pan.pilot.hasPreviousHole());
+			hpreviousButton.setEnabled(pan.pilot.hasPreviousPhrase());
 			hplayButton.setEnabled(true);
 			hplayButton.setIcon(new ImageIcon(pan.player.isPlaying() ? pauseIcon : playIcon));
-			hnextButton.setEnabled(pan.pilot.hasNextHole());
+			hnextButton.setEnabled(pan.pilot.hasNextPhrase());
 			hrepeatButton.setEnabled(pan.player.isPlaying());
 			hgoToField.setEnabled(true);
 			

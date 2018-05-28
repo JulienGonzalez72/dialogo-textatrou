@@ -344,29 +344,11 @@ public class ControlerText {
 	}
 
 	public void replaceMaskByWord(int h) {
-
 		Mask m = getMask(h);
-		if (m == null) {
-			fillHole(h);
-			return;
+		if (m != null) {
+			m.setVisible(false);
 		}
-		String temp = "";
-		int j = 0;
-		for (int i = 0; i < p.editorPane.getText().length(); i++) {
-			if (i >= m.start && i < m.end) {
-				temp += m.motCouvert.charAt(j);
-				j++;
-			} else {
-				temp += p.editorPane.getText().charAt(i);
-			}
-		}
-
-		p.editorPane.setText(temp);
-
-		m.setVisible(false);
-
-		p.replaceAllMask();
-
+		fillHole(h);
 	}
 
 	/**

@@ -8,13 +8,17 @@ public class Pilot {
 	/**
 	 * Thread de lecture actif
 	 */
-	private ReaderThread activeThread;
+	private PhraseThread activeThread;
 	private Panneau p;
 	public ControlerText controler;
 	/**
 	 * Trou actuel
 	 */
 	private int hole;
+	/**
+	 * Segment actuel
+	 */
+	private int phrase;
 
 	public Pilot(Panneau p) {
 		this.p = p;
@@ -70,6 +74,11 @@ public class Pilot {
 			activeThread.doStop();
 		}
 		activeThread = new PhraseThread(controler, n);
+		activeThread.onPhraseEnd.add(new Runnable() {
+			public void run() {
+				phrase = activeThread.n;
+			}
+		});
 		activeThread.start();
 	}
 
@@ -101,19 +110,19 @@ public class Pilot {
 	 * le début.
 	 */
 	public void doPlay() {
-		goTo(hole);
+		goToPhrase(phrase);
 	}
 	
 	public void nextPhrase() {
-		goToPhrase(getCurrentPhraseIndex() + 1);
+		goToPhrase(phrase + 1);
 	}
 	
 	public void previousPhrase() {
-		goToPhrase(getCurrentPhraseIndex() - 1);
+		goToPhrase(phrase - 1);
 	}
 	
 	public int getCurrentPhraseIndex() {
-		return p.player.getCurrentPhraseIndex();
+		return phrase;
 	}
 
 	public int getCurrentHoleIndex() {
