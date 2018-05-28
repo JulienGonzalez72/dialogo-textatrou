@@ -384,9 +384,7 @@ public class FenetreParametre extends JFrame {
 		pan.oneHole.setEnabled(etat);
 		pan.surlignage.setEnabled(etat);
 		pan.fixedField.setEnabled(etat);
-		pan.waitSlider.setEnabled(etat);
 		pan.replayPhrase.setEnabled(etat);
-		pan.timeToShowWord.setEnabled(etat);
 	}
 
 	public JMenuItem eMenuItem2;

@@ -2,6 +2,7 @@ package main;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GraphicsEnvironment;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -48,8 +49,8 @@ public final class Constants {
 	public static final int MIN_WAIT_TIME_PERCENT = 0;
 	public static final int MAX_WAIT_TIME_PERCENT = 300;
 	public static final int DEFAULT_WAIT_TIME_PERCENT = 0;
-	public static final int PARAM_FRAME_HEIGHT = 900;
-	public static final int PARAM_FRAME_WIDTH = 500;
+	public static final int PARAM_FRAME_HEIGHT = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height*8/10;
+	public static final int PARAM_FRAME_WIDTH = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width*3/11;
 	public static final String PARAM_FRAME_TITLE = "Dialogo by roman and julien";
 	public static final boolean LOAD_FIRST_PHRASE = false;
 
