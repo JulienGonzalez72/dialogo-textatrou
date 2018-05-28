@@ -16,9 +16,9 @@ import main.controler.Pilot;
 import main.Parametres;
 import main.controler.ControlerKey;
 import main.controler.ControlerMask;
-import main.model.ReaderAllHoleFF;
 import main.model.Player;
 import main.model.TextHandler;
+import main.reading.ReaderAllHoleFF;
 
 public class Panneau extends JDesktopPane {
 
@@ -330,13 +330,7 @@ public class Panneau extends JDesktopPane {
 
 		setLayout(null);
 
-		JTextField jtf = new JTextField();
-		jtf.addActionListener(controlerMask);
-		jtf.setEnabled(false);
-		jtf.setFont(param.police.deriveFont(param.police.getSize() / 1.5f));
-		jtf.setHorizontalAlignment(SwingConstants.CENTER);
-		frame.jtf = jtf;
-		frame.add(jtf);
+		frame.initField(param.police.deriveFont(param.police.getSize() / 1.5f), controlerMask);
 
 		frame.setVisible(true);
 		frame.motCouvert = textHandler.getHidedWord(h);

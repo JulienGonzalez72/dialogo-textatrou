@@ -1,8 +1,16 @@
 package main.view;
 
-import java.util.Comparator;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.event.ActionListener;
+import java.util.Timer;
+import java.util.TimerTask;
 
-import javax.swing.*;
+import javax.swing.JInternalFrame;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 
 public class Mask extends JInternalFrame {
@@ -25,7 +33,15 @@ public class Mask extends JInternalFrame {
 	public Mask(int start, int end, JTextField jtf) {
 		this.start = start;
 		this.end = end;
-		this.jtf = jtf;
+	}
+	
+	public void initField(Font font, ActionListener actionListener) {
+		this.jtf = new Field();
+		jtf.addActionListener(actionListener);
+		jtf.setEnabled(false);
+		jtf.setFont(font);
+		jtf.setHorizontalAlignment(SwingConstants.CENTER);
+		add(jtf);
 	}
 	
 	public void activate() {
@@ -43,18 +59,41 @@ public class Mask extends JInternalFrame {
 	public boolean correctWord() {
 		return jtf.getText().equals(motCouvert);
 	}
-
-	public static class PositionComparator implements Comparator<Mask> {
-		@Override
-		public int compare(Mask m1, Mask m2) {
-			return m1.start - m2.start;
-		}
-		
-	}
 	
 	public String toString(){
 		return motCouvert+" ( "+start+"/"+end+" )";
 	}
-
-
+	
+	public void setHint(final long duration) {
+		Field field = (Field) jtf;;
+		field.hint(true);
+		Timer timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {
+			private long time;
+			public void run() {
+				time += 20;
+				if (time >= duration) {
+					field.hint(false);
+					cancel();
+				}
+			}
+		}, 0, 20);
+	}
+	
+	private class Field extends JTextField {
+		public boolean hint;
+		public void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			if (hint && motCouvert != null && getText().isEmpty()) {
+				FontMetrics fm = g.getFontMetrics();
+				g.setColor(new Color(200, 200, 200));
+				g.drawString(motCouvert, getWidth() / 2 - fm.stringWidth(motCouvert) / 2, fm.getHeight());
+			}
+		}
+		public void hint(boolean active) {
+			hint = active;
+			repaint();
+		}
+	}
+	
 }
