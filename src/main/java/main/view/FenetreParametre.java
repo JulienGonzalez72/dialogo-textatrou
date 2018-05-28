@@ -149,7 +149,7 @@ public class FenetreParametre extends JFrame {
 
 			JPanel midPanel = new JPanel(new GridLayout(1, 2));
 			JPanel midRightPanel = new JPanel(new GridLayout(7, 1));
-			JPanel midLeftPanel = new JPanel(new GridLayout(7, 1));
+			JPanel midLeftPanel = new JPanel(new GridLayout(6, 1));
 			midPanel.add(midRightPanel);
 			midPanel.add(midLeftPanel);
 
