@@ -1,7 +1,15 @@
 package main.controler;
 
 import main.Constants;
+<<<<<<< HEAD
 import main.reading.*;
+=======
+import main.reading.ReaderAllHoleFF;
+import main.reading.ReaderAllHoleUF;
+import main.reading.ReaderOneHoleFF;
+import main.reading.ReaderOneHoleUF;
+import main.reading.ReaderThread;
+>>>>>>> d6c126f0c25f8e5f4bf706544c7d360d9e49c98b
 import main.view.Panneau;
 
 public class Pilot {

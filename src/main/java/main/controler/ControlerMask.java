@@ -2,16 +2,13 @@ package main.controler;
 
 import java.awt.event.*;
 
-import main.view.Panneau;
-
 public class ControlerMask implements ActionListener, KeyListener {
 
-	private Panneau p;
 	
 	public boolean enter;
 	
-	public ControlerMask(Panneau p) {
-		this.p = p;
+	public ControlerMask() {
+
 	}
 
 	@Override

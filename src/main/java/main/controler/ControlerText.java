@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 
-import javax.swing.JTextField;
 import javax.swing.text.BadLocationException;
 
 import main.Constants;
