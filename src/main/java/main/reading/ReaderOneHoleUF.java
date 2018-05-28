@@ -44,6 +44,8 @@ public class ReaderOneHoleUF extends ReaderThread {
 				}
 				controler.doError();
 			}
+			//on efface tous les masques
+			controler.removeAllMasks();
 			h++;
 			/// appel des écouteurs de fin de trou ///
 			for (Runnable r : onHoleEnd) {

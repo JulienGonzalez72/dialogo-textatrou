@@ -21,6 +21,10 @@ public class Pilot {
 		this.p = p;
 		controler = p.controlerGlobal;
 	}
+	
+	public void initialiseHole() {
+		this.hole = 0;
+	}
 
 	/**
 	 * Se place sur le trou de numero h et démarre le lecteur.
