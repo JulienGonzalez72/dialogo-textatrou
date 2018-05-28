@@ -9,7 +9,21 @@ public class ReaderOneHoleUF extends ReaderThread { //extends HoleThread {
 	}
 	
 	public void run() {
+<<<<<<< HEAD
 		
+=======
+		controler.removeAllMasks();
+		while (!controler.hasHole(n) && !needToDead) {
+			controler.readPhrase(n);
+			n++;
+		}
+		if (needToDead) {
+			return;
+		}
+		h = controler.getFirstHole(n);
+		while (h < controler.getHolesCount() - 1 && !needToDead) {
+			/// affiche la page correspondante ///
+>>>>>>> 468c67f3289032fc32e1e81f16363fb605f76ef3
 			int page = controler.getPageOf(h);
 			showPage(page);
 			

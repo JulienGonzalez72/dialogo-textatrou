@@ -1,6 +1,5 @@
 package main.view;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -13,6 +12,8 @@ import java.util.TimerTask;
 import javax.swing.JInternalFrame;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import main.Constants;
 
 
 public class Mask extends JInternalFrame {
@@ -101,7 +102,7 @@ public class Mask extends JInternalFrame {
 			super.paintComponent(g);
 			if (hint && motCouvert != null && getText().isEmpty()) {
 				FontMetrics fm = g.getFontMetrics();
-				g.setColor(new Color(200, 200, 200));
+				g.setColor(Constants.HINT_COLOR);
 				g.drawString(motCouvert, getWidth() / 2 - fm.stringWidth(motCouvert) / 2, fm.getHeight());
 			}
 		}

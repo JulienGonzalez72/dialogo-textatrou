@@ -7,6 +7,12 @@ import java.awt.Font;
 import javax.swing.text.BadLocationException;
 
 import main.Constants;
+import main.reading.HoleThread;
+import main.reading.ReaderAllHoleFF;
+import main.reading.ReaderAllHoleUF;
+import main.reading.ReaderOneHoleFF;
+import main.reading.ReaderOneHoleUF;
+import main.reading.ReaderThread;
 import main.view.Mask;
 import main.view.Panneau;
 
@@ -405,6 +411,13 @@ public class ControlerText {
 	public boolean hasHole(int n) {
 		return getHolesCount(n) > 0;
 	}
+	
+	/**
+	 * Retourne le premier trou du segment n, ou -1 si ce segment ne contient pas de trou.
+	 */
+	public int getFirstHole(int n) {
+		return p.textHandler.getFirstHole(n);
+	}
 
 	/**
 	 * Desaffiche tous les trous puis montre uniquement le trou h
@@ -445,6 +458,22 @@ public class ControlerText {
 
 	public void updateHG(int h) {
 		p.updateHG(h);
+	}
+
+	/**
+	 * Retourne un algorithme de lecture de trou associé aux paramètres actuels et au numéro de trou h.
+	 */
+	public HoleThread getHoleThread(int h) {
+
+		return p.param.oneHole ?
+
+				p.param.fixedField ? new ReaderOneHoleFF(p.controlerGlobal, h)
+						: new ReaderOneHoleUF(p.controlerGlobal, h)
+
+				:
+
+				p.param.fixedField ? new ReaderAllHoleFF(p.controlerGlobal, h)
+						: new ReaderAllHoleUF(p.controlerGlobal, h);
 	}
 
 }

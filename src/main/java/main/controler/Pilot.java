@@ -69,7 +69,7 @@ public class Pilot {
 		if (activeThread != null) {
 			activeThread.doStop();
 		}
-		activeThread = new PhraseThread(n);
+		activeThread = getReaderThread(n);
 		activeThread.start();
 	}
 	
@@ -83,6 +83,7 @@ public class Pilot {
 			this.n = n;
 		}
 		public void run() {
+			controler.removeAllMasks();
 			while (!p.textHandler.hasHole(n) && !needToDead) {
 				controler.readPhrase(n);
 				n++;
