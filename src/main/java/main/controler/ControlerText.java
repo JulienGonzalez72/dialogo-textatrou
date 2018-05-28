@@ -44,12 +44,6 @@ public class ControlerText {
 	 * Affiche le compte rendu
 	 */
 	public void showReport() {
-		blink(Color.BLUE);
-		blink(Color.RED);
-		blink(Color.ORANGE);
-		blink(Color.PINK);
-		blink(Color.WHITE);
-		blink(Color.YELLOW);
 		p.afficherCompteRendu();
 	}
 
