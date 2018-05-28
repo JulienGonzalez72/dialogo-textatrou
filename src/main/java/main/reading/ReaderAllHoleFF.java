@@ -11,22 +11,41 @@ public class ReaderAllHoleFF extends HoleThread {
 
 	public void run() {
 
-		// on montre uniquement les trous à partir du trou actuel et de cette page
-		controler.showHolesInPage(h);
-		// colorier le trou actuel en bleu ou jaune si le fond est bleu
-		controler.color(h, controler.getColorBackground() != Color.cyan ? Color.cyan : Color.YELLOW);
-		// active la fenêtre de saisie avec le trou actuel
-		controler.activateInputFenetreFixe(h);
+
+
+
 
 		/// joue le son si c'est le premier trou du segment ///
 		if (controler.isFirstInPhrase(h)) {
 			controler.showPage(controler.getPageOf(h));
+			/// valide tous les trous de la page avant le trou actuel ///
+			for (int i = 0; i < h; i++) {
+				if (controler.getPageOf(i) == controler.getPageOf(h)) {
+					controler.fillHole(i);
+				}
+			}
+			// on montre uniquement les trous à partir du trou actuel et de cette page
+			controler.showHolesInPage(h);
 			controler.readPhrase(controler.getPhraseOf(h));
+		} else {
+			/// valide tous les trous de la page avant le trou actuel ///
+			for (int i = 0; i < h; i++) {
+				if (controler.getPageOf(i) == controler.getPageOf(h)) {
+					controler.fillHole(i);
+				}
+			}
+			// on montre uniquement les trous à partir du trou actuel et de cette page
+			controler.showHolesInPage(h);
 		}
 
 		if (needToDead) {
 			return;
 		}
+		
+		// colorier le trou actuel en bleu ou jaune si le fond est bleu
+		controler.color(h, controler.getColorBackground() != Color.cyan ? Color.cyan : Color.YELLOW);
+		// active la fenêtre de saisie avec le trou actuel
+		controler.activateInputFenetreFixe(h);
 
 		// tant que la saisie n'est pas juste
 		while (!controler.waitForFillFenetreFixe(h)) {

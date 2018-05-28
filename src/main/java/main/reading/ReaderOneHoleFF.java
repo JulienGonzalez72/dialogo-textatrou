@@ -12,23 +12,25 @@ public class ReaderOneHoleFF extends HoleThread {
 
 		controler.desactiverFenetreFixe();
 
-		replaceHoleOfPage(h);
-
-		// on montre uniquement le trou actuel
-		controler.showJustHole(h);
+		
 
 		/// joue le son si c'est le premier trou du segment ///
-		if (controler.isFirstInPhrase(h)) {
+		if (controler.isFirstInPhrase(h)) {		
 			controler.showPage(controler.getPageOf(h));
+			replaceHoleOfPage(controler.getPageOf(h));
+			controler.showJustHole(h);
 			controler.readPhrase(controler.getPhraseOf(h));
+		} else {
+			replaceHoleOfPage(controler.getPageOf(h));
+			controler.showJustHole(h);
 		}
-
-		// active la fenêtre de saisie avec le trou actuel
-		controler.activateInputFenetreFixe(h);
 
 		if (needToDead) {
 			return;
 		}
+		
+		// active la fenêtre de saisie avec le trou actuel
+		controler.activateInputFenetreFixe(h);
 
 		// tant que la saisie n'est pas juste
 		while (!controler.waitForFillFenetreFixe(h)) {
@@ -59,9 +61,9 @@ public class ReaderOneHoleFF extends HoleThread {
 	 * 
 	 * @param h
 	 */
-	public void replaceHoleOfPage(int h) {
-		for (int i = 0; i < controler.getPhrasesCount(); i++) {
-			if (controler.getPageOf(i) == controler.getPageOf(h)) {
+	public void replaceHoleOfPage(int p) {
+		for (int i = 0; i < controler.getHolesCount(); i++) {
+			if (controler.getPageOf(i) == p) {
 				controler.replaceMaskByWord(i);
 			}
 		}
