@@ -26,7 +26,11 @@ public class FenetreParametre extends JFrame {
 		setIconImage(getToolkit().getImage("icone.jpg"));
 		editorPane = null;
 		setTitle(titre);
-		setSize(tailleX, tailleY);
+		if(param.sizeParamX > 0) {
+			setSize(param.sizeParamX, param.sizeParamY);
+		} else {
+			setSize(tailleX, tailleY);
+		}
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(true);
@@ -47,6 +51,34 @@ public class FenetreParametre extends JFrame {
 		setContentPane(generalTab);
 		addMenu();
 		setVisible(true);
+		
+		getRootPane().addComponentListener(new ComponentListener() {
+			
+			@Override
+			public void componentShown(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void componentResized(ComponentEvent e) {
+				param.sizeParamX = FenetreParametre.this.getWidth();
+				param.sizeParamY = FenetreParametre.this.getHeight();
+				
+			}
+			
+			@Override
+			public void componentMoved(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void componentHidden(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 
 	}
 
