@@ -56,7 +56,6 @@ public class FenetreParametre extends JFrame {
 			
 			@Override
 			public void componentShown(ComponentEvent e) {
-				// TODO Auto-generated method stub
 				
 			}
 			
@@ -69,13 +68,11 @@ public class FenetreParametre extends JFrame {
 			
 			@Override
 			public void componentMoved(ComponentEvent e) {
-				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
 			public void componentHidden(ComponentEvent e) {
-				// TODO Auto-generated method stub
 				
 			}
 		});
@@ -171,7 +168,7 @@ public class FenetreParametre extends JFrame {
 				public void colorChanged(Color newColor) {
 					if (fenetre != null && fenetre.pan.editorPane != null) {
 						param.rightColor = rightColorComboBox.getBackground();
-						fenetre.pan.updateHG(fenetre.pan.pilot.getCurrentHoleIndex());
+						fenetre.pan.updateHG(fenetre.pan.pilot.getCurrentPhraseIndex());
 					}
 					grabFocus();
 				}
@@ -467,7 +464,7 @@ public class FenetreParametre extends JFrame {
 		fenetre.setVisible(false);
 		controlPanel.disableAll();
 		fenetre.pan.pilot.doStop();
-		fenetre.pan.pilot.initialiseHole();
+		fenetre.pan.pilot.initialisePhrase();
 	}
 
 	public static Color stringToColor(String name) {

@@ -11,10 +11,7 @@ public class Pilot {
 	private PhraseThread activeThread;
 	private Panneau p;
 	public ControlerText controler;
-	/**
-	 * Trou actuel
-	 */
-	private int hole;
+
 	/**
 	 * Segment actuel
 	 */
@@ -24,52 +21,16 @@ public class Pilot {
 		this.p = p;
 		controler = p.controlerGlobal;
 	}
-	
-	public void initialiseHole() {
-		this.hole = 0;
+
+	public void initialisePhrase() {
+		this.phrase = 0;
 	}
 
-	/**
-	 * Se place sur le trou de numero h et démarre le lecteur.
-	 */
-	public void goTo(int h) throws IllegalArgumentException {
-		if (h < 0 || h >= p.textHandler.getHolesCount()) {
-			throw new IllegalArgumentException("Numéro de trou invalide : " + h);
-		}
-
-		
-		/*p.fenetre.setResizable(false);
-
-		hole = h;
-		/// désacive la taille et la police et le segment de départ
-		p.fenetreParam.pan.fontFamilyComboBox.setEnabled(false);
-		p.fenetreParam.pan.fontSizeComboBox.setEnabled(false);
-		p.fenetreParam.pan.segmentDeDepart.setEnabled(false);
-		/// désactive les boutons de contrôle pour éviter le spam ///
-		p.controlPanel.disableAll(Constants.DISABLE_TIME);
-
-		p.updateBar(hole);
-
-		if (activeThread != null) {
-			activeThread.doStop();
-		}
-		activeThread = getReaderThread(h);
-		activeThread.onHoleEnd.add(new Runnable() {
-			public void run() {
-				controler.updateHG(hole + 1);
-				hole = activeThread.h;
-				p.updateBar(hole);
-			}
-		});
-		activeThread.start();
-		
-		p.controlerGlobal.updateHG(hole);*/
-	}
-	
 	/**
 	 * Se place sur le segment n et démarre le lecteur.
 	 */
 	public void goToPhrase(int n) {
+		controler.updateHG(n - 1);
 		phrase = n;
 		if (activeThread != null) {
 			activeThread.doStop();
@@ -78,25 +39,10 @@ public class Pilot {
 		activeThread.onPhraseEnd.add(new Runnable() {
 			public void run() {
 				phrase = activeThread.n;
+				controler.updateHG(n);
 			}
 		});
 		activeThread.start();
-	}
-
-	/**
-	 * Essaye de passer au trou suivant, passe à la page suivante si c'était le
-	 * dernier trou de la page.
-	 */
-	public void doNext() {
-		goTo(hole + 1);
-	}
-
-	/**
-	 * Essaye de passer au trou précédent. Déclenche une erreur si on était au
-	 * premier trou du texte.
-	 */
-	public void doPrevious() {
-		goTo(hole - 1);
 	}
 
 	/**
@@ -113,41 +59,29 @@ public class Pilot {
 	public void doPlay() {
 		goToPhrase(phrase);
 	}
-	
+
 	public void nextPhrase() {
 		goToPhrase(phrase + 1);
 	}
-	
+
 	public void previousPhrase() {
 		goToPhrase(phrase - 1);
 	}
-	
+
 	public int getCurrentPhraseIndex() {
 		return phrase;
-	}
-
-	public int getCurrentHoleIndex() {
-		return hole;
 	}
 
 	public boolean isPlaying() {
 		return p.player.isPlaying();
 	}
-	
+
 	public boolean hasPreviousPhrase() {
 		return p.player.hasPreviousPhrase();
 	}
-	
+
 	public boolean hasNextPhrase() {
 		return p.player.hasNextPhrase();
-	}
-
-	public boolean hasPreviousHole() {
-		return hole > 0;
-	}
-
-	public boolean hasNextHole() {
-		return hole < p.textHandler.getHolesCount() - 1;
 	}
 
 }

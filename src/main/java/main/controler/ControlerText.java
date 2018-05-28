@@ -437,8 +437,8 @@ public class ControlerText {
 		p.editorPane.removeHighlight(debutRelatifSegment, finRelativeSegment);
 	}
 
-	public void updateHG(int h) {
-		p.updateHG(h);
+	public void updateHG(int n) {
+		p.updateHG(n);
 	}
 
 	/**

@@ -22,11 +22,11 @@ public class ControlerKey implements KeyListener {
 		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 			/// recommence le segment ///
 			if (e.getWhen() - lastClick > Constants.LEFT_DELAY) {
-				pilot.goTo(pilot.getCurrentPhraseIndex());
+				pilot.doPlay();
 			}
 			/// retourne au segment précédent ///
 			else if (pilot.hasPreviousPhrase()) {
-				pilot.goTo(pilot.getCurrentPhraseIndex() - 1);
+				pilot.previousPhrase();
 			}
 			lastClick = e.getWhen();
 		}

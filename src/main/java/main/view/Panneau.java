@@ -462,10 +462,10 @@ public class Panneau extends JDesktopPane {
 		}
 	}
 
-	public void updateHG(int h) {
-		int n = controlerGlobal.getPhraseOf(h);
+	public void updateHG(int n) {
 		if (param.highlight) {
-			editorPane.lastPhraseToHG = n - 1;
+			editorPane.lastPhraseToHG = n;
+			editorPane.repaint();
 		}
 	}
 

@@ -26,6 +26,7 @@ public class PhraseThread extends ReaderThread {
 				for (int i = 0; i < controler.getHolesCount(); i++) {
 					controler.replaceMaskByWord(i);
 				}
+				controler.updateHG(n);
 				controler.readPhrase(n);
 			}
  			/// traite tous les trous du segment un par un ///
