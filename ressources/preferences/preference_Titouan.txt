@@ -1,5 +1,5 @@
 #Sauvegarde
-#Mon May 28 13:13:49 CEST 2018
+#Mon May 28 13:53:56 CEST 2018
 couleurJuste=255/255/150
 taillePolice=42
 tempsApparitionMot=999
