@@ -16,6 +16,13 @@ public class ReaderOneHoleFF extends HoleThread {
 
 		// on montre uniquement le trou actuel
 		controler.showJustHole(h);
+
+		/// joue le son si c'est le premier trou du segment ///
+		if (controler.isFirstInPhrase(h)) {
+			controler.showPage(controler.getPageOf(h));
+			controler.readPhrase(controler.getPhraseOf(h));
+		}
+
 		// active la fenêtre de saisie avec le trou actuel
 		controler.activateInputFenetreFixe(h);
 

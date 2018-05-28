@@ -10,14 +10,16 @@ public class ReaderOneHoleUF extends HoleThread {
 
 	public void run() {
 
-		int page = controler.getPageOf(h);
-<<<<<<< HEAD
-=======
-		replaceHoleOfPage(page);
->>>>>>> 58c894f64c32c06489c8c96c88e66cf27cca2976
+		replaceHoleOfPage(controler.getPageOf(h));
 
 		/// affiche uniquement le trou actuel ///
 		controler.showJustHole(h);
+
+		/// joue le son si c'est le premier trou du segment ///
+		if (controler.isFirstInPhrase(h)) {
+			controler.showPage(controler.getPageOf(h));
+			controler.readPhrase(controler.getPhraseOf(h));
+		}
 
 		if (needToDead) {
 			return;
