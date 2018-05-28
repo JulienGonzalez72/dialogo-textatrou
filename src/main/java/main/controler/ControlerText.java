@@ -204,7 +204,7 @@ public class ControlerText {
 		if (m == null)
 			return true;
 		m.activate();
-		m.setHint(1000);
+		m.setHint();
 		p.controlerMask.enter = false;
 		while (true) {
 			Thread.yield();

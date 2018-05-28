@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -41,6 +43,15 @@ public class Mask extends JInternalFrame {
 		jtf.setEnabled(false);
 		jtf.setFont(font);
 		jtf.setHorizontalAlignment(SwingConstants.CENTER);
+		/// désactive le hint à partir de la première frappe ///
+		jtf.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (jtf instanceof Field) {
+					((Field) jtf).hint(false);
+				}
+			}
+		});
 		add(jtf);
 	}
 	
@@ -65,7 +76,7 @@ public class Mask extends JInternalFrame {
 	}
 	
 	public void setHint(final long duration) {
-		Field field = (Field) jtf;;
+		Field field = (Field) jtf;
 		field.hint(true);
 		Timer timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
@@ -80,8 +91,12 @@ public class Mask extends JInternalFrame {
 		}, 0, 20);
 	}
 	
+	public void setHint() {
+		((Field) jtf).hint(true);
+	}
+	
 	private class Field extends JTextField {
-		public boolean hint;
+		private boolean hint;
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			if (hint && motCouvert != null && getText().isEmpty()) {

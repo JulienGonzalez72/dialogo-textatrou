@@ -12,11 +12,26 @@ public class ControlPanel extends JPanel {
 	private static int imageSize = Constants.tailleImageFrame;
 	private static Image previousIcon, playIcon, pauseIcon, nextIcon, repeatIcon;
 
+	/**
+	 * Panneau pour les contrôles de trou à trou
+	 */
+	private JPanel holePanel = new JPanel();
+	private JButton hpreviousButton = new JButton();
+	private JButton hplayButton = new JButton();
+	private JButton hnextButton = new JButton();
+	private JButton hrepeatButton = new JButton();
+	private JTextField hgoToField = new JTextField();
+	
+	/**
+	 * Panneau pour les contrôles de segment à segment
+	 */
+	private JPanel phrasePanel = new JPanel(); 
 	private JButton previousButton = new JButton();
 	private JButton playButton = new JButton();
 	private JButton nextButton = new JButton();
 	private JButton repeatButton = new JButton();
-	public JTextField goToField = new JTextField();
+	private JTextField goToField = new JTextField();
+	
 	private Panneau pan;
 
 	private boolean usable = true;
@@ -26,20 +41,86 @@ public class ControlPanel extends JPanel {
 	}
 
 	public ControlPanel(Panneau pan, FenetreParametre fen, Parametres param) {
-
 		this.pan = pan;
 
-		add(previousButton);
-		previousButton.setIcon(new ImageIcon(previousIcon));
-		previousButton.setEnabled(false);
-		previousButton.addActionListener(new ActionListener() {
+		holePanel.add(hpreviousButton);
+		hpreviousButton.setIcon(new ImageIcon(previousIcon));
+		hpreviousButton.setEnabled(false);
+		hpreviousButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pan.pilot.doPrevious();
 				updateButtons();
 			}
 		});
 
-		add(playButton);
+		holePanel.add(hplayButton);
+		hplayButton.setIcon(new ImageIcon(playIcon));
+		hplayButton.setEnabled(false);
+		hplayButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (pan.player.isPlaying()) {
+					pan.pilot.doStop();
+				}
+				else {
+					pan.pilot.doPlay();
+				}
+				updateButtons();
+			}
+		});
+
+		holePanel.add(hnextButton);
+		hnextButton.setIcon(new ImageIcon(nextIcon));
+		hnextButton.setEnabled(false);
+		hnextButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pan.pilot.doNext();
+				updateButtons();
+			}
+		});
+
+		holePanel.add(hrepeatButton);
+		hrepeatButton.setIcon(new ImageIcon(repeatIcon));
+		hrepeatButton.setEnabled(false);
+		hrepeatButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pan.pilot.doPlay();
+				updateButtons();
+			}
+		});
+
+		JLabel goToLabel = new JLabel("Passer au trou :");
+		goToLabel.setFont(goToLabel.getFont().deriveFont(Font.ITALIC));
+		holePanel.add(goToLabel);
+		holePanel.add(hgoToField);
+		hgoToField.setPreferredSize(new Dimension(40, 20));
+		hgoToField.setEnabled(false);
+		hgoToField.addActionListener(new ActionListener() {			
+			public void actionPerformed(ActionEvent e) {
+				int h;
+				try {
+					h = Integer.parseInt(hgoToField.getText()) - 1;
+					pan.pilot.goTo(h);
+				} catch (IllegalArgumentException ex) {
+					JOptionPane.showMessageDialog(null, "Numéro de trou incorrect : " + hgoToField.getText());
+				}
+				updateButtons();
+			}
+		});
+		
+		holePanel.setBorder(BorderFactory.createTitledBorder("Contrôle par trou"));
+		add(holePanel);
+		
+		phrasePanel.add(previousButton);
+		previousButton.setIcon(new ImageIcon(previousIcon));
+		previousButton.setEnabled(false);
+		previousButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pan.pilot.previousPhrase();
+				updateButtons();
+			}
+		});
+
+		phrasePanel.add(playButton);
 		playButton.setIcon(new ImageIcon(playIcon));
 		playButton.setEnabled(false);
 		playButton.addActionListener(new ActionListener() {
@@ -54,17 +135,17 @@ public class ControlPanel extends JPanel {
 			}
 		});
 
-		add(nextButton);
+		phrasePanel.add(nextButton);
 		nextButton.setIcon(new ImageIcon(nextIcon));
 		nextButton.setEnabled(false);
 		nextButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pan.pilot.doNext();
+				pan.pilot.nextPhrase();
 				updateButtons();
 			}
 		});
 
-		add(repeatButton);
+		phrasePanel.add(repeatButton);
 		repeatButton.setIcon(new ImageIcon(repeatIcon));
 		repeatButton.setEnabled(false);
 		repeatButton.addActionListener(new ActionListener() {
@@ -74,268 +155,28 @@ public class ControlPanel extends JPanel {
 			}
 		});
 
-		JLabel goToLabel = new JLabel("Passer au trou :");
+		goToLabel = new JLabel("Passer au segment :");
 		goToLabel.setFont(goToLabel.getFont().deriveFont(Font.ITALIC));
-		add(goToLabel);
-		add(goToField);
+		phrasePanel.add(goToLabel);
+		phrasePanel.add(goToField);
 		goToField.setPreferredSize(new Dimension(40, 20));
 		goToField.setEnabled(false);
 		goToField.addActionListener(new ActionListener() {			
 			public void actionPerformed(ActionEvent e) {
-				int h;
+				int n;
 				try {
-					h = Integer.parseInt(goToField.getText()) - 1;
-					pan.pilot.goTo(h);
+					n = Integer.parseInt(goToField.getText()) - 1;
+					pan.pilot.goToPhrase(n);
 				} catch (IllegalArgumentException ex) {
-					JOptionPane.showMessageDialog(null, "Numéro de trou incorrect : " + goToField.getText());
+					JOptionPane.showMessageDialog(null, "Numéro de segment incorrect : " + goToField.getText());
 				}
 				updateButtons();
 			}
 		});
+		
+		phrasePanel.setBorder(BorderFactory.createTitledBorder("Contrôle par segment"));
+		add(phrasePanel);
 	}
-
-	// appeler avec -1 si on lance le goto avec le gotoField
-	/*public void gotoMagiqueAvancer(Panneau pan, int numeroSegment) {
-
-		int n;
-		try {
-
-			if (pan.fenetre.isResizable()) {
-				pan.pilot.doPlay();
-				return;
-			}
-
-			// on met a jour le numero de segment;
-			if (numeroSegment == -1) {
-				n = Integer.parseInt(goToField.getText()) - 1;
-				int nouveauNumeroCourant = 0;
-				for (int j = 0; j < n; j++) {
-					nouveauNumeroCourant+= pan.textHandler.motsParSegment.get(j).size();
-				}	
-				//-1 parce que l'on part de zero, +1 parce que l'on veut le segment d'après
-				pan.numeroCourant = nouveauNumeroCourant+1-1-(pan.param.premierSegment-1);
-			} else {
-				if (pan.textHandler.hasNextHoleInPhrase(pan.numeroCourant)) {
-					// n = la meme phrase
-					n = pan.pilot.getCurrentPhraseIndex();
-				} else {
-					// n = la prochaine phrase où il ya un mot à découvrir
-					n = numeroSegment;
-					String s = null;
-					while (s == null) {
-						try {
-							s = pan.textHandler.motsParSegment.get(n).get(0);
-						} catch (Exception e2) {
-							n++;
-							if (n >= pan.textHandler.getPhrasesCount()) {
-								return;
-							}
-						}
-					}
-				}
-				// on passe au mot a decouvrir suivant
-				pan.numeroCourant++;
-			}
-			// on met a jour le segment
-			pan.pilot.phrase = n;
-
-			// on desactive toutes les fenetres qui ne sont pas des masques
-			for (JInternalFrame jf : pan.getAllFrames()) {
-				if (!(jf instanceof Mask)) {
-					jf.setVisible(false);
-				}
-			}
-
-			int page = -1;
-			for (int i = 1; i <= pan.segmentsEnFonctionDeLaPage.size(); i++) {
-				if (pan.segmentsEnFonctionDeLaPage.get(i).contains(n)) {
-					page = i;
-					System.out.println("Nouvelle page : " + page + " /  Page actuelle : " + pan.pageActuelle);
-					break;
-				}
-			}
-
-			// on réécrit tous les mots dépassés
-			// et on enleve les fenetres
-			for (Mask m : pan.fenetreMasque) {
-				if (pan.getNumero(m) < pan.numeroCourant && m.page == pan.pageActuelle) {
-					System.out.println(" ( " + pan.fenetreMasque.indexOf(m) + " ) Masque numero " + pan.getNumero(m)
-							+ " est rendu INVISIBLE. Valeur : " + m.motCouvert);
-					String temp = pan.editorPane.getText();
-					String r = "";
-					char[] tab = temp.toCharArray();
-					int j = 0;
-					for (int i = 0; i < temp.length(); i++) {
-						if (i >= m.start && i < m.end) {
-							r += m.motCouvert.charAt(j);
-							j++;
-						} else {
-							r += tab[i];
-						}
-						pan.editorPane.setText(r);
-					}
-					m.setVisible(false);
-				}
-			}
-
-			// ON CHANGE DE page SI BESOIN
-			if (page != pan.pageActuelle) {
-				System.out.println("Nouvelle page = " + page);
-				pan.pilot.controler.showPage(pan.pilot.controler.getPageOfPhrase(n));
-				// on réécrit tous les mots dépassés
-				// et on enleve les fenetres
-				for (Mask m : pan.fenetreMasque) {
-					if (pan.getNumero(m) < pan.numeroCourant && m.page == page) {
-						System.out.println(" ( " + pan.fenetreMasque.indexOf(m) + " ) Masque numero " + pan.getNumero(m)
-								+ " est rendu visible. Valeur : " + m.motCouvert);
-						String temp = pan.editorPane.getText();
-						String r = "";
-						char[] tab = temp.toCharArray();
-						int j = 0;
-						for (int i = 0; i < temp.length(); i++) {
-							if (i >= m.start && i < m.end) {
-								r += m.motCouvert.charAt(j);
-								j++;
-							} else {
-								r += tab[i];
-							}
-							pan.editorPane.setText(r);
-						}
-						m.setVisible(false);
-					}
-				}
-			}
-
-			// on replace les masques visibles
-			pan.replaceAllMask();
-
-			// on interrompt la lecture et on la relance en partant du nouveau segment
-			pan.lecteur.needToDead = true;
-
-			// on reprend le lecteur
-			synchronized (pan.lecteur.lock) {
-				pan.lecteur.lock.notify();
-				pan.lecteur.notified = true;
-			}
-
-			pan.lecteur = new LectorFixFrame(pan.controlerGlobal, n);
-			pan.lecteur.start();
-
-		} catch (IllegalArgumentException ex) {
-			JOptionPane.showMessageDialog(null, "Numéro de segment incorrect : " + goToField.getText());
-		}
-		updateButtons();
-	}*/
-
-	//appeller avec -1 si l'appelleur est gotofield
-	/*private void gotoMagiqueReculer(Panneau pan, int numeroSegment) {
-
-		int n;
-		try {
-
-			if (pan.fenetre.isResizable()) {
-				pan.pilot.doPlay();
-				return;
-			}
-			if (numeroSegment == -1) {
-				n = Integer.parseInt(goToField.getText()) - 1;
-				int nouveauNumeroCourant = 0;
-				for (int j = 0; j < n; j++) {
-					nouveauNumeroCourant+= pan.textHandler.motsParSegment.get(j).size();
-				}	
-				//-1 parce que l'on part de zero, +1 parce que l'on veut le segment d'après
-				pan.numeroCourant = nouveauNumeroCourant+1-1-(pan.param.premierSegment-1);
-			} else {
-				if (pan.textHandler.hasPreviousHoleInPhrase(pan.numeroCourant)) {
-					n = pan.pilot.getCurrentPhraseIndex();
-				} else {
-					n = numeroSegment;
-					String s = null;
-					while (s == null) {
-						if (n < 0) {
-							break;
-						}
-						try {
-							s = pan.textHandler.motsParSegment.get(n).get(0);
-						} catch (Exception e2) {
-							n--;
-						}
-					}
-				}
-				pan.numeroCourant--;
-			}
-			// phrase = le numero de segment
-			pan.pilot.phrase = n;
-
-			int page = -1;
-			for (int i = 1; i <= pan.segmentsEnFonctionDeLaPage.size(); i++) {
-				if (pan.segmentsEnFonctionDeLaPage.get(i).contains(n)) {
-					page = i;
-					System.out.println("Nouvelle page : " + page + " /  Page actuelle : " + pan.pageActuelle);
-					break;
-				}
-			}
-
-			for (Mask m : pan.fenetreMasque) {
-				if (m.jtf.getBackground().equals(Color.CYAN)) {
-					m.jtf.setBackground(Color.white);
-				}
-				if (pan.getNumero(m) >= pan.numeroCourant && m.page == pan.pageActuelle) {
-					System.out.println(" ( " + pan.fenetreMasque.indexOf(m) + " ) Masque numero " + pan.getNumero(m)
-							+ " est rendu visible. Valeur : " + m.motCouvert);
-					m.setVisible(true);
-				}
-			}
-
-			// ON CHANGE DE page SI BESOIN
-			if (page != pan.pageActuelle) {
-				System.out.println("Nouvelle page = " + page);
-				pan.pilot.controler.showPage(pan.pilot.controler.getPageOfPhrase(n));
-				for (Mask m : pan.fenetreMasque) {
-					if (pan.getNumero(m) >= pan.numeroCourant && m.page == page) {
-						System.out.println(" ( " + pan.fenetreMasque.indexOf(m) + " ) Masque numero " + pan.getNumero(m)
-								+ " est rendu visible. Valeur : " + m.motCouvert);
-						m.setVisible(true);
-					} else if (m.page == page) {
-						System.out.println(" ( " + pan.fenetreMasque.indexOf(m) + " ) Masque numero " + pan.getNumero(m)
-								+ " est rendu visible. Valeur : " + m.motCouvert);
-						String temp = pan.editorPane.getText();
-						String r = "";
-						char[] tab = temp.toCharArray();
-						int j = 0;
-						for (int i = 0; i < temp.length(); i++) {
-							if (i >= m.start && i < m.end) {
-								r += m.motCouvert.charAt(j);
-								j++;
-							} else {
-								r += tab[i];
-							}
-							pan.editorPane.setText(r);
-						}
-					}
-				}
-			}
-
-			// on replace les masques visibles
-			pan.replaceAllMask();
-
-			// on interrompt la lecture et on la relance en partant du nouveau segment
-			pan.lecteur.needToDead = true;
-
-			// on reprend le lecteur
-			synchronized (pan.lecteur.lock) {
-				pan.lecteur.lock.notify();
-				pan.lecteur.notified = true;
-			}
-
-			pan.lecteur = new LectorFixFrame(pan.controlerGlobal, n);
-			pan.lecteur.start();
-
-		} catch (IllegalArgumentException ex) {
-			JOptionPane.showMessageDialog(null, "Numéro de segment incorrect : " + goToField.getText());
-		}
-		updateButtons();
-	}*/
 
 	/**
 	 * Méthode qui s'exécute lorsque les contrôles sont prêts à être effectifs.
@@ -355,6 +196,13 @@ public class ControlPanel extends JPanel {
 	 */
 	public void updateButtons() {
 		if (usable) {
+			hpreviousButton.setEnabled(pan.pilot.hasPreviousHole());
+			hplayButton.setEnabled(true);
+			hplayButton.setIcon(new ImageIcon(pan.player.isPlaying() ? pauseIcon : playIcon));
+			hnextButton.setEnabled(pan.pilot.hasNextHole());
+			hrepeatButton.setEnabled(pan.player.isPlaying());
+			hgoToField.setEnabled(true);
+			
 			previousButton.setEnabled(pan.pilot.hasPreviousHole());
 			playButton.setEnabled(true);
 			playButton.setIcon(new ImageIcon(pan.player.isPlaying() ? pauseIcon : playIcon));
@@ -362,6 +210,13 @@ public class ControlPanel extends JPanel {
 			repeatButton.setEnabled(pan.player.isPlaying());
 			goToField.setEnabled(true);
 		} else {
+			hpreviousButton.setEnabled(false);
+			hplayButton.setEnabled(false);
+			hplayButton.setIcon(new ImageIcon(playIcon));
+			hnextButton.setEnabled(false);
+			hrepeatButton.setEnabled(false);
+			hgoToField.setEnabled(false);
+
 			previousButton.setEnabled(false);
 			playButton.setEnabled(false);
 			playButton.setIcon(new ImageIcon(playIcon));
