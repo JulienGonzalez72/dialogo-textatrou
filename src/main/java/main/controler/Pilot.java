@@ -2,6 +2,11 @@ package main.controler;
 
 import main.Constants;
 import main.model.*;
+import main.reading.ReaderAllHoleFF;
+import main.reading.ReaderAllHoleUF;
+import main.reading.ReaderOneHoleFF;
+import main.reading.ReaderOneHoleUF;
+import main.reading.ReaderThread;
 import main.view.Panneau;
 
 public class Pilot {

@@ -1,4 +1,4 @@
-package main.model;
+package main.reading;
 
 import main.controler.ControlerText;
 

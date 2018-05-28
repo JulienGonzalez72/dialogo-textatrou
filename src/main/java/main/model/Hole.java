@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Hole {
 	
-	private enum State {HIDED, FILLED}
+	private enum State {HIDDEN, FILLED}
 	
 	private State state;
 	private String word;
@@ -17,7 +17,7 @@ public class Hole {
 	
 	public Hole(String word) {
 		this.word = word;
-		this.state = State.HIDED;
+		this.state = State.HIDDEN;
 	}
 	
 	public void fill() {
@@ -25,11 +25,11 @@ public class Hole {
 	}
 	
 	public void hide() {
-		state = State.HIDED;
+		state = State.HIDDEN;
 	}
 	
 	public boolean isHidden() {
-		return state == State.HIDED;
+		return state == State.HIDDEN;
 	}
 	
 	private int holeLength() {
@@ -55,7 +55,7 @@ public class Hole {
 	public String toString() {
 		String str = "";
 		switch (state) {
-			case HIDED :
+			case HIDDEN :
 				for (int i = 0; i < holeLength(); i++) {
 					str += '_';//'\u00a0';
 				}
