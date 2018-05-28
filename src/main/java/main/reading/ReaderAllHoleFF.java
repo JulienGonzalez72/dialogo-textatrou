@@ -3,7 +3,7 @@ package main.reading;
 import java.awt.Color;
 import main.controler.ControlerText;
 
-public class ReaderAllHoleFF extends HoleThread{
+public class ReaderAllHoleFF extends HoleThread {
 
 	public ReaderAllHoleFF(ControlerText controler, int h) {
 		super(controler, h);
@@ -18,15 +18,21 @@ public class ReaderAllHoleFF extends HoleThread{
 		// active la fenêtre de saisie avec le trou actuel
 		controler.activateInputFenetreFixe(h);
 
-		if (needToDead) {return;}
+		if (needToDead) {
+			return;
+		}
 
 		// tant que la saisie n'est pas juste
 		while (!controler.waitForFillFenetreFixe(h)) {
-			if (needToDead) {return;}
+			if (needToDead) {
+				return;
+			}
 			controler.doError();
 		}
 
-		if (needToDead) {return;}
+		if (needToDead) {
+			return;
+		}
 
 		// désactiver la fenêtre de saisie
 		controler.desactiverFenetreFixe();

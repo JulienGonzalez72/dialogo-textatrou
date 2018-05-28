@@ -1,6 +1,12 @@
 #Sauvegarde
+<<<<<<< HEAD
 #Mon May 28 15:19:12 CEST 2018
+=======
+#Mon May 28 15:04:25 CEST 2018
+>>>>>>> ddf4b5d0b5355e3a5dbb4aaf8207b935139b2389
 couleurJuste=255/255/150
+sizeParamY=965
+sizeParamX=1661
 taillePolice=42
 tempsApparitionMot=999
 surlignage=false

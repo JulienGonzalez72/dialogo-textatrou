@@ -14,6 +14,10 @@ public class Parametres {
 	public String title;
 	public int sizeX;
 	public int sizeY;
+	
+	public int sizeParamX;
+	public int sizeParamY;
+	
 	public int firstPhrase = 1;
 	public int timeToWaitToLetStudentRepeat;
 	public int timeToShowWord;
@@ -40,6 +44,8 @@ public class Parametres {
 		Properties prop = new Properties();
 		prop.put("w", String.valueOf(panWidth));
 		prop.put("h", String.valueOf(panHeight));
+		prop.put("sizeParamX", String.valueOf(sizeParamX));
+		prop.put("sizeParamY", String.valueOf(sizeParamY));
 		prop.put("x", String.valueOf(panX));
 		prop.put("y", String.valueOf(panY));
 		prop.put("taillePolice", String.valueOf(police.getSize()));
@@ -108,6 +114,9 @@ public class Parametres {
 		if (police.equals("Lexia")) {
 			index = 2;
 		}
+
+		p.sizeParamX = Integer.valueOf(pro.getProperty("sizeParamX"));
+		p.sizeParamY = Integer.valueOf(pro.getProperty("sizeParamY"));
 		p.timeToShowWord = Integer.valueOf(pro.getProperty("tempsApparitionMot"));
 		p.police = ControleurParam.getFont(police, index, Font.BOLD, taillePolice);
 		p.bgColor = fromStringToColor(pro.getProperty("couleurFond"));
