@@ -9,14 +9,17 @@ public class ReaderAllHoleUF extends HoleThread {
 	}
 	
 	public void run() {
+<<<<<<< HEAD
 
 			/// affiche la page correspondante ///
 			int page = controler.getPageOf(h);
 			//controler.showPage(page);
+=======
+>>>>>>> 58c894f64c32c06489c8c96c88e66cf27cca2976
 			
 			/// valide tous les trous de la page avant le trou actuel ///
 			for (int i = 0; i < h; i++) {
-				if (controler.getPageOf(i) == page) {
+				if (controler.getPageOf(i) == controler.getPageOf(h)) {
 					controler.fillHole(i);
 				}
 			}
@@ -33,7 +36,7 @@ public class ReaderAllHoleUF extends HoleThread {
 			/// attends une saisie de l'utilisateur ///
 			while (!controler.waitForFill(h)) {
 				if (needToDead) {return;}
-				controler.doError();
+				controler.doError(h);
 			}
 
 			if (needToDead) {return;}

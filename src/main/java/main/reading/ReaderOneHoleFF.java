@@ -12,7 +12,7 @@ public class ReaderOneHoleFF extends HoleThread {
 
 		controler.desactiverFenetreFixe();
 
-		showPage(h);
+		replaceHoleOfPage(h);
 
 		// on montre uniquement le trou actuel
 		controler.showJustHole(h);
@@ -28,7 +28,7 @@ public class ReaderOneHoleFF extends HoleThread {
 			if (needToDead) {
 				return;
 			}
-			controler.doError();
+			controler.doError(h);
 		}
 
 		if (needToDead) {
@@ -48,12 +48,11 @@ public class ReaderOneHoleFF extends HoleThread {
 	}
 
 	/**
-	 * Montre la page du trou h Remplace tous les trous de la page par le bon mot
+	 * Remplace tous les trous de la page par le bon mot
 	 * 
 	 * @param h
 	 */
-	public void showPage(int h) {
-		controler.showPage(controler.getPageOf(h));
+	public void replaceHoleOfPage(int h) {
 		for (int i = 0; i < controler.getPhrasesCount(); i++) {
 			if (controler.getPageOf(i) == controler.getPageOf(h)) {
 				controler.replaceMaskByWord(i);

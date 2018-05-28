@@ -12,7 +12,6 @@ import main.reading.ReaderAllHoleFF;
 import main.reading.ReaderAllHoleUF;
 import main.reading.ReaderOneHoleFF;
 import main.reading.ReaderOneHoleUF;
-import main.reading.ReaderThread;
 import main.view.Mask;
 import main.view.Panneau;
 
@@ -45,6 +44,12 @@ public class ControlerText {
 	 * Affiche le compte rendu
 	 */
 	public void showReport() {
+		blink(Color.BLUE);
+		blink(Color.RED);
+		blink(Color.ORANGE);
+		blink(Color.PINK);
+		blink(Color.WHITE);
+		blink(Color.YELLOW);
 		p.afficherCompteRendu();
 	}
 
@@ -254,8 +259,8 @@ public class ControlerText {
 		p.removeAllMasks();
 	}
 
-	public void blink() {
-		p.blink();
+	public void blink(Color c) {
+		p.blink(c);
 	}
 
 	/**
@@ -315,16 +320,16 @@ public class ControlerText {
 
 	}
 
-	public void doError() {
-		blink();
+	public void doError(int h) {
+		blink(Constants.ALERT_COLOR);
 		p.nbErreurs++;
 		//on reaffiche le hint
 		if(p.param.fixedField) {
 			getFenetreFixe().jtf.setText("");	
 			hint(getFenetreFixe());
 		} else {
-			getMask(p.pilot.getCurrentHoleIndex()).jtf.setText("");
-			hint(getMask(p.pilot.getCurrentHoleIndex()));
+			getMask(h).jtf.setText("");
+			hint(getMask(h));
 		}
 		if(p.param.replayPhrase) {
 			play(p.pilot.getCurrentPhraseIndex());

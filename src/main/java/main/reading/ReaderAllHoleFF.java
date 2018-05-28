@@ -27,7 +27,7 @@ public class ReaderAllHoleFF extends HoleThread {
 			if (needToDead) {
 				return;
 			}
-			controler.doError();
+			controler.doError(h);
 		}
 
 		if (needToDead) {
