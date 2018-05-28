@@ -214,7 +214,6 @@ public class ControlerText {
 	}
 
 	public boolean waitForFillFenetreFixe(int h) {
-
 		Mask m = getFenetreFixe();
 		m.activate();
 		hint(m);

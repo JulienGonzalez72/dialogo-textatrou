@@ -29,6 +29,8 @@ public class Pilot {
 		if (h < 0 || h >= p.textHandler.getHolesCount()) {
 			throw new IllegalArgumentException("Numéro de trou invalide : " + h);
 		}
+		
+		p.fenetre.setResizable(false);
 
 		hole = h;
 		/// désacive la taille et la police et le segment de départ
@@ -52,6 +54,8 @@ public class Pilot {
 			}
 		});
 		activeThread.start();
+		
+		p.controlerGlobal.updateHG(hole);
 	}
 	
 	/**
