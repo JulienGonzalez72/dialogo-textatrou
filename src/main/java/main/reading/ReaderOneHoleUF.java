@@ -9,6 +9,15 @@ public class ReaderOneHoleUF extends ReaderThread {
 	}
 	
 	public void run() {
+		controler.removeAllMasks();
+		while (!controler.hasHole(n) && !needToDead) {
+			controler.readPhrase(n);
+			n++;
+		}
+		if (needToDead) {
+			return;
+		}
+		h = controler.getFirstHole(n);
 		while (h < controler.getHolesCount() - 1 && !needToDead) {
 			/// affiche la page correspondante ///
 			int page = controler.getPageOf(h);

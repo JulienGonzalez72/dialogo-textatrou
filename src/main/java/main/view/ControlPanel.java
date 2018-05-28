@@ -108,7 +108,7 @@ public class ControlPanel extends JPanel {
 		});
 		
 		holePanel.setBorder(BorderFactory.createTitledBorder("Contrôle par trou"));
-		add(holePanel);
+		//add(holePanel);
 		
 		phrasePanel.add(previousButton);
 		previousButton.setIcon(new ImageIcon(previousIcon));

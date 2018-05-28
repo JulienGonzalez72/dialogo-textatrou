@@ -49,8 +49,8 @@ public final class Constants {
 	public static final int MIN_WAIT_TIME_PERCENT = 0;
 	public static final int MAX_WAIT_TIME_PERCENT = 300;
 	public static final int DEFAULT_WAIT_TIME_PERCENT = 0;
-	public static final int PARAM_FRAME_HEIGHT = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height*8/10;
-	public static final int PARAM_FRAME_WIDTH = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width*3/11;
+	public static final int PARAM_FRAME_HEIGHT = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height*9/10;
+	public static final int PARAM_FRAME_WIDTH = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width*4/11;
 	public static final String PARAM_FRAME_TITLE = "Dialogo by roman and julien";
 	public static final boolean LOAD_FIRST_PHRASE = false;
 
@@ -158,6 +158,8 @@ public final class Constants {
 	}
 	
 	public static final String SHOW_MORE_COLORS_TEXT = "Autre couleur...";
+	
+	public static final Color HINT_COLOR = new Color(100, 100, 100);
 	
 	public static final String[] FONT_FAMILIES = {"OpenDyslexic", "Andika", "Lexia", "Arial", "Times New Roman"};
 	
