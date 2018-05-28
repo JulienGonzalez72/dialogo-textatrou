@@ -1,8 +1,6 @@
 package main.controler;
 
-import java.awt.Color;
 import main.Constants;
-import main.model.*;
 import main.reading.ReaderAllHoleFF;
 import main.reading.ReaderAllHoleUF;
 import main.reading.ReaderOneHoleFF;

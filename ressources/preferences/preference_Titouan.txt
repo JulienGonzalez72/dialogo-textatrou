@@ -1,8 +1,8 @@
 #Sauvegarde
-#Mon May 28 10:47:21 CEST 2018
+#Mon May 28 11:15:33 CEST 2018
 couleurJuste=0/255/0
 taillePolice=42
-tempsApparitionMot=792
+tempsApparitionMot=200
 surlignage=true
 typePolice=Times New Roman Gras
 h=530

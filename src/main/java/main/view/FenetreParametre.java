@@ -69,6 +69,7 @@ public class FenetreParametre extends JFrame {
 		public final Object[] fontFamilies;
 		public FenetreParametre fen;
 
+		@SuppressWarnings("unchecked")
 		public PanneauParam(FenetreParametre fen) throws NumberFormatException, IOException {
 			this.fen = fen;
 			setLayout(new BorderLayout());
@@ -209,7 +210,7 @@ public class FenetreParametre extends JFrame {
 			timeToShowWord.setPaintLabels(true);
 			timeToShowWord.setMinorTickSpacing(40);
 			timeToShowWord.setMajorTickSpacing(200);
-			Dictionary<Integer, JComponent> labels = timeToShowWord.getLabelTable();
+			Dictionary<Integer, JLabel> labels = timeToShowWord.getLabelTable();
 			labels.put(Constants.MAX_APPARITION_TIME, fastLabel("Illimité"));
 			timeToShowWord.setLabelTable(labels);
 			timeToShowWord.addChangeListener(controleur);
@@ -370,10 +371,22 @@ public class FenetreParametre extends JFrame {
 			fenetre.pan.panelSud.setLayout(new GridLayout(1, 1));
 			fenetre.pan.panelSud.add(fenetre.pan.progressBar);
 		}
+		
+		updateOptionsEnabled(false);
 
-		fenetre.pan.add(fenetre.pan.panelSud, BorderLayout.SOUTH);
+		fenetre.pan.panelSud.setVisible(true);
 		fenetre.start();
 
+	}
+
+	private void updateOptionsEnabled(boolean etat) {
+		pan.segmentDeDepart.setEnabled(etat);
+		pan.oneHole.setEnabled(etat);
+		pan.surlignage.setEnabled(etat);
+		pan.fixedField.setEnabled(etat);
+		pan.waitSlider.setEnabled(etat);
+		pan.replayPhrase.setEnabled(etat);
+		pan.timeToShowWord.setEnabled(etat);
 	}
 
 	public JMenuItem eMenuItem2;
@@ -409,6 +422,7 @@ public class FenetreParametre extends JFrame {
 	}
 
 	public void stopExercice() {
+		updateOptionsEnabled(true);
 		fenetre.pan.nbErreurs = 0;
 		fenetre.pan.numeroCourant = 0;
 		eMenuItem2.setEnabled(false);

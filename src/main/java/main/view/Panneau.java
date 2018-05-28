@@ -61,7 +61,7 @@ public class Panneau extends JDesktopPane {
 		this.param = param;
 		this.fenetreParam = fenetreParam;
 		this.controlerGlobal = new ControlerText(this);
-		this.controlerMask = new ControlerMask(this);
+		this.controlerMask = new ControlerMask();
 		this.fenetre = fenetre;
 		this.pilot = new Pilot(this);
 		String texteCesures = getTextFromFile("ressources/textes/" + Constants.TEXT_FILE_NAME);
@@ -88,6 +88,9 @@ public class Panneau extends JDesktopPane {
 		progressBar = new JProgressBar(0, (textHandler.getHolesCount()));
 		progressBar.setStringPainted(true);
 		progressBar.setForeground(Color.GREEN);
+		
+		add(panelSud, BorderLayout.SOUTH);
+		panelSud.setVisible(false);
 
 	}
 
