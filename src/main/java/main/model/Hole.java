@@ -33,7 +33,8 @@ public class Hole {
 	}
 	
 	private int holeLength() {
-		return word.length() + 3 - word.length() % 3;
+		return word.length();
+		//return word.length() + 3 - word.length() % 3;
 	}
 	
 	public String getHidedWord() {

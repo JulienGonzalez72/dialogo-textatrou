@@ -18,6 +18,9 @@ public abstract class ReaderThread extends Thread {
 	public ReaderThread(ControlerText controler, int h) {
 		this.controler = controler;
 		this.h = h;
+		
+		controler.updateHG(h);
+		
 	}
 	
 	public abstract void run();

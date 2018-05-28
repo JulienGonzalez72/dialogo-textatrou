@@ -31,7 +31,7 @@ public class ControlerText {
 	public boolean isFirstInPhrase(int h) {
 		return !p.textHandler.hasPreviousHoleInPhrase(h);
 	}
-	
+
 	public boolean isLastInPhrase(int h) {
 		return !p.textHandler.hasNextHoleInPhrase(h);
 	}
@@ -150,13 +150,13 @@ public class ControlerText {
 			}
 		}
 	}
-	
+
 	private void showHole(int h) {
 		/// on cache le trou avant de montrer la fenêtre ///
 		hideHole(h);
-		
+
 		int startPhrase = p.segmentsEnFonctionDeLaPage.get(getPageOf(h)).get(0);
-		
+
 		int start = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleStartOffset(h));
 		int end = p.textHandler.getRelativeOffset(startPhrase, p.textHandler.getHoleEndOffset(h));
 
@@ -217,10 +217,10 @@ public class ControlerText {
 	public boolean waitForFillFenetreFixe(int h) {
 
 		Mask m = getFenetreFixe();
-		
+
 		while (true) {
-			
-			if(getFenetreFixe() != m) {
+
+			if (getFenetreFixe() != m) {
 				return true;
 			}
 
@@ -257,7 +257,7 @@ public class ControlerText {
 	public void color(int h, Color c) {
 		getMask(h).jtf.setBackground(c);
 	}
-	
+
 	public Color getColorBackground() {
 		return p.editorPane.getBackground();
 	}
@@ -289,8 +289,9 @@ public class ControlerText {
 
 		JTextField jtf = new JTextField();
 		Font f = new Font(p.editorPane.getFont().getFontName(), p.editorPane.getFont().getStyle(),
-				p.editorPane.getFont().getSize() / 2);
+				p.editorPane.getFont().getSize() * 7 / 10);
 		jtf.setFont(f);
+
 		jtf.setHorizontalAlignment(JTextField.CENTER);
 		jtf.addActionListener(p.controlerMask);
 
@@ -302,7 +303,7 @@ public class ControlerText {
 		frame.setVisible(true);
 		jtf.setEnabled(true);
 		jtf.requestFocus();
-		
+
 		p.fenetreFixe = frame;
 
 	}
@@ -323,7 +324,7 @@ public class ControlerText {
 	}
 
 	public void replaceMaskByWord(int h) {
-		
+
 		Mask m = getMask(h);
 		if (m == null) {
 			fillHole(h);
@@ -341,9 +342,9 @@ public class ControlerText {
 		}
 
 		p.editorPane.setText(temp);
-		
+
 		m.setVisible(false);
-		
+
 		p.replaceAllMask();
 
 	}
@@ -358,7 +359,7 @@ public class ControlerText {
 			p.replaceAllMask();
 		}
 	}
-	
+
 	/**
 	 * Cache le trou h.
 	 */
@@ -384,7 +385,6 @@ public class ControlerText {
 		doWait(getCurrentWaitTime(), Constants.CURSOR_LISTEN);
 	}
 
-	
 	/**
 	 * Retourne <code>true</code> si le segment n contient au moins un trou.
 	 */
@@ -392,9 +392,45 @@ public class ControlerText {
 		return getHolesCount(n) > 0;
 	}
 
+	/**
+	 * Desaffiche tous les trous puis montre uniquement le trou h
+	 */
 	public void showJustHole(int h) {
 		removeAllMasks();
-		showHole(h);	
+		showHole(h);
+	}
+
+	/**
+	 * Surligne tout depuis le début de la page jusqu'au segment de phrase indiqué.
+	 */
+	public void highlightUntilPhrase(Color c, int n) {
+		p.surlignerJusquaSegment(c, n);
+	}
+
+	/**
+	 * Colorie le segment numero n en couleur c
+	 */
+	public void highlightPhrase(Color c, int n) {
+		if (p.textHandler.getPhrase(n) != null) {
+			int debutRelatifSegment = p.textHandler.getRelativeStartPhrasePosition(p.getNumeroPremierSegmentAffiché(),
+					n);
+			int finRelativeSegment = debutRelatifSegment + p.textHandler.getPhrase(n).length();
+			p.editorPane.surlignerPhrase(debutRelatifSegment, finRelativeSegment, c);
+		}
+	}
+
+	/**
+	 * Supprime le surlignage qui se trouve sur le segment n. Ne fait rien si ce
+	 * segment n'est pas surligné.
+	 */
+	public void removeHighlightPhrase(int n) {
+		int debutRelatifSegment = p.textHandler.getRelativeStartPhrasePosition(p.getNumeroPremierSegmentAffiché(), n);
+		int finRelativeSegment = debutRelatifSegment + p.textHandler.getPhrase(n).length();
+		p.editorPane.removeHighlight(debutRelatifSegment, finRelativeSegment);
+	}
+
+	public void updateHG(int h) {
+		p.updateHG(h);
 	}
 
 }

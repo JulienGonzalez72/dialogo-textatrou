@@ -51,6 +51,7 @@ public class ReaderAllHoleUF extends ReaderThread {
 		}
 		/// à la fin, affiche le compte rendu ///
 		if (h == controler.getHolesCount() - 1 && !needToDead) {
+			controler.removeAllMasks();
 			controler.showReport();
 		}
 	}

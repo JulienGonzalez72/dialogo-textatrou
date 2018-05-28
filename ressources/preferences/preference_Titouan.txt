@@ -1,12 +1,14 @@
 #Sauvegarde
 #Mon May 28 09:35:47 CEST 2018
+couleurJuste=0/255/0
 taillePolice=42
+surlignage=true
 typePolice=Times New Roman Gras
 h=530
 tempsAttente=0
-oneHole=false
+oneHole=true
 y=80
 x=548
 w=1007
-fenetreFixe=false
+fenetreFixe=true
 couleurFond=255/255/150

@@ -104,7 +104,7 @@ public class Panneau extends JDesktopPane {
 		editorPane.setFont(param.police);
 		pageActuelle = 0;
 		nbEssaisRestantPourLeSegmentCourant = nbEssaisParSegment = param.mysterCarac;
-		
+
 		/// construit la mise en page virtuelle ///
 		rebuildPages();
 
@@ -207,15 +207,16 @@ public class Panneau extends JDesktopPane {
 				e.printStackTrace();
 			} catch (NullPointerException e) {
 			}
-			int off = textHandler.getAbsoluteOffset(lastPhrase,
-					editorPane.viewToModel(new Point((int) (editorPane.getWidth() - Constants.TEXTPANE_MARGING),
-							(int) (editorPane.getHeight() - h -( param.fixedField ? panelFenetreFixe.getHeight() : 0)))));
+			int off = textHandler.getAbsoluteOffset(lastPhrase, editorPane.viewToModel(new Point(
+					(int) (editorPane.getWidth() - Constants.TEXTPANE_MARGING),
+					(int) (editorPane.getHeight() - h - (param.fixedField ? panelFenetreFixe.getHeight() : 0)))));
 			for (int i = lastOffset; i < off; i++) {
 				int phraseIndex = textHandler.getPhraseIndex(i);
 				if (phraseIndex == -1) {
 					lastOffset = textHandler.getShowText().length();
 				}
-				if (!phrases.contains(phraseIndex) && phraseIndex > lastPhrase && phraseIndex != textHandler.getPhraseIndex(off)) {
+				if (!phrases.contains(phraseIndex) && phraseIndex > lastPhrase
+						&& phraseIndex != textHandler.getPhraseIndex(off)) {
 					lastPhrase = phraseIndex;
 					phrases.add(phraseIndex);
 					lastOffset = i;
@@ -255,12 +256,12 @@ public class Panneau extends JDesktopPane {
 		fenetre.setTitle("Lexidia - Texte à Trou - Page " + page);
 		updateText();
 	}
-	
+
 	public void updateText() {
 		String texteAfficher = "";
 		// on recupere les segments a afficher dans la page
 		List<String> liste = new ArrayList<String>();
-		
+
 		for (Integer i : segmentsEnFonctionDeLaPage.get(pageActuelle)) {
 			liste.add(textHandler.getPhrase(i));
 		}
@@ -268,6 +269,10 @@ public class Panneau extends JDesktopPane {
 			texteAfficher += string;
 		}
 		editorPane.setText(texteAfficher);
+
+		if (editorPane.lastPhraseToHG != -1) {
+			controlerGlobal.highlightUntilPhrase(param.rightColor, editorPane.lastPhraseToHG);
+		}
 	}
 
 	public boolean pageFinis() {
@@ -444,5 +449,23 @@ public class Panneau extends JDesktopPane {
 		fenetreMasque.clear();
 	}
 
+	/**
+	 * Colorie tout jusqu'au segment n en couleur c
+	 */
+	public void surlignerJusquaSegment(Color c, int n) {
+		if (textHandler.getPhrase(n) != null) {
+			int debutRelatifSegment = textHandler.getRelativeStartPhrasePosition(getNumeroPremierSegmentAffiché(), n);
+			int finRelativeSegment = debutRelatifSegment + textHandler.getPhrase(n).length();
+			editorPane.surlignerPhrase(0, finRelativeSegment, param.rightColor);
+		}
+	}
+
+	public void updateHG(int h) {
+		int n = controlerGlobal.getPhraseOf(h);
+		if (param.surlignage) {
+			editorPane.lastPhraseToHG = n - 1;
+		}
+
+	}
 
 }
