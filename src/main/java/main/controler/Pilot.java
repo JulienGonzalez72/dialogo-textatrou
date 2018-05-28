@@ -1,15 +1,7 @@
 package main.controler;
 
 import main.Constants;
-<<<<<<< HEAD
 import main.reading.*;
-=======
-import main.reading.ReaderAllHoleFF;
-import main.reading.ReaderAllHoleUF;
-import main.reading.ReaderOneHoleFF;
-import main.reading.ReaderOneHoleUF;
-import main.reading.ReaderThread;
->>>>>>> d6c126f0c25f8e5f4bf706544c7d360d9e49c98b
 import main.view.Panneau;
 
 public class Pilot {
@@ -66,21 +58,31 @@ public class Pilot {
 	 * Se place sur le segment n et démarre le lecteur.
 	 */
 	public void goToPhrase(int n) {
-		while (!p.textHandler.hasHole(n)) {
-			new PhraseThread(n).start();
-			n++;
+		if (activeThread != null) {
+			activeThread.doStop();
 		}
-		int h = p.textHandler.getFirstHole(n);
-		goTo(h);
+		activeThread = new PhraseThread(n);
+		activeThread.start();
 	}
 	
-	private class PhraseThread extends Thread {
+	/**
+	 * Lecteur de segments sans trous, lance un lecteur de trous dès qu'il rencontre un segment avec au moins un trou.
+	 */
+	private class PhraseThread extends ReaderThread {
 		private int n;
 		public PhraseThread(int n) {
+			super(p.controlerGlobal, -1);
 			this.n = n;
 		}
-		public void run() {			
-			controler.readPhrase(n);
+		public void run() {
+			while (!p.textHandler.hasHole(n) && !needToDead) {
+				controler.readPhrase(n);
+				n++;
+			}
+			int h = p.textHandler.getFirstHole(n);
+			if (!needToDead) {
+				goTo(h);
+			}
 		}
 	}
 
@@ -129,11 +131,11 @@ public class Pilot {
 	}
 	
 	public void nextPhrase() {
-		goToPhrase(controler.getPhraseOf(hole) + 1);
+		goToPhrase(getCurrentPhraseIndex() + 1);
 	}
 	
 	public void previousPhrase() {
-		goToPhrase(controler.getPhraseOf(hole) - 1);
+		goToPhrase(getCurrentPhraseIndex() - 1);
 	}
 	
 	public int getCurrentPhraseIndex() {
