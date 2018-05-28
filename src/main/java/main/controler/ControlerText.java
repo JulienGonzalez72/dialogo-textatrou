@@ -204,7 +204,7 @@ public class ControlerText {
 			return true;
 		m.activate();
 		if(p.param.timeToShowWord == -1) {
-			//m.setHint();
+			m.setHint();
 		} else {
 			m.setHint(p.param.timeToShowWord*m.getNbCarac());
 		}

@@ -1,11 +1,15 @@
 package main.controler;
 
 import main.Constants;
+<<<<<<< HEAD
+import main.reading.*;
+=======
 import main.reading.ReaderAllHoleFF;
 import main.reading.ReaderAllHoleUF;
 import main.reading.ReaderOneHoleFF;
 import main.reading.ReaderOneHoleUF;
 import main.reading.ReaderThread;
+>>>>>>> d6c126f0c25f8e5f4bf706544c7d360d9e49c98b
 import main.view.Panneau;
 
 public class Pilot {
@@ -50,12 +54,34 @@ public class Pilot {
 		activeThread = getReaderThread(h);
 		activeThread.onHoleEnd.add(new Runnable() {
 			public void run() {
-				controler.updateHG(hole+1);
+				controler.updateHG(hole + 1);
 				hole = activeThread.h;
 				p.updateBar(hole);
 			}
 		});
 		activeThread.start();
+	}
+	
+	/**
+	 * Se place sur le segment n et démarre le lecteur.
+	 */
+	public void goToPhrase(int n) {
+		while (!p.textHandler.hasHole(n)) {
+			new PhraseThread(n).start();
+			n++;
+		}
+		int h = p.textHandler.getFirstHole(n);
+		goTo(h);
+	}
+	
+	private class PhraseThread extends Thread {
+		private int n;
+		public PhraseThread(int n) {
+			this.n = n;
+		}
+		public void run() {			
+			controler.readPhrase(n);
+		}
 	}
 
 	public ReaderThread getReaderThread(int h) {
@@ -101,7 +127,15 @@ public class Pilot {
 	public void doPlay() {
 		goTo(hole);
 	}
-
+	
+	public void nextPhrase() {
+		goToPhrase(controler.getPhraseOf(hole) + 1);
+	}
+	
+	public void previousPhrase() {
+		goToPhrase(controler.getPhraseOf(hole) - 1);
+	}
+	
 	public int getCurrentPhraseIndex() {
 		return p.player.getCurrentPhraseIndex();
 	}
@@ -113,9 +147,13 @@ public class Pilot {
 	public boolean isPlaying() {
 		return p.player.isPlaying();
 	}
-
+	
 	public boolean hasPreviousPhrase() {
 		return p.player.hasPreviousPhrase();
+	}
+	
+	public boolean hasNextPhrase() {
+		return p.player.hasNextPhrase();
 	}
 
 	public boolean hasPreviousHole() {

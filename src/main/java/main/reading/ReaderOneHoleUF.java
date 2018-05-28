@@ -9,8 +9,6 @@ public class ReaderOneHoleUF extends ReaderThread {
 	}
 	
 	public void run() {
-		
-		
 		while (h < controler.getHolesCount() - 1 && !needToDead) {
 			/// affiche la page correspondante ///
 			int page = controler.getPageOf(h);

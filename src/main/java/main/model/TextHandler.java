@@ -353,14 +353,17 @@ public class TextHandler {
 	}
 	
 	/**
+	 * Retourne <code>true</code> si le segment indiqué contient au moins un trou.
+	 */
+	public boolean hasHole(int phrase) {
+		return getFirstHole(phrase) >= 0;
+	}
+	
+	/**
 	 * Retourne le mot associé au trou indiqué.
 	 */
 	public String getHidedWord(int hole) {
 		return holes.get(hole).getHidedWord();
-	}
-	
-	public boolean isHole(int offset) {
-		return getShowText().charAt(offset) == '_';
 	}
 	
 	public int getHidedWordLength(int h) {
