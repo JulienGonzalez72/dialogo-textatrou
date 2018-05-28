@@ -1,16 +1,16 @@
 #Sauvegarde
-#Mon May 28 11:46:46 CEST 2018
-couleurJuste=0/255/0
+#Mon May 28 11:50:56 CEST 2018
+couleurJuste=147/112/219
 taillePolice=42
-tempsApparitionMot=200
+tempsApparitionMot=999
 surlignage=true
 typePolice=Times New Roman Gras
-h=622
+h=1038
 tempsAttente=0
 oneHole=true
-y=115
-x=643
-w=800
-rejouerSon=true
-fenetreFixe=true
-couleurFond=255/255/150
+y=0
+x=952
+w=976
+rejouerSon=false
+fenetreFixe=false
+couleurFond=1/215/88
