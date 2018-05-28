@@ -38,8 +38,6 @@ public class TextHandler {
 
 	Parametres param;
 
-	public int lastPhraseToHG = -1;
-
 	public TextHandler(String texteOriginal, Parametres param) {
 		this.originText = texteOriginal;
 		this.param = param;

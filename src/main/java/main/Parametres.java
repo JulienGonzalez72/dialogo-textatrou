@@ -16,9 +16,11 @@ public class Parametres {
 	public int sizeY;
 	public int firstPhrase = 1;
 	public int timeToWaitToLetStudentRepeat;
+	public int timeToShowWord;
 	public boolean fixedField = true;
 	public int panWidth, panHeight, panX, panY;
 	public boolean highlight;
+	public boolean replayPhrase;
 	public Color rightColor = Color.green;
 
 	public Parametres() {
@@ -44,11 +46,13 @@ public class Parametres {
 		prop.put("typePolice", police.getFontName());
 		prop.put("couleurFond", fromColorToString(bgColor));
 		prop.put("couleurJuste", fromColorToString(rightColor));
+		prop.put("tempsApparitionMot", String.valueOf(timeToShowWord));
 		prop.put("tempsAttente", String.valueOf(timeToWaitToLetStudentRepeat));
 		prop.put("fenetreFixe", String.valueOf(fixedField));
 		//prop.put("premierSegment", String.valueOf(premierSegment));
 		prop.put("oneHole", String.valueOf(oneHole));
 		prop.put("surlignage", String.valueOf(highlight));
+		prop.put("rejouerSon", String.valueOf(replayPhrase));
 		String fichier = "./ressources/preferences/preference_" + Constants.NAME_STUDENT + ".txt";
 		OutputStream ops = null;
 		try {
@@ -104,6 +108,7 @@ public class Parametres {
 		if (police.equals("Lexia")) {
 			index = 2;
 		}
+		p.timeToShowWord = Integer.valueOf(pro.getProperty("tempsApparitionMot"));
 		p.police = ControleurParam.getFont(police, index, Font.BOLD, taillePolice);
 		p.bgColor = fromStringToColor(pro.getProperty("couleurFond"));
 		p.rightColor = fromStringToColor(pro.getProperty("couleurJuste"));
@@ -116,7 +121,7 @@ public class Parametres {
 		p.fixedField = Boolean.valueOf(pro.getProperty("fenetreFixe"));
 		p.oneHole = Boolean.valueOf(pro.getProperty("oneHole"));
 		p.highlight = Boolean.valueOf(pro.getProperty("surlignage"));
-		
+		p.replayPhrase = Boolean.valueOf(pro.getProperty("rejouerSon"));		
 		return p;
 	}
 

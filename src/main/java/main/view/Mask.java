@@ -95,5 +95,9 @@ public class Mask extends JInternalFrame {
 			repaint();
 		}
 	}
+
+	public int getNbCarac() {
+		return motCouvert.length();
+	}
 	
 }

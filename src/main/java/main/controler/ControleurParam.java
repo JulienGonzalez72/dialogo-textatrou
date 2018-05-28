@@ -88,13 +88,6 @@ public class ControleurParam implements ActionListener, ChangeListener {
 		return null;
 	}
 
-	@Override
-	public void stateChanged(ChangeEvent arg0) {
-		if (arg0.getSource() == panneau.waitSlider) {
-			param.timeToWaitToLetStudentRepeat = panneau.waitSlider.getValue();
-		}
-	}
-
 	/**
 	 * Retourne vrai si : - Aucune couleur n'est sélectionnée en double - Les champs
 	 * saisies sont cohérents
@@ -155,6 +148,11 @@ public class ControleurParam implements ActionListener, ChangeListener {
 			}
 		}
 		return r;
+	}
+
+	@Override
+	public void stateChanged(ChangeEvent arg0) {
+		
 	}
 
 }

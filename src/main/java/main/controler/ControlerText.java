@@ -204,7 +204,11 @@ public class ControlerText {
 		if (m == null)
 			return true;
 		m.activate();
-		m.setHint(1000);
+		if(p.param.timeToShowWord == -1) {
+			//m.setHint();
+		} else {
+			m.setHint(p.param.timeToShowWord*m.getNbCarac());
+		}
 		p.controlerMask.enter = false;
 		while (true) {
 			Thread.yield();
@@ -217,7 +221,12 @@ public class ControlerText {
 	public boolean waitForFillFenetreFixe(int h) {
 
 		Mask m = getFenetreFixe();
-
+		m.activate();
+		if(p.param.timeToShowWord == -1) {
+			//m.setHint();
+		} else {
+			m.setHint(p.param.timeToShowWord*m.getNbCarac());
+		}
 		while (true) {
 
 			if (getFenetreFixe() != m) {
@@ -287,22 +296,16 @@ public class ControlerText {
 
 		p.panelFenetreFixe.add(frame);
 
-		JTextField jtf = new JTextField();
 		Font f = new Font(p.editorPane.getFont().getFontName(), p.editorPane.getFont().getStyle(),
 				p.editorPane.getFont().getSize() * 7 / 10);
-		jtf.setFont(f);
 
-		jtf.setHorizontalAlignment(JTextField.CENTER);
-		jtf.addActionListener(p.controlerMask);
 
-		frame.add(jtf);
-		frame.jtf = jtf;
+		frame.initField(f, p.controlerMask);
 		frame.n = h;
 		frame.motCouvert = p.textHandler.getHidedWord(h);
 		frame.toFront();
 		frame.setVisible(true);
-		jtf.setEnabled(true);
-		jtf.requestFocus();
+		frame.activate();
 
 		p.fenetreFixe = frame;
 
@@ -311,6 +314,11 @@ public class ControlerText {
 	public void doError() {
 		blink();
 		p.nbErreurs++;
+		if(p.param.replayPhrase) {
+			play(p.pilot.getCurrentPhraseIndex());
+			doWait(getCurrentWaitTime(), Constants.CURSOR_LISTEN);
+		}
+	
 	}
 
 	public void desactiverFenetreFixe() {
