@@ -222,7 +222,7 @@ public class ControlerText {
 		Mask m = getFenetreFixe();
 		m.activate();
 		if(p.param.timeToShowWord == -1) {
-			//m.setHint();
+			m.setHint();
 		} else {
 			m.setHint(p.param.timeToShowWord*m.getNbCarac());
 		}

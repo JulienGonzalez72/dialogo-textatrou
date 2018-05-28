@@ -420,7 +420,13 @@ public class FenetreParametre extends JFrame {
 	}
 
 	public void stopExercice() {
+		editorPane.lastPhraseToHG = -1;
 		updateOptionsEnabled(true);
+		//TODO : reparer les bugs de redimentionnement des fenetres arrivant apres un stop exercice
+		//en attendant on empeche ce redimentionnement
+		fenetre.setResizable(false);
+		//Ligne ci dessus = a supprimer quand le todo  ci dessus sera fait
+		
 		fenetre.pan.nbErreurs = 0;
 		fenetre.pan.numeroCourant = 0;
 		eMenuItem2.setEnabled(false);
