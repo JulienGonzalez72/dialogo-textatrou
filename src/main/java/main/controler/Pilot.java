@@ -23,7 +23,7 @@ public class Pilot {
 	}
 
 	public void initialiseExo() {
-		if(activeThread != null) {
+		if (activeThread != null) {
 			activeThread.doStop();
 		}
 		this.phrase = 0;
@@ -36,57 +36,59 @@ public class Pilot {
 	 * Se place sur le segment n et démarre le lecteur.
 	 */
 	public void goToPhrase(int n) throws IllegalArgumentException {
-		
-		if(n>p.textHandler.getPhrasesCount()-1 || n < 0) {
+
+		if (n > p.textHandler.getPhrasesCount() - 1 || n < 0) {
 			throw new IllegalArgumentException("Numero de segment invalide");
 		}
-		
-		if(p.param.fixedField) {
+
+		if (p.param.fixedField) {
 			controler.desactiverFenetreFixe();
 		}
-		
+
 		p.fenetre.setResizable(false);
 		p.fenetreParam.updateOptionsOnExoStart(false);
-		
+
 		phrase = n;
-		
+
 		p.updateBar(n);
-		
+
 		if (activeThread != null) {
 			activeThread.doStop();
 		}
 		activeThread = new PhraseThread(controler, n);
 		activeThread.onPhraseEnd.add(new Runnable() {
 			public void run() {
-				updateBarOnPhraseEnd(activeThread.n-1);
+				updateBarOnPhraseEnd(activeThread.n - 1);
 				phrase = activeThread.n;
 			}
 		});
 		activeThread.start();
 	}
-	
+
 	/**
-	 *  Update la barre avec le dernier trou du segment si il en contient, avec le dernier trou du segment précédent sinon
+	 * Update la barre avec le dernier trou du segment si il en contient, avec le
+	 * dernier trou du segment précédent sinon
 	 */
 	public void updateBarOnPhraseEnd(int n) {
 		int segmentAvecTrou = n;
 		int lastHole = p.textHandler.getLastHole(segmentAvecTrou);
-		while(lastHole ==-1 && segmentAvecTrou >= 0) {
-				lastHole = p.textHandler.getLastHole(segmentAvecTrou);
-		segmentAvecTrou--;
+		while (lastHole == -1 && segmentAvecTrou >= 0) {
+			lastHole = p.textHandler.getLastHole(segmentAvecTrou);
+			segmentAvecTrou--;
 		}
 		p.updateBar(lastHole);
 	}
-	
+
 	/**
-	 *  Update la barre avec le 1er trou du segment actuel si il en contient, avec le dernier toru du segment précédent sinon
+	 * Update la barre avec le 1er trou du segment actuel si il en contient, avec le
+	 * dernier toru du segment précédent sinon
 	 */
 	public void updateBar(int n) {
 		int segmentAvecTrou = n;
 		int lastHole = p.textHandler.getFirstHole(segmentAvecTrou);
-		while(lastHole ==-1 && segmentAvecTrou >= 0) {
-				lastHole = p.textHandler.getLastHole(segmentAvecTrou);
-		segmentAvecTrou--;
+		while (lastHole == -1 && segmentAvecTrou >= 0) {
+			lastHole = p.textHandler.getLastHole(segmentAvecTrou);
+			segmentAvecTrou--;
 		}
 		p.updateBar(lastHole);
 	}
