@@ -107,8 +107,7 @@ public class FenetreParametre extends JFrame {
 			add(titre, BorderLayout.NORTH);
 			
 			ControleurParam controleur = new ControleurParam(fen, this);
-
-
+			
 			replayPhrase = fastCheckBox("Rejouer les phrases si erreur", controleur);
 			valider = fastButton("Valider les parametres", new Font("OpenDyslexic", Font.BOLD, 18), Color.green);
 			valider.addActionListener(controleur);
@@ -173,9 +172,7 @@ public class FenetreParametre extends JFrame {
 					grabFocus();
 				}
 			};
-
-		
-
+			
 			segmentDeDepart = fastTextField("1", new Font("OpenDyslexic", Font.PLAIN, 15), "1");
 			segmentDeDepart.setEnabled(false);
 			segments.setEnabled(false);
@@ -218,9 +215,7 @@ public class FenetreParametre extends JFrame {
 			temp = new JPanel();
 			temp.add(replayPhrase);
 			midLeftPanel.add(temp);
-		
 			
-
 			waitSlider = new JSlider();
 			waitSlider.setMaximum(Constants.MAX_WAIT_TIME_PERCENT);
 			waitSlider.setMinimum(Constants.MIN_WAIT_TIME_PERCENT);
@@ -387,7 +382,6 @@ public class FenetreParametre extends JFrame {
 	}
 
 	public void lancerExercice() {
-
 		Panneau.premierSegment = param.firstPhrase;
 
 		if (param.fixedField) {

@@ -133,8 +133,8 @@ public class ColorComboBox extends JComboBox<String> {
 	}
 	
 	private static Color getForeground(Color bgColor) {
-		float luminosity = bgColor.getRed() + bgColor.getGreen() * 1.5f + bgColor.getBlue();
-		return luminosity < 382.5 ? Color.WHITE : Color.BLACK;
+		//float luminosity = bgColor.getRed() + bgColor.getGreen() * 1.5f + bgColor.getBlue();
+		return /*luminosity < 382.5 ? Color.WHITE :*/ Color.BLACK;
 	}
 	
 	public interface ColorChangeListener {

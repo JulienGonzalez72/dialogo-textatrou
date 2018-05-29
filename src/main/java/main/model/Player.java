@@ -230,7 +230,7 @@ public class Player {
 	 * Retourne true si il reste au moins un segment à lire.
 	 */
 	public boolean hasNextPhrase() {
-		return currentPhrase < text.getPhrasesCount() - 2;
+		return currentPhrase < text.getPhrasesCount() - 1;
 	}
 
 	/**

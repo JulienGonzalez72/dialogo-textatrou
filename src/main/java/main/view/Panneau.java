@@ -70,9 +70,10 @@ public class Panneau extends JDesktopPane {
 			texteCesures = texteCesures.substring(texteCesures.indexOf("/") + 1, texteCesures.length());
 		}
 		textHandler = new TextHandler(texteCesures, param);
+		
 		if (!textHandler.oneHoleEqualOneWord()) {
 			fenetreParam.pan.fixedField.setSelected(true);
-			fenetreParam.pan.fixedField.setText("Un seul mode disponible pour ce texte");
+			//fenetreParam.pan.fixedField.setText("Un seul mode disponible pour ce texte");
 			fenetreParam.pan.fixedField.setEnabled(false);
 		}
 
@@ -175,10 +176,6 @@ public class Panneau extends JDesktopPane {
 		nbPages = segmentsEnFonctionDeLaPage.size();
 	}
 
-	public boolean hasNextPage() {
-		return pageActuelle < nbPages;
-	}
-
 	public void afficherPagePrecedente() {
 		if (pageActuelle > 0) {
 			showPage(pageActuelle - 1);
@@ -217,7 +214,7 @@ public class Panneau extends JDesktopPane {
 				if (phraseIndex == -1) {
 					lastOffset = textHandler.getShowText().length();
 				}
-				if (!phrases.contains(phraseIndex) && phraseIndex > lastPhrase
+				else if (!phrases.contains(phraseIndex) && phraseIndex > lastPhrase
 						&& phraseIndex != textHandler.getPhraseIndex(off)) {
 					lastPhrase = phraseIndex;
 					phrases.add(phraseIndex);
@@ -232,7 +229,8 @@ public class Panneau extends JDesktopPane {
 			String newText = textHandler.getShowText().substring(lastOffset);
 			/// dernière page ///
 			if (newText.equals(text)) {
-				if (!segmentsEnFonctionDeLaPage.get(page - 1).contains(textHandler.getPhraseIndex(off))) {
+				if (!segmentsEnFonctionDeLaPage.get(page - 1).contains(textHandler.getPhraseIndex(off))
+						&& textHandler.getPhraseIndex(off) >= 0) {
 					segmentsEnFonctionDeLaPage.get(page - 1).add(textHandler.getPhraseIndex(off));
 				}
 				break;
@@ -276,11 +274,16 @@ public class Panneau extends JDesktopPane {
 			controlerGlobal.highlightUntilPhrase(param.rightColor, editorPane.lastPhraseToHG);
 		}
 	}
+	
+	public boolean correctSize() {
+		List<Integer> lastPage = segmentsEnFonctionDeLaPage.get(segmentsEnFonctionDeLaPage.size());
+		return lastPage.get(lastPage.size() - 1) == textHandler.getPhrasesCount() - 1;
+	}
 
 	public boolean pageFinis() {
 		// la page actuelle contient t-elle le segment suivant ? si non elle est finis
 		return (!segmentsEnFonctionDeLaPage.get(pageActuelle).contains(player.getCurrentPhraseIndex() + 1))
-				|| player.getCurrentPhraseIndex() + 2 == textHandler.getPhrasesCount();
+				|| player.getCurrentPhraseIndex() == textHandler.getPhrasesCount() - 1;
 	}
 
 	public int getNumeroPremierSegmentAffiché() {
@@ -299,8 +302,7 @@ public class Panneau extends JDesktopPane {
 		}
 
 		// met a jour la barre de progression
-		progressBar.setValue(textHandler.getPhrasesCount() - 1);
-		progressBar.setString((textHandler.getPhrasesCount() - 1) + "/" + (textHandler.getPhrasesCount() - 1));
+		updateBar(textHandler.getHolesCount());
 
 		Object optionPaneBG = UIManager.get("OptionPane.background");
 		Object panelBG = UIManager.get("Panel.background");

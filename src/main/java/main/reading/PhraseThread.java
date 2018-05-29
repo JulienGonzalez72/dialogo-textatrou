@@ -20,7 +20,7 @@ public class PhraseThread extends ReaderThread {
 	}
 	
 	public void run() {
-		while (n < controler.getPhrasesCount() - 1 && !needToDead) {
+		while (n < controler.getPhrasesCount() && !needToDead) {
 			controler.updateHG(n-1);
 			/// joue le segment ///
 			if (!controler.hasHole(n)) {
@@ -48,7 +48,7 @@ public class PhraseThread extends ReaderThread {
 			}
 		}
 		/// affiche le compte rendu ///
-		if (n == controler.getPhrasesCount() - 1) {
+		if (n >= controler.getPhrasesCount()) {
 			controler.showReport();
 		}
 	}

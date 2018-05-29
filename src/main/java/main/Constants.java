@@ -31,11 +31,11 @@ public final class Constants {
 	/**
 	 * Largeur minimale de la fenetre principale
 	 */
-	public static int MIN_FRAME_WIDTH = 800;
+	public static int MIN_FRAME_WIDTH = 750;
 	/**
 	 * Hauteur minimale de la fenetre principale
 	 */
-	public static int MIN_FRAME_HEIGHT = 400;
+	public static int MIN_FRAME_HEIGHT = 450;
 	/**
 	 * Taille des images dans le controleur du player
 	 */

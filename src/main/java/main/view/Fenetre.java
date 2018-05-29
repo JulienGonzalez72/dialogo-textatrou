@@ -42,8 +42,17 @@ public class Fenetre extends JFrame {
 				if (isResizable() && pan.editorPane != null && pan.editorPane.getWidth() > 0
 						&& (lastWidth != getWidth() || lastHeight != getHeight())) {
 					pan.rebuildPages();
-					lastWidth = getWidth();
-					lastHeight = getHeight();
+					
+					/// corrige le rendimensionnement s'il empêche une mise en page correcte ///
+					if (!pan.correctSize() && (getWidth() < lastWidth || getHeight() < lastHeight)) {
+						setSize(getWidth() + 100, getHeight() + 100);
+						pan.rebuildPages();
+					}
+					
+					else {
+						lastWidth = getWidth();
+						lastHeight = getHeight();
+					}
 				}
 
 				param.panWidth = Fenetre.this.getWidth();

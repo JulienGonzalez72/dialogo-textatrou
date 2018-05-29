@@ -125,7 +125,9 @@ public class TextHandler {
 		
 		phrases.clear();
 		for (String phrase : txt.split(Constants.PAUSE)) {
-			phrases.put(phrases.size(), phrase);
+			if (phrase.length() > 1) {				
+				phrases.put(phrases.size(), phrase);
+			}
 		}
 	}
 

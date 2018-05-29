@@ -3,6 +3,8 @@ package main.view;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -100,6 +102,12 @@ public class Mask extends JInternalFrame {
 		private boolean hint;
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
+			
+			/// filtre anticrénelage ///
+			if (g instanceof Graphics2D) {
+				((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			}
+			
 			if (hint && motCouvert != null && getText().isEmpty()) {
 				FontMetrics fm = g.getFontMetrics();
 				g.setColor(Constants.HINT_COLOR);
