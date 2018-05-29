@@ -70,10 +70,10 @@ public class Panneau extends JDesktopPane {
 			texteCesures = texteCesures.substring(texteCesures.indexOf("/") + 1, texteCesures.length());
 		}
 		textHandler = new TextHandler(texteCesures, param);
-		
+
 		if (!textHandler.oneHoleEqualOneWord()) {
 			fenetreParam.pan.fixedField.setSelected(true);
-			//fenetreParam.pan.fixedField.setText("Un seul mode disponible pour ce texte");
+			// fenetreParam.pan.fixedField.setText("Un seul mode disponible pour ce texte");
 			fenetreParam.pan.fixedField.setEnabled(false);
 		}
 
@@ -213,8 +213,7 @@ public class Panneau extends JDesktopPane {
 				int phraseIndex = textHandler.getPhraseIndex(i);
 				if (phraseIndex == -1) {
 					lastOffset = textHandler.getShowText().length();
-				}
-				else if (!phrases.contains(phraseIndex) && phraseIndex > lastPhrase
+				} else if (!phrases.contains(phraseIndex) && phraseIndex > lastPhrase
 						&& phraseIndex != textHandler.getPhraseIndex(off)) {
 					lastPhrase = phraseIndex;
 					phrases.add(phraseIndex);
@@ -275,7 +274,7 @@ public class Panneau extends JDesktopPane {
 				editorPane.setText(texteAfficher);
 				setTextOK = true;
 			} catch (Exception e) {
-				//des fois setText ne marche pas et lance une erreur avec interupt write lock
+				// des fois setText ne marche pas et lance une erreur avec interupt write lock
 				e.printStackTrace();
 			}
 		}
@@ -284,7 +283,7 @@ public class Panneau extends JDesktopPane {
 			controlerGlobal.highlightUntilPhrase(param.rightColor, editorPane.lastPhraseToHG);
 		}
 	}
-	
+
 	public boolean correctSize() {
 		List<Integer> lastPage = segmentsEnFonctionDeLaPage.get(segmentsEnFonctionDeLaPage.size());
 		return lastPage.get(lastPage.size() - 1) == textHandler.getPhrasesCount() - 1;
@@ -476,6 +475,7 @@ public class Panneau extends JDesktopPane {
 
 	public void updateHG(int n) {
 		if (param.highlight) {
+			editorPane.enleverSurlignageVert();
 			editorPane.lastPhraseToHG = n;
 			editorPane.repaint();
 		}
