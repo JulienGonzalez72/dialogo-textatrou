@@ -88,7 +88,7 @@ public class Panneau extends JDesktopPane {
 		progressBar = new JProgressBar(0, (textHandler.getHolesCount()));
 		progressBar.setStringPainted(true);
 		progressBar.setForeground(Color.GREEN);
-		
+
 		add(panelSud, BorderLayout.SOUTH);
 		panelSud.setVisible(false);
 
@@ -270,7 +270,17 @@ public class Panneau extends JDesktopPane {
 		for (String string : liste) {
 			texteAfficher += string;
 		}
-		editorPane.setText(texteAfficher);
+
+		boolean setTextOK = false;
+		while (!setTextOK) {
+			try {
+				editorPane.setText(texteAfficher);
+				setTextOK = true;
+			} catch (Exception e) {
+				//des fois setText ne marche pas et lance une erreur avec interupt write lock
+				e.printStackTrace();
+			}
+		}
 
 		if (editorPane.lastPhraseToHG != -1) {
 			controlerGlobal.highlightUntilPhrase(param.rightColor, editorPane.lastPhraseToHG);
@@ -426,7 +436,7 @@ public class Panneau extends JDesktopPane {
 	}
 
 	public void replaceAllMask() {
-		for (int i = 0; i < fenetreMasque.size();i++) {
+		for (int i = 0; i < fenetreMasque.size(); i++) {
 			if (fenetreMasque.get(i).isVisible()) {
 				try {
 					replacerMasque(fenetreMasque.get(i));
@@ -468,5 +478,5 @@ public class Panneau extends JDesktopPane {
 			editorPane.repaint();
 		}
 	}
-	
+
 }
