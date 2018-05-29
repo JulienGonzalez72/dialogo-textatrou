@@ -426,10 +426,10 @@ public class Panneau extends JDesktopPane {
 	}
 
 	public void replaceAllMask() {
-		for (Mask m : fenetreMasque) {
-			if (m.isVisible()) {
+		for (int i = 0; i < fenetreMasque.size();i++) {
+			if (fenetreMasque.get(i).isVisible()) {
 				try {
-					replacerMasque(m);
+					replacerMasque(fenetreMasque.get(i));
 				} catch (BadLocationException e1) {
 					e1.printStackTrace();
 				}
