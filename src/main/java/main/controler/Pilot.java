@@ -23,9 +23,11 @@ public class Pilot {
 	}
 
 	public void initialiseExo() {
+		if(activeThread != null) {
+			activeThread.doStop();
+		}
 		this.phrase = 0;
 		p.nbErreurs = 0;
-		activeThread.doStop();
 		controler.removeAllMasks();
 		p.textHandler.initialiseExo();
 	}
