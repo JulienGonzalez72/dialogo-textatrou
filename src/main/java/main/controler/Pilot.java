@@ -22,16 +22,43 @@ public class Pilot {
 		controler = p.controlerGlobal;
 	}
 
-	public void initialisePhrase() {
+	public void initialiseExo() {
+		if(activeThread != null) {
+			activeThread.doStop();
+		}
 		this.phrase = 0;
+		p.nbErreurs = 0;
+		controler.removeAllMasks();
+		p.textHandler.init();
 	}
 
 	/**
 	 * Se place sur le segment n et démarre le lecteur.
 	 */
-	public void goToPhrase(int n) {
+	public void goToPhrase(int n) throws IllegalArgumentException {
+		
+		if(n>p.textHandler.getPhrasesCount()-1 || n < 0) {
+			throw new IllegalArgumentException("Numero de segment invalide");
+		}
+		
+		if(p.param.fixedField) {
+			controler.desactiverFenetreFixe();
+		}
+		
+		p.fenetre.setResizable(false);
+		p.fenetreParam.updateOptionsOnExoStart(false);
+		
 		phrase = n;
-		p.updateBar(p.textHandler.getFirstHole(n));
+		
+		//update de la barre
+		int segmentAvecTrou = n;
+		int lastHole = p.textHandler.getFirstHole(segmentAvecTrou);
+		while(lastHole ==-1 && segmentAvecTrou >= 0) {
+			lastHole = p.textHandler.getFirstHole(segmentAvecTrou);
+			segmentAvecTrou--;
+		}
+		p.updateBar(lastHole);
+		
 		if (activeThread != null) {
 			activeThread.doStop();
 		}

@@ -431,5 +431,15 @@ public class TextHandler {
 		return str;
 	}
 
+	public void init() {
+		this.holes = new HashMap<Integer, Hole>();
+		this.motsParSegment = new HashMap<>();
+		this.filledWords = new HashMap<>();
+		this.phrases = new HashMap<Integer, String>();
+		remplirMots(originText);
+		updateText();
+	}
+
+
 	
 }
