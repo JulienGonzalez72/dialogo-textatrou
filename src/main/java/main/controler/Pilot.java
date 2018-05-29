@@ -31,7 +31,16 @@ public class Pilot {
 	 */
 	public void goToPhrase(int n) {
 		phrase = n;
-		p.updateBar(p.textHandler.getFirstHole(n));
+		
+		//update de la barre
+		int segmentAvecTrou = n;
+		int lastHole = p.textHandler.getFirstHole(segmentAvecTrou);
+		while(lastHole ==-1 && segmentAvecTrou >= 0) {
+			lastHole = p.textHandler.getFirstHole(segmentAvecTrou);
+			segmentAvecTrou--;
+		}
+		p.updateBar(lastHole);
+		
 		if (activeThread != null) {
 			activeThread.doStop();
 		}
