@@ -31,12 +31,14 @@ public class Pilot {
 	 */
 	public void goToPhrase(int n) {
 		phrase = n;
+		p.updateBar(p.textHandler.getFirstHole(n));
 		if (activeThread != null) {
 			activeThread.doStop();
 		}
 		activeThread = new PhraseThread(controler, n);
 		activeThread.onPhraseEnd.add(new Runnable() {
 			public void run() {
+				p.updateBar(p.textHandler.getLastHole(activeThread.n-1));
 				phrase = activeThread.n;
 			}
 		});

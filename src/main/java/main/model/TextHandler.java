@@ -341,6 +341,19 @@ public class TextHandler {
 	}
 	
 	/**
+	 * Retourne le numéro du dernier trou du segment indiqué.
+	 */
+	public int getLastHole(int phrase) {
+		int r = -1;
+		for (int i = 0; i < getHolesCount(); i++) {
+			if (phrase == getPhraseOf(i)) {
+				r = i+1;
+			}
+		}
+		return r;
+	}
+	
+	/**
 	 * Retourne le numéro du premier trou à partir du segment indiqué.
 	 */
 	public int getFirstHole(int phrase) {
@@ -415,5 +428,6 @@ public class TextHandler {
 		}
 		return str;
 	}
+
 	
 }
