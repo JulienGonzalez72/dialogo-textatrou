@@ -37,6 +37,10 @@ public class Pilot {
 	 */
 	public void goToPhrase(int n) {
 		
+		if(p.param.fixedField) {
+			controler.desactiverFenetreFixe();
+		}
+		
 		p.fenetre.setResizable(false);
 		p.fenetreParam.updateOptionsOnExoStart(false);
 		
