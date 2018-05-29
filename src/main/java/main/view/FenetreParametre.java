@@ -401,19 +401,24 @@ public class FenetreParametre extends JFrame {
 			fenetre.pan.panelSud.add(fenetre.pan.progressBar);
 		}
 		
-		updateOptionsEnabled(false);
+		updateOptionsOnExoShow(false);
 
 		fenetre.pan.panelSud.setVisible(true);
 		fenetre.start();
 
 	}
 
-	private void updateOptionsEnabled(boolean etat) {
+	private void updateOptionsOnExoShow(boolean etat) {
 		pan.segmentDeDepart.setEnabled(etat);
 		pan.oneHole.setEnabled(etat);
 		pan.surlignage.setEnabled(etat);
 		pan.fixedField.setEnabled(etat);
 		pan.replayPhrase.setEnabled(etat);
+	}
+	
+	public void updateOptionsOnExoStart(boolean etat) {
+		pan.fontFamilyComboBox.setEnabled(etat);
+		pan.fontSizeComboBox.setEnabled(etat);
 	}
 
 	public JMenuItem eMenuItem2;
@@ -450,21 +455,18 @@ public class FenetreParametre extends JFrame {
 
 	public void stopExercice() {
 		editorPane.lastPhraseToHG = -1;
-		updateOptionsEnabled(true);
+		updateOptionsOnExoShow(true);
+		updateOptionsOnExoStart(true);
 		//TODO : reparer les bugs de redimentionnement des fenetres arrivant apres un stop exercice
 		//en attendant on empeche ce redimentionnement
 		fenetre.setResizable(false);
 		//Ligne ci dessus = a supprimer quand le todo  ci dessus sera fait
 		
-		
-		fenetre.pan.nbErreurs = 0;
-		fenetre.pan.numeroCourant = 0;
-		
 		eMenuItem2.setEnabled(false);
 		fenetre.setVisible(false);
 		controlPanel.disableAll();
 		fenetre.pan.pilot.doStop();
-		fenetre.pan.pilot.initialisePhrase();
+		fenetre.pan.pilot.initialiseExo();
 	}
 
 	public static Color stringToColor(String name) {

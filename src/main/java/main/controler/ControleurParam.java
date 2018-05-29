@@ -35,6 +35,14 @@ public class ControleurParam implements ActionListener, ChangeListener {
 			Font font = new Font(panneau.fontFamilyComboBox.getFont().getFontName(), Constants.DEFAULT_FONT_STYLE, taille);
 			if (fen.editorPane != null) {
 				fen.editorPane.setFont(font);
+				
+				//redimentionnement de l'eventuelle fenetre fixe
+				Panneau panneauExo = fen.fenetre.pan;		
+				if(panneauExo.panelFenetreFixe != null) {
+					panneauExo.panelSud.setPreferredSize(new Dimension(panneauExo.fenetre.getWidth(),font.getSize()+panneauExo.progressBar.getHeight()));
+					panneauExo.panelFenetreFixe.setPreferredSize(new Dimension(panneauExo.fenetre.getWidth(),font.getSize()));
+				}
+				
 				fen.fenetre.pan.rebuildPages();
 			}
 		}

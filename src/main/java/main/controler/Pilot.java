@@ -22,14 +22,22 @@ public class Pilot {
 		controler = p.controlerGlobal;
 	}
 
-	public void initialisePhrase() {
+	public void initialiseExo() {
 		this.phrase = 0;
+		p.nbErreurs = 0;
+		activeThread.doStop();
+		controler.removeAllMasks();
+		p.textHandler.initialiseExo();
 	}
 
 	/**
 	 * Se place sur le segment n et démarre le lecteur.
 	 */
 	public void goToPhrase(int n) {
+		
+		p.fenetre.setResizable(false);
+		p.fenetreParam.updateOptionsOnExoStart(false);
+		
 		phrase = n;
 		
 		//update de la barre
