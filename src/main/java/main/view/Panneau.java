@@ -65,15 +65,15 @@ public class Panneau extends JDesktopPane {
 		this.fenetre = fenetre;
 		this.pilot = new Pilot(this);
 		String texteCesures = getTextFromFile("ressources/textes/" + Constants.TEXT_FILE_NAME);
-		/// enlève la consigne ///
+		/// enlï¿½ve la consigne ///
 		if (Constants.HAS_INSTRUCTIONS) {
 			texteCesures = texteCesures.substring(texteCesures.indexOf("/") + 1, texteCesures.length());
 		}
 		textHandler = new TextHandler(texteCesures, param);
-		
+
 		if (!textHandler.oneHoleEqualOneWord()) {
 			fenetreParam.pan.fixedField.setSelected(true);
-			//fenetreParam.pan.fixedField.setText("Un seul mode disponible pour ce texte");
+			// fenetreParam.pan.fixedField.setText("Un seul mode disponible pour ce texte");
 			fenetreParam.pan.fixedField.setEnabled(false);
 		}
 
@@ -98,7 +98,7 @@ public class Panneau extends JDesktopPane {
 	public JDesktopPane panelFenetreFixe = null;
 
 	/**
-	 * S'exécute lorsque le panneau s'est bien intégré à la fenêtre.
+	 * S'exï¿½cute lorsque le panneau s'est bien intï¿½grï¿½ ï¿½ la fenï¿½tre.
 	 */
 	public void init() {
 		param.appliquerPreferenceTaillePosition(fenetre);
@@ -111,7 +111,7 @@ public class Panneau extends JDesktopPane {
 		/// construit la mise en page virtuelle ///
 		rebuildPages();
 
-		/// initialise le lecteur et le démarre ///
+		/// initialise le lecteur et le dï¿½marre ///
 		player = new Player(textHandler, param);
 		player.load(param.firstPhrase - 1);
 
@@ -139,7 +139,7 @@ public class Panneau extends JDesktopPane {
 	}
 
 	/**
-	 * retourne le contenu du fichier .txt situé à l'emplacement du paramètre
+	 * retourne le contenu du fichier .txt situï¿½ ï¿½ l'emplacement du paramï¿½tre
 	 */
 	public static String getTextFromFile(String emplacement) throws IOException {
 		File fichierTxt = new File(emplacement);
@@ -166,7 +166,7 @@ public class Panneau extends JDesktopPane {
 	}
 
 	/**
-	 * Construit les pages et affiche la première.
+	 * Construit les pages et affiche la premiï¿½re.
 	 */
 	public void rebuildPages() {
 		buildPages(param.firstPhrase - 1);
@@ -213,8 +213,7 @@ public class Panneau extends JDesktopPane {
 				int phraseIndex = textHandler.getPhraseIndex(i);
 				if (phraseIndex == -1) {
 					lastOffset = textHandler.getShowText().length();
-				}
-				else if (!phrases.contains(phraseIndex) && phraseIndex > lastPhrase
+				} else if (!phrases.contains(phraseIndex) && phraseIndex > lastPhrase
 						&& phraseIndex != textHandler.getPhraseIndex(off)) {
 					lastPhrase = phraseIndex;
 					phrases.add(phraseIndex);
@@ -227,7 +226,7 @@ public class Panneau extends JDesktopPane {
 			}
 
 			String newText = textHandler.getShowText().substring(lastOffset);
-			/// dernière page ///
+			/// derniï¿½re page ///
 			if (newText.equals(text)) {
 				if (!segmentsEnFonctionDeLaPage.get(page - 1).contains(textHandler.getPhraseIndex(off))
 						&& textHandler.getPhraseIndex(off) >= 0) {
@@ -271,12 +270,12 @@ public class Panneau extends JDesktopPane {
 		}
 		
 		editorPane.setText(texteAfficher);
-		
+
 		if (editorPane.lastPhraseToHG != -1) {
 			controlerGlobal.highlightUntilPhrase(param.rightColor, editorPane.lastPhraseToHG);
 		}
 	}
-	
+
 	public boolean correctSize() {
 		List<Integer> lastPage = segmentsEnFonctionDeLaPage.get(segmentsEnFonctionDeLaPage.size());
 		return lastPage.get(lastPage.size() - 1) == textHandler.getPhrasesCount() - 1;
@@ -288,7 +287,7 @@ public class Panneau extends JDesktopPane {
 				|| player.getCurrentPhraseIndex() == textHandler.getPhrasesCount() - 1;
 	}
 
-	public int getNumeroPremierSegmentAffiché() {
+	public int getFirstPhraseShowed() {
 		return segmentsEnFonctionDeLaPage.get(pageActuelle).get(0);
 	}
 
@@ -311,14 +310,14 @@ public class Panneau extends JDesktopPane {
 		try {
 			UIManager.put("OptionPane.background", Color.WHITE);
 			UIManager.put("Panel.background", Color.WHITE);
-			String message = "L'exercice est terminé." + "\n" + "Le patient a fait " + nbErreurs + " erreur"
+			String message = "L'exercice est terminï¿½." + "\n" + "Le patient a fait " + nbErreurs + " erreur"
 					+ (nbErreurs > 1 ? "s" : "");
 			JOptionPane.showMessageDialog(this, message, "Compte Rendu", JOptionPane.INFORMATION_MESSAGE);
 		} finally {
 			UIManager.put("OptionPane.background", optionPaneBG);
 			UIManager.put("Panel.background", panelBG);
 		}
-		/// réactive la taille et la police et le segment de départ
+		/// rï¿½active la taille et la police et le segment de dï¿½part
 		fenetreParam.pan.fontFamilyComboBox.setEnabled(true);
 		fenetreParam.pan.fontSizeComboBox.setEnabled(true);
 		fenetreParam.pan.segmentDeDepart.setEnabled(true);
@@ -327,7 +326,7 @@ public class Panneau extends JDesktopPane {
 	}
 
 	/**
-	 * Affiche une fenetre correspondant au mot délimité par start et end, d'indice
+	 * Affiche une fenetre correspondant au mot dï¿½limitï¿½ par start et end, d'indice
 	 * numeroCourant, et met le masque correspondant dans la liste des masques
 	 */
 	public void afficherFrame(int start, int end, int h) throws BadLocationException {
@@ -380,31 +379,31 @@ public class Panneau extends JDesktopPane {
 	}
 
 	/**
-	 * Renvoie le nombre d'occurrences de la sous-chaine de caractères spécifiée
-	 * dans la chaine de caractères spécifiée
+	 * Renvoie le nombre d'occurrences de la sous-chaine de caractï¿½res spï¿½cifiï¿½e
+	 * dans la chaine de caractï¿½res spï¿½cifiï¿½e
 	 * 
 	 * @param text
-	 *            chaine de caractères initiale
+	 *            chaine de caractï¿½res initiale
 	 * @param string
-	 *            sous-chaine de caractères dont le nombre d'occurrences doit etre
-	 *            compté
-	 * @return le nombre d'occurrences du pattern spécifié dans la chaine de
-	 *         caractères spécifiée
+	 *            sous-chaine de caractï¿½res dont le nombre d'occurrences doit etre
+	 *            comptï¿½
+	 * @return le nombre d'occurrences du pattern spï¿½cifiï¿½ dans la chaine de
+	 *         caractï¿½res spï¿½cifiï¿½e
 	 */
 	public static final int stringOccur(String text, String string) {
 		return regexOccur(text, Pattern.quote(string));
 	}
 
 	/**
-	 * Renvoie le nombre d'occurrences du pattern spécifié dans la chaine de
-	 * caractères spécifiée
+	 * Renvoie le nombre d'occurrences du pattern spï¿½cifiï¿½ dans la chaine de
+	 * caractï¿½res spï¿½cifiï¿½e
 	 * 
 	 * @param text
-	 *            chaine de caractères initiale
+	 *            chaine de caractï¿½res initiale
 	 * @param regex
-	 *            expression régulière dont le nombre d'occurrences doit etre compté
-	 * @return le nombre d'occurrences du pattern spécifié dans la chaine de
-	 *         caractères spécifiée
+	 *            expression rï¿½guliï¿½re dont le nombre d'occurrences doit etre comptï¿½
+	 * @return le nombre d'occurrences du pattern spï¿½cifiï¿½ dans la chaine de
+	 *         caractï¿½res spï¿½cifiï¿½e
 	 */
 	public static final int regexOccur(String text, String regex) {
 		Matcher matcher = Pattern.compile(regex).matcher(text);
@@ -460,7 +459,7 @@ public class Panneau extends JDesktopPane {
 	 */
 	public void surlignerJusquaSegment(Color c, int n) {
 		if (textHandler.getPhrase(n) != null) {
-			int debutRelatifSegment = textHandler.getRelativeStartPhrasePosition(getNumeroPremierSegmentAffiché(), n);
+			int debutRelatifSegment = textHandler.getRelativeStartPhrasePosition(getFirstPhraseShowed(), n);
 			int finRelativeSegment = debutRelatifSegment + textHandler.getPhrase(n).length();
 			editorPane.surlignerPhrase(0, finRelativeSegment, param.rightColor);
 		}
@@ -468,6 +467,7 @@ public class Panneau extends JDesktopPane {
 
 	public void updateHG(int n) {
 		if (param.highlight) {
+			editorPane.enleverSurlignageVert();
 			editorPane.lastPhraseToHG = n;
 			editorPane.repaint();
 		}

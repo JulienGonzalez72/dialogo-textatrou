@@ -69,7 +69,7 @@ public class ControleurParam implements ActionListener, ChangeListener {
 	}
 
 	/**
-	 * Retourne le font correspondant à :
+	 * Retourne le font correspondant ï¿½ :
 	 * 
 	 * @param : la police
 	 * @param : l'index du font dans la liste des polices de la FenetreParametre
@@ -97,14 +97,14 @@ public class ControleurParam implements ActionListener, ChangeListener {
 	}
 
 	/**
-	 * Retourne vrai si : - Aucune couleur n'est sélectionnée en double - Les champs
-	 * saisies sont cohérents
+	 * Retourne vrai si : - Aucune couleur n'est sï¿½lectionnï¿½e en double - Les champs
+	 * saisies sont cohï¿½rents
 	 */
 	public boolean verifierValiditeChamp() {
 		boolean valide = true;
 
 		if (!couleursUniques()) {
-			JOptionPane.showMessageDialog(panneau, "Les couleurs doivent être différentes", "Erreur",
+			JOptionPane.showMessageDialog(panneau, "Les couleurs doivent ï¿½tre diffï¿½rentes", "Erreur",
 					JOptionPane.ERROR_MESSAGE);
 			valide = false;
 		}
@@ -116,7 +116,7 @@ public class ControleurParam implements ActionListener, ChangeListener {
 			if (premierSegment + 2 > ((Panneau) fen.fenetre.getContentPane()).textHandler.getPhrasesCount()
 					|| premierSegment < 1) {
 				JOptionPane.showMessageDialog(panneau,
-						"Entrez un segment inférieur à "
+						"Entrez un segment infï¿½rieur ï¿½ "
 								+ (((Panneau) fen.fenetre.getContentPane()).textHandler.getPhrasesCount() - 1),
 						"Erreur", JOptionPane.ERROR_MESSAGE);
 				premierSegment = 1;
@@ -132,7 +132,7 @@ public class ControleurParam implements ActionListener, ChangeListener {
 	}
 
 	/**
-	 * Retourne vrai si toutes les couleurs des paramètres sont uniques
+	 * Retourne vrai si toutes les couleurs des paramï¿½tres sont uniques
 	 */
 	private boolean couleursUniques() {
 		boolean r = true;

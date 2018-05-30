@@ -23,7 +23,7 @@ public class Pilot {
 	}
 
 	public void initialiseExo() {
-		if(activeThread != null) {
+		if (activeThread != null) {
 			activeThread.doStop();
 		}
 		this.phrase = 0;
@@ -39,16 +39,18 @@ public class Pilot {
 		if(n > p.textHandler.getPhrasesCount() - 1 || n < 0) {
 			throw new IllegalArgumentException("Numero de segment invalide");
 		}
-		
-		if(p.param.fixedField) {
+
+		if (p.param.fixedField) {
 			controler.desactiverFenetreFixe();
 		}
-		
+
 		p.fenetre.setResizable(false);
 		p.fenetreParam.updateOptionsOnExoStart(false);
-		
+
 		phrase = n;
-		
+
+		p.updateBar(n);
+
 		if (activeThread != null) {
 			activeThread.doStop();
 		}

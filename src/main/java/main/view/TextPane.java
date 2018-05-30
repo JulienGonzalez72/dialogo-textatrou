@@ -29,7 +29,7 @@ public class TextPane extends JTextPane {
 		setFont(param.police);
 		setSelectionColor(new Color(0, 0, 0, 0));
 
-		/// mets les marges sur les côtés ///
+		/// mets les marges sur les cï¿½tï¿½s ///
 		SimpleAttributeSet attrs = new SimpleAttributeSet();
 		StyleConstants.setLineSpacing(attrs, 1);
 		StyleConstants.setSpaceAbove(attrs, Constants.TEXTPANE_MARGING);
@@ -39,7 +39,7 @@ public class TextPane extends JTextPane {
 	}
 
 	/**
-	 * surligne tout de début à fin avec la couleur spécifiée
+	 * surligne tout de dï¿½but ï¿½ fin avec la couleur spï¿½cifiï¿½e
 	 *
 	 */
 	public void surlignerPhrase(int debut, int fin, Color couleur) {
@@ -75,7 +75,7 @@ public class TextPane extends JTextPane {
 	}
 
 	/**
-	 * Enlève tout le surlignage présent entre les bornes start et end.
+	 * Enlï¿½ve tout le surlignage prï¿½sent entre les bornes start et end.
 	 */
 	public void removeHighlight(int start, int end) {
 		Highlight[] hl = getHighlighter().getHighlights();

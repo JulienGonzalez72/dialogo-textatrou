@@ -9,6 +9,7 @@ import java.util.TreeMap;
 
 public final class Constants {
 
+
 	/**
 	 * Nom des fichiers contenants les fonts pour dislexyques
 	 */
