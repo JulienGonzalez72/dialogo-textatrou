@@ -356,11 +356,12 @@ public class TextHandler {
 	}
 	
 	/**
-	 * Retourne le numéro du premier trou à partir du segment indiqué.
+	 * Retourne le numéro du premier trou à partir du segment indiqué.<br>
+	 * Retourne -1 s'il n'y a plus de trous après.
 	 */
 	public int getFirstHole(int phrase) {
 		for (int i = 0; i < getHolesCount(); i++) {
-			if (phrase == getPhraseOf(i)) {
+			if (getPhraseOf(i) >= phrase) {
 				return i;
 			}
 		}
@@ -371,7 +372,7 @@ public class TextHandler {
 	 * Retourne <code>true</code> si le segment indiqué contient au moins un trou.
 	 */
 	public boolean hasHole(int phrase) {
-		return getFirstHole(phrase) >= 0;
+		return getHolesCount(phrase) > 0;
 	}
 	
 	/**
@@ -439,7 +440,5 @@ public class TextHandler {
 		remplirMots(originText);
 		updateText();
 	}
-
-
 	
 }

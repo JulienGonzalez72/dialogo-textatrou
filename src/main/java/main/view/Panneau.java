@@ -134,7 +134,7 @@ public class Panneau extends JDesktopPane {
 	}
 
 	public void updateBar(int hole) {
-		progressBar.setValue(hole);
+		progressBar.setValue(hole + 1);
 		progressBar.setString((hole + 1) + "/" + (textHandler.getHolesCount()));
 	}
 
@@ -257,29 +257,21 @@ public class Panneau extends JDesktopPane {
 		updateText();
 	}
 
-	public void updateText() {
+	public void updateText() {		
 		String texteAfficher = "";
 		// on recupere les segments a afficher dans la page
 		List<String> liste = new ArrayList<String>();
 
-		for (Integer i : segmentsEnFonctionDeLaPage.get(pageActuelle)) {
-			liste.add(textHandler.getPhrase(i));
+		for (int i = 0; i < segmentsEnFonctionDeLaPage.get(pageActuelle).size(); i++) {
+			int index = segmentsEnFonctionDeLaPage.get(pageActuelle).get(i);
+			liste.add(textHandler.getPhrase(index));
 		}
-		for (String string : liste) {
-			texteAfficher += string;
+		for (int i = 0; i < liste.size(); i++) {
+			texteAfficher += liste.get(i);
 		}
-
-		boolean setTextOK = false;
-		while (!setTextOK) {
-			try {
-				editorPane.setText(texteAfficher);
-				setTextOK = true;
-			} catch (Exception e) {
-				//des fois setText ne marche pas et lance une erreur avec interupt write lock
-				e.printStackTrace();
-			}
-		}
-
+		
+		editorPane.setText(texteAfficher);
+		
 		if (editorPane.lastPhraseToHG != -1) {
 			controlerGlobal.highlightUntilPhrase(param.rightColor, editorPane.lastPhraseToHG);
 		}

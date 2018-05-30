@@ -9,28 +9,33 @@ public class ReaderAllHoleUF extends HoleThread {
 	}
 
 	public void run() {
-
-		
-
 		/// joue le son si c'est le premier trou du segment ///
-		if (controler.isFirstInPhrase(h)) {
+		if (controler.isFirstInPhrase(h) && !needToDead) {
 			controler.showPage(controler.getPageOf(h));
 			/// valide tous les trous de la page avant le trou actuel ///
-			for (int i = 0; i < h; i++) {
+			for (int i = 0; i < h && !needToDead; i++) {
 				if (controler.getPageOf(i) == controler.getPageOf(h)) {
 					controler.fillHole(i);
 				}
 			}
-
+			
+			if (needToDead) {
+				return;
+			}
+			
 			/// affiche tous et uniquement les trous de la page à partir du trou actuel ///
 			controler.showHolesInPage(h);
 			controler.readPhrase(controler.getPhraseOf(h));
-		} else {
+		} else if (!needToDead) {
 			/// valide tous les trous de la page avant le trou actuel ///
-			for (int i = 0; i < h; i++) {
+			for (int i = 0; i < h && !needToDead; i++) {
 				if (controler.getPageOf(i) == controler.getPageOf(h)) {
 					controler.fillHole(i);
 				}
+			}
+			
+			if (needToDead) {
+				return;
 			}
 
 			/// affiche tous et uniquement les trous de la page à partir du trou actuel ///

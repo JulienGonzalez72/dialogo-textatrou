@@ -36,8 +36,7 @@ public class Pilot {
 	 * Se place sur le segment n et démarre le lecteur.
 	 */
 	public void goToPhrase(int n) throws IllegalArgumentException {
-		
-		if(n>p.textHandler.getPhrasesCount()-1 || n < 0) {
+		if(n > p.textHandler.getPhrasesCount() - 1 || n < 0) {
 			throw new IllegalArgumentException("Numero de segment invalide");
 		}
 		
@@ -50,22 +49,12 @@ public class Pilot {
 		
 		phrase = n;
 		
-		//update de la barre
-		int segmentAvecTrou = n;
-		int lastHole = p.textHandler.getFirstHole(segmentAvecTrou);
-		while(lastHole ==-1 && segmentAvecTrou >= 0) {
-			lastHole = p.textHandler.getFirstHole(segmentAvecTrou);
-			segmentAvecTrou--;
-		}
-		p.updateBar(lastHole);
-		
 		if (activeThread != null) {
 			activeThread.doStop();
 		}
 		activeThread = new PhraseThread(controler, n);
 		activeThread.onPhraseEnd.add(new Runnable() {
 			public void run() {
-				p.updateBar(p.textHandler.getLastHole(activeThread.n-1));
 				phrase = activeThread.n;
 			}
 		});

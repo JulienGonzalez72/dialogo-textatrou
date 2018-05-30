@@ -87,22 +87,11 @@ public class TextPane extends JTextPane {
 		}
 	}
 
-	public Rectangle getTextBounds(String str) {
-		return getFont().createGlyphVector(getFontMetrics(getFont()).getFontRenderContext(), str).getPixelBounds(null,
-				0, 0);
-	}
-
-	public float getSpacingFactor() {
-		FontMetrics fm = getFontMetrics(getFont());
-		return (float) (1f + fm.getHeight() / getTextBounds("|").getHeight());
-	}
-
-
-	@Override
+	/*@Override
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.YELLOW);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		super.paintComponent(g);
-	}
+	}*/
 
 }
