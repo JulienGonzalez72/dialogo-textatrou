@@ -13,7 +13,7 @@ public class ControlPanel extends JPanel {
 	private static Image previousIcon, playIcon, pauseIcon, nextIcon, repeatIcon;
 
 	/**
-	 * Panneau pour les contrôles de segment à segment
+	 * Panneau pour les contrï¿½les de segment ï¿½ segment
 	 */
 	private JPanel phrasePanel = new JPanel();
 	private JButton previousButton = new JButton();
@@ -90,18 +90,18 @@ public class ControlPanel extends JPanel {
 					n = Integer.parseInt(goToField.getText()) - 1;
 					pan.pilot.goToPhrase(n);
 				} catch (IllegalArgumentException ex) {
-					JOptionPane.showMessageDialog(null, "Numéro de segment incorrect : " + goToField.getText());
+					JOptionPane.showMessageDialog(null, "NumÃ©ro de segment incorrect : " + goToField.getText());
 				}
 				updateButtons();
 			}
 		});
 
-		phrasePanel.setBorder(BorderFactory.createTitledBorder("Contrôle par segment"));
+		phrasePanel.setBorder(BorderFactory.createTitledBorder("ContrÃ´le par segment"));
 		add(phrasePanel);
 	}
 
 	/**
-	 * Méthode qui s'exécute lorsque les contrôles sont prêts à être effectifs.
+	 * Mï¿½thode qui s'exï¿½cute lorsque les contrï¿½les sont prï¿½ts ï¿½ ï¿½tre effectifs.
 	 */
 	public void init() {
 		Runnable update = () -> {
@@ -114,7 +114,7 @@ public class ControlPanel extends JPanel {
 	}
 
 	/**
-	 * Actualise l'état de tous les composants de la fenêtre de contrôle.
+	 * Actualise l'ï¿½tat de tous les composants de la fenï¿½tre de contrï¿½le.
 	 */
 	public void updateButtons() {
 		if (usable) {
@@ -140,7 +140,7 @@ public class ControlPanel extends JPanel {
 	}
 
 	/**
-	 * Désactive tous les boutons de la fenêtre de contrôle puis les ré-active après
+	 * Dï¿½sactive tous les boutons de la fenï¿½tre de contrï¿½le puis les rï¿½-active aprï¿½s
 	 * le temps duration.
 	 */
 	public void disableAll(long duration) {

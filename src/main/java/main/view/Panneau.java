@@ -252,7 +252,7 @@ public class Panneau extends JDesktopPane {
 
 		pageActuelle = page;
 		// mise a jour du titre de la fen�tre
-		fenetre.setTitle("Lexidia - Texte � Trou - Page " + page);
+		fenetre.setTitle("Lexidia - Texte à Trou - Page " + page);
 		updateText();
 	}
 
@@ -261,23 +261,14 @@ public class Panneau extends JDesktopPane {
 		// on recupere les segments a afficher dans la page
 		List<String> liste = new ArrayList<String>();
 
-		for (Integer i : segmentsEnFonctionDeLaPage.get(pageActuelle)) {
-			liste.add(textHandler.getPhrase(i));
+		for (int i = 0; i < segmentsEnFonctionDeLaPage.get(pageActuelle).size();i++) {
+			liste.add(textHandler.getPhrase(segmentsEnFonctionDeLaPage.get(pageActuelle).get(i)));
 		}
-		for (String string : liste) {
-			texteAfficher += string;
+		for (int i =0; i < liste.size();i++) {
+			texteAfficher += liste.get(i);
 		}
 
-		boolean setTextOK = false;
-		while (!setTextOK) {
-			try {
-				editorPane.setText(texteAfficher);
-				setTextOK = true;
-			} catch (Exception e) {
-				// des fois setText ne marche pas et lance une erreur avec interupt write lock
-				e.printStackTrace();
-			}
-		}
+		editorPane.setText(texteAfficher);
 
 		if (editorPane.lastPhraseToHG != -1) {
 			controlerGlobal.highlightUntilPhrase(param.rightColor, editorPane.lastPhraseToHG);
@@ -318,7 +309,7 @@ public class Panneau extends JDesktopPane {
 		try {
 			UIManager.put("OptionPane.background", Color.WHITE);
 			UIManager.put("Panel.background", Color.WHITE);
-			String message = "L'exercice est termin�." + "\n" + "Le patient a fait " + nbErreurs + " erreur"
+			String message = "L'exercice est terminé." + "\n" + "Le patient a fait " + nbErreurs + " erreur"
 					+ (nbErreurs > 1 ? "s" : "");
 			JOptionPane.showMessageDialog(this, message, "Compte Rendu", JOptionPane.INFORMATION_MESSAGE);
 		} finally {
