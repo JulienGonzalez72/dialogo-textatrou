@@ -134,7 +134,7 @@ public class Panneau extends JDesktopPane {
 	}
 
 	public void updateBar(int hole) {
-		progressBar.setValue(hole);
+		progressBar.setValue(hole + 1);
 		progressBar.setString((hole + 1) + "/" + (textHandler.getHolesCount()));
 	}
 
@@ -256,17 +256,19 @@ public class Panneau extends JDesktopPane {
 		updateText();
 	}
 
-	public void updateText() {
+	public void updateText() {		
 		String texteAfficher = "";
 		// on recupere les segments a afficher dans la page
 		List<String> liste = new ArrayList<String>();
 
-		for (int i = 0; i < segmentsEnFonctionDeLaPage.get(pageActuelle).size();i++) {
-			liste.add(textHandler.getPhrase(segmentsEnFonctionDeLaPage.get(pageActuelle).get(i)));
+		for (int i = 0; i < segmentsEnFonctionDeLaPage.get(pageActuelle).size(); i++) {
+			int index = segmentsEnFonctionDeLaPage.get(pageActuelle).get(i);
+			liste.add(textHandler.getPhrase(index));
 		}
-		for (int i =0; i < liste.size();i++) {
+		for (int i = 0; i < liste.size(); i++) {
 			texteAfficher += liste.get(i);
 		}
+		
 
 		editorPane.setText(texteAfficher);
 

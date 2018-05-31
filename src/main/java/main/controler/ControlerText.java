@@ -390,11 +390,12 @@ public class ControlerText {
 	 * Retourne <code>true</code> si le segment n contient au moins un trou.
 	 */
 	public boolean hasHole(int n) {
-		return getHolesCount(n) > 0;
+		return p.textHandler.hasHole(n);
 	}
 	
 	/**
-	 * Retourne le premier trou du segment n, ou -1 si ce segment ne contient pas de trou.
+	 * Retourne le numéro du premier trou à partir du segment indiqué.<br>
+	 * Retourne -1 s'il n'y a plus de trous après.
 	 */
 	public int getFirstHole(int n) {
 		return p.textHandler.getFirstHole(n);
@@ -439,6 +440,13 @@ public class ControlerText {
 
 	public void updateHG(int n) {
 		p.updateHG(n);
+	}
+	
+	/**
+	 * Mets à jour la barre de progression en fonction du numéro de trou
+	 */
+	public void updateBar(int h) {
+		p.updateBar(h);
 	}
 
 	/**

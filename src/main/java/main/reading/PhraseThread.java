@@ -21,9 +21,10 @@ public class PhraseThread extends ReaderThread {
 	
 	public void run() {
 		while (n < controler.getPhrasesCount() && !needToDead) {
-			controler.updateHG(n-1);
+			controler.updateHG(n - 1);
 			/// joue le segment ///
 			if (!controler.hasHole(n)) {
+				controler.updateBar(controler.getFirstHole(n) >= 0 ? controler.getFirstHole(n) : controler.getHolesCount() - 1);
 				for (int i = 0; i < controler.getHolesCount(); i++) {
 					controler.replaceMaskByWord(i);
 				}
@@ -32,6 +33,7 @@ public class PhraseThread extends ReaderThread {
  			/// traite tous les trous du segment un par un ///
 			for (int h = 0; h < controler.getHolesCount(n) && !needToDead; h++) {
 				activeThread = controler.getHoleThread(controler.getFirstHole(n) + h);
+				controler.updateBar(activeThread.h);
 				activeThread.start();
 				try {
 					activeThread.join();

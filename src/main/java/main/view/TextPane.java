@@ -1,9 +1,6 @@
 package main.view;
 
 import java.awt.Color;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.util.*;
 import javax.swing.JTextPane;
 import javax.swing.text.*;
@@ -87,22 +84,11 @@ public class TextPane extends JTextPane {
 		}
 	}
 
-	public Rectangle getTextBounds(String str) {
-		return getFont().createGlyphVector(getFontMetrics(getFont()).getFontRenderContext(), str).getPixelBounds(null,
-				0, 0);
-	}
-
-	public float getSpacingFactor() {
-		FontMetrics fm = getFontMetrics(getFont());
-		return (float) (1f + fm.getHeight() / getTextBounds("|").getHeight());
-	}
-
-
-	@Override
+	/*@Override
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.YELLOW);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		super.paintComponent(g);
-	}
+	}*/
 
 }
