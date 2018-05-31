@@ -394,8 +394,8 @@ public class ControlerText {
 	}
 	
 	/**
-	 * Retourne le numéro du premier trou à partir du segment indiqué.<br>
-	 * Retourne -1 s'il n'y a plus de trous après.
+	 * Retourne le numï¿½ro du premier trou ï¿½ partir du segment indiquï¿½.<br>
+	 * Retourne -1 s'il n'y a plus de trous aprï¿½s.
 	 */
 	public int getFirstHole(int n) {
 		return p.textHandler.getFirstHole(n);
@@ -439,11 +439,11 @@ public class ControlerText {
 	}
 
 	public void updateHG(int n) {
-		p.updateHG(n);
+		p.updateHG(n);	
 	}
 	
 	/**
-	 * Mets à jour la barre de progression en fonction du numéro de trou
+	 * Mets ï¿½ jour la barre de progression en fonction du numï¿½ro de trou
 	 */
 	public void updateBar(int h) {
 		p.updateBar(h);
