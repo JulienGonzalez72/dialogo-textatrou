@@ -66,7 +66,7 @@ public class TextPane extends JTextPane {
 	 * desurligne tout
 	 *
 	 */
-	public void dÃ©surlignerTout() {
+	public void désurlignerTout() {
 		getHighlighter().removeAllHighlights();
 		greenHighlightTags.clear();
 	}
