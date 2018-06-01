@@ -1,12 +1,13 @@
 package main.controler;
 
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import main.Constants;
 
 public class ControlerKey implements KeyListener {
 
 	private Pilot pilot;
-
 
 	/**
 	 * Moment du dernier clic
@@ -16,7 +17,7 @@ public class ControlerKey implements KeyListener {
 	public ControlerKey(Pilot pilot) {
 		this.pilot = pilot;
 	}
-	
+
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
@@ -24,7 +25,7 @@ public class ControlerKey implements KeyListener {
 			if (e.getWhen() - lastClick > Constants.LEFT_DELAY) {
 				pilot.doPlay();
 			}
-			/// retourne au segment précédent ///
+			/// retourne au segment prï¿½cï¿½dent ///
 			else if (pilot.hasPreviousPhrase()) {
 				pilot.previousPhrase();
 			}

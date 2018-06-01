@@ -1,10 +1,16 @@
 package main.view;
 
 import java.awt.Color;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JTextPane;
-import javax.swing.text.*;
-import javax.swing.text.Highlighter.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter.Highlight;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+
 import main.Constants;
 import main.Parametres;
 
@@ -13,7 +19,7 @@ public class TextPane extends JTextPane {
 	private static final long serialVersionUID = 1L;
 
 	private List<Object> greenHighlightTags = new ArrayList<>();
-	
+
 	public Parametres param;
 
 	public String textReel;
@@ -26,7 +32,7 @@ public class TextPane extends JTextPane {
 		setFont(param.police);
 		setSelectionColor(new Color(0, 0, 0, 0));
 
-		/// mets les marges sur les c�t�s ///
+		/// mets les marges sur les cétés ///
 		SimpleAttributeSet attrs = new SimpleAttributeSet();
 		StyleConstants.setLineSpacing(attrs, 1);
 		StyleConstants.setSpaceAbove(attrs, Constants.TEXTPANE_MARGING);
@@ -36,7 +42,7 @@ public class TextPane extends JTextPane {
 	}
 
 	/**
-	 * surligne tout de d�but � fin avec la couleur sp�cifi�e
+	 * surligne tout de début é fin avec la couleur spécifiée
 	 *
 	 */
 	public void surlignerPhrase(int debut, int fin, Color couleur) {
@@ -52,7 +58,7 @@ public class TextPane extends JTextPane {
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public void enleverSurlignageVert() {
@@ -62,17 +68,10 @@ public class TextPane extends JTextPane {
 		greenHighlightTags.clear();
 	}
 
-	/**
-	 * desurligne tout
-	 *
-	 */
-	public void d�surlignerTout() {
-		getHighlighter().removeAllHighlights();
-		greenHighlightTags.clear();
-	}
+
 
 	/**
-	 * Enl�ve tout le surlignage pr�sent entre les bornes start et end.
+	 * Enlève tout le surlignage présent entre les bornes start et end.
 	 */
 	public void removeHighlight(int start, int end) {
 		Highlight[] hl = getHighlighter().getHighlights();
@@ -83,12 +82,5 @@ public class TextPane extends JTextPane {
 			}
 		}
 	}
-
-	/*@Override
-	public void paintComponent(Graphics g) {
-		g.setColor(Color.YELLOW);
-		g.fillRect(0, 0, getWidth(), getHeight());
-		super.paintComponent(g);
-	}*/
-
+	
 }
