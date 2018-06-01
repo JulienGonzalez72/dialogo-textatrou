@@ -1,6 +1,6 @@
 package main.controler;
 
-import main.reading.*;
+import main.reading.PhraseThread;
 import main.view.Panneau;
 
 public class Pilot {
@@ -33,10 +33,10 @@ public class Pilot {
 	}
 
 	/**
-	 * Se place sur le segment n et démarre le lecteur.
+	 * Se place sur le segment n et dï¿½marre le lecteur.
 	 */
 	public void goToPhrase(int n) throws IllegalArgumentException {
-		if(n > p.textHandler.getPhrasesCount() - 1 || n < 0) {
+		if (n > p.textHandler.getPhrasesCount() - 1 || n < 0) {
 			throw new IllegalArgumentException("Numero de segment invalide");
 		}
 
@@ -64,15 +64,15 @@ public class Pilot {
 	}
 
 	/**
-	 * Essaye d'arrêter l'enregistrement en cours.
+	 * Essaye d'arrï¿½ter l'enregistrement en cours.
 	 */
 	public void doStop() {
 		p.player.stop();
 	}
 
 	/**
-	 * Essaye de reprendre l'enregistrement. Si il est déjà démarré, reprend depuis
-	 * le début.
+	 * Essaye de reprendre l'enregistrement. Si il est dï¿½jï¿½ dï¿½marrï¿½, reprend depuis
+	 * le dï¿½but.
 	 */
 	public void doPlay() {
 		goToPhrase(phrase);

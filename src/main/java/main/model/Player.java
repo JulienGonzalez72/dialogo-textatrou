@@ -1,18 +1,20 @@
 package main.model;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+
 import main.Constants;
 import main.Parametres;
-
 
 public class Player {
 
@@ -28,31 +30,32 @@ public class Player {
 	private long lastPosition;
 
 	/**
-	 * Si un temps de pause s'effectue après l'enregistrement (valeur par défaut =
+	 * Si un temps de pause s'effectue aprï¿½s l'enregistrement (valeur par dï¿½faut =
 	 * <code>false</code>).
 	 */
 	public boolean waitAfter = false;
 
 	/**
-	 * Ecouteurs qui s'enclenchent lorsque un segment a finis d'être prononcé.
+	 * Ecouteurs qui s'enclenchent lorsque un segment a finis d'ï¿½tre prononcï¿½.
 	 */
 	public List<Runnable> onPhraseEnd = new ArrayList<>();
 	public List<Runnable> onNextPhrase = new ArrayList<>();
 	public List<Runnable> onPreviousPhrase = new ArrayList<>();
 	/**
-	 * Ecouteurs qui s'enclenchent lorsque l'enregistrement est lancé.
+	 * Ecouteurs qui s'enclenchent lorsque l'enregistrement est lancï¿½.
 	 */
 	public List<Runnable> onPlay = new ArrayList<>();
 	/**
-	 * Ecouteurs qui s'enclenchent lorsque le temps de pause de
-	 * l'enregistrement se termine.
+	 * Ecouteurs qui s'enclenchent lorsque le temps de pause de l'enregistrement se
+	 * termine.
 	 */
 	public List<Runnable> onBlockEnd = new ArrayList<>();
 	/**
-	 * Ecouteurs qui se déclenchent lorsque l'utilisateur est mis en attente pour répéter.
+	 * Ecouteurs qui se dï¿½clenchent lorsque l'utilisateur est mis en attente pour
+	 * rï¿½pï¿½ter.
 	 */
 	public List<Runnable> onWait = new ArrayList<>();
-	
+
 	private Parametres param;
 
 	public Player(TextHandler textHandler, Parametres param) {
@@ -61,7 +64,7 @@ public class Player {
 	}
 
 	/**
-	 * Charge l'enregistrement correspondant à un segment précis.
+	 * Charge l'enregistrement correspondant ï¿½ un segment prï¿½cis.
 	 */
 	public void load(int phrase) {
 		currentPhrase = phrase;
@@ -73,7 +76,7 @@ public class Player {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Joue un segment de phrase.
 	 */
@@ -85,7 +88,7 @@ public class Player {
 	}
 
 	/**
-	 * Démarre la lecture (n'a aucun effet si la lecture est déjà démarrée).
+	 * Dï¿½marre la lecture (n'a aucun effet si la lecture est dï¿½jï¿½ dï¿½marrï¿½e).
 	 */
 	public void play() {
 		if (playing) {
@@ -146,8 +149,7 @@ public class Player {
 			time += 20;
 
 			/// fin du blocage ///
-			if (blocked && time > clip.getMicrosecondLength() / 1000
-					* param.timeToWaitToLetStudentRepeat / 100.) {
+			if (blocked && time > clip.getMicrosecondLength() / 1000 * param.timeToWaitToLetStudentRepeat / 100.) {
 				blocked = false;
 				cancel();
 				for (Runnable r : onBlockEnd) {
@@ -158,7 +160,7 @@ public class Player {
 	}
 
 	/**
-	 * Arrête la lecture (n'a aucun effet si elle n'est pas en cours).
+	 * Arrï¿½te la lecture (n'a aucun effet si elle n'est pas en cours).
 	 */
 	public void stop() {
 		if (clip != null) {
@@ -180,7 +182,7 @@ public class Player {
 	}
 
 	/**
-	 * Indique si le segment a finis d'être prononcé.
+	 * Indique si le segment a finis d'ï¿½tre prononcï¿½.
 	 */
 	public boolean isPhraseFinished() {
 		return clip != null ? clip.getFramePosition() == clip.getFrameLength() : false;
@@ -201,7 +203,7 @@ public class Player {
 	}
 
 	/**
-	 * Retourne la phrase courante du lecteur, qu'elle soit finie d'être prononcée
+	 * Retourne la phrase courante du lecteur, qu'elle soit finie d'ï¿½tre prononcï¿½e
 	 * ou non.
 	 */
 	public String getCurrentPhrase() {
@@ -216,7 +218,7 @@ public class Player {
 	}
 
 	/**
-	 * Passe au segment suivant et démarre le lecteur.
+	 * Passe au segment suivant et dï¿½marre le lecteur.
 	 */
 	public void nextPhrase() {
 		for (Runnable r : onNextPhrase) {
@@ -227,14 +229,14 @@ public class Player {
 	}
 
 	/**
-	 * Retourne true si il reste au moins un segment à lire.
+	 * Retourne true si il reste au moins un segment ï¿½ lire.
 	 */
 	public boolean hasNextPhrase() {
 		return currentPhrase < text.getPhrasesCount() - 1;
 	}
 
 	/**
-	 * Retourne au segment prédédent et démarre le lecteur.
+	 * Retourne au segment prï¿½dï¿½dent et dï¿½marre le lecteur.
 	 */
 	public void previousPhrase() {
 		for (Runnable r : onPreviousPhrase) {
@@ -261,16 +263,16 @@ public class Player {
 	}
 
 	/**
-	 * Se place directement à un segment donné sans démarrer le lecteur.
+	 * Se place directement ï¿½ un segment donnï¿½ sans dï¿½marrer le lecteur.
 	 */
 	public void goTo(int index) {
 		lastPosition = 0;
 		stop();
 		currentPhrase = index;
 	}
-	
+
 	/**
-	 * Retourne la durée en millisecondes de l'enregistrement courant.
+	 * Retourne la durï¿½e en millisecondes de l'enregistrement courant.
 	 */
 	public long getDuration() {
 		return clip != null ? clip.getMicrosecondLength() / 1000 : 0;

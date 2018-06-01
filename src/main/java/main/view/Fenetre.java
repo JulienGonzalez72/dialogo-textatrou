@@ -7,7 +7,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import main.Constants;
 import main.Parametres;
@@ -24,15 +25,15 @@ public class Fenetre extends JFrame {
 			e.printStackTrace();
 		}
 		setContentPane(pan);
-		
+
 		setTitle(titre);
 		setSize(tailleX, tailleY);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(true);
 		setMinimumSize(new Dimension(Constants.MIN_FRAME_WIDTH, Constants.MIN_FRAME_HEIGHT));
-		//setUndecorated(true);
-		
+		// setUndecorated(true);
+
 		addComponentListener(new ComponentAdapter() {
 			private int lastWidth = getWidth(), lastHeight = getHeight();
 
@@ -42,13 +43,13 @@ public class Fenetre extends JFrame {
 				if (isResizable() && pan.editorPane != null && pan.editorPane.getWidth() > 0
 						&& (lastWidth != getWidth() || lastHeight != getHeight())) {
 					pan.rebuildPages();
-					
-					/// corrige le rendimensionnement s'il empêche une mise en page correcte ///
+
+					/// corrige le rendimensionnement s'il empï¿½che une mise en page correcte ///
 					if (!pan.correctSize() && (getWidth() < lastWidth || getHeight() < lastHeight)) {
 						setSize(getWidth() + 100, getHeight() + 100);
 						pan.rebuildPages();
 					}
-					
+
 					else {
 						lastWidth = getWidth();
 						lastHeight = getHeight();
@@ -66,7 +67,7 @@ public class Fenetre extends JFrame {
 				param.panY = Fenetre.this.getY();
 			}
 		});
-		
+
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {

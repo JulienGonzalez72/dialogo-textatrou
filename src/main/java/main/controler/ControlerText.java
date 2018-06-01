@@ -240,12 +240,12 @@ public class ControlerText {
 			}
 		}
 	}
-	
+
 	private void hint(Mask m) {
-		if(p.param.timeToShowWord == -1) {
+		if (p.param.timeToShowWord == -1) {
 			m.setHint();
 		} else {
-			m.setHint(p.param.timeToShowWord*m.getNbCarac());
+			m.setHint(p.param.timeToShowWord * m.getNbCarac());
 		}
 	}
 
@@ -302,7 +302,6 @@ public class ControlerText {
 		Font f = new Font(p.editorPane.getFont().getFontName(), p.editorPane.getFont().getStyle(),
 				p.editorPane.getFont().getSize() * 7 / 10);
 
-
 		frame.initField(f, p.controlerMask);
 		frame.n = h;
 		frame.motCouvert = p.textHandler.getHidedWord(h);
@@ -317,19 +316,19 @@ public class ControlerText {
 	public void doError(int h) {
 		blink(Constants.ALERT_COLOR);
 		p.nbErreurs++;
-		//on reaffiche le hint
-		if(p.param.fixedField) {
-			getFenetreFixe().jtf.setText("");	
+		// on reaffiche le hint
+		if (p.param.fixedField) {
+			getFenetreFixe().jtf.setText("");
 			hint(getFenetreFixe());
 		} else {
 			getMask(h).jtf.setText("");
 			hint(getMask(h));
 		}
-		if(p.param.replayPhrase) {
+		if (p.param.replayPhrase) {
 			play(p.pilot.getCurrentPhraseIndex());
 			doWait(getCurrentWaitTime(), Constants.CURSOR_LISTEN);
 		}
-	
+
 	}
 
 	public void desactiverFenetreFixe() {
@@ -364,7 +363,7 @@ public class ControlerText {
 	/**
 	 * Cache le trou h.
 	 */
-	public void hideHole(int h) {		
+	public void hideHole(int h) {
 		if (!p.textHandler.isHidden(h)) {
 			p.textHandler.hideHole(h);
 			p.updateText();
@@ -392,7 +391,7 @@ public class ControlerText {
 	public boolean hasHole(int n) {
 		return p.textHandler.hasHole(n);
 	}
-	
+
 	/**
 	 * Retourne le num�ro du premier trou � partir du segment indiqu�.<br>
 	 * Retourne -1 s'il n'y a plus de trous apr�s.
@@ -421,8 +420,7 @@ public class ControlerText {
 	 */
 	public void highlightPhrase(Color c, int n) {
 		if (p.textHandler.getPhrase(n) != null) {
-			int debutRelatifSegment = p.textHandler.getRelativeStartPhrasePosition(p.getFirstPhraseShowed(),
-					n);
+			int debutRelatifSegment = p.textHandler.getRelativeStartPhrasePosition(p.getFirstPhraseShowed(), n);
 			int finRelativeSegment = debutRelatifSegment + p.textHandler.getPhrase(n).length();
 			p.editorPane.surlignerPhrase(debutRelatifSegment, finRelativeSegment, c);
 		}
@@ -439,9 +437,9 @@ public class ControlerText {
 	}
 
 	public void updateHG(int n) {
-		p.updateHG(n);	
+		p.updateHG(n);
 	}
-	
+
 	/**
 	 * Mets � jour la barre de progression en fonction du num�ro de trou
 	 */
@@ -450,7 +448,8 @@ public class ControlerText {
 	}
 
 	/**
-	 * Retourne un algorithme de lecture de trou associ� aux param�tres actuels et au num�ro de trou h.
+	 * Retourne un algorithme de lecture de trou associ� aux param�tres actuels et
+	 * au num�ro de trou h.
 	 */
 	public HoleThread getHoleThread(int h) {
 
@@ -468,7 +467,5 @@ public class ControlerText {
 	public int lastPhraseToHG() {
 		return p.editorPane.lastPhraseToHG;
 	}
-
-
 
 }

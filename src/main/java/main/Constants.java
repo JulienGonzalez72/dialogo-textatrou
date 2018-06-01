@@ -9,24 +9,24 @@ import java.util.TreeMap;
 
 public final class Constants {
 
-	
-	//remplacer les espaces entre deux mots dans un meme trou par des espaces insecables
+	// remplacer les espaces entre deux mots dans un meme trou par des espaces
+	// insecables
 
 	/**
 	 * Nom des fichiers contenants les fonts pour dislexyques
 	 */
 	public static final String[] FONTS_NAMES = { "OpenDyslexic-Bold.otf", "AndBasR.ttf", "LEXIA___.otf" };
-	
+
 	/**
 	 * Couleur de fond du TextPane
 	 */
 	public static Color BG_COLOR = new Color(255, 255, 150);
-	
+
 	/**
 	 * Couleur de clignotement du fond lorsque l'utilisateur s'est tromp�
 	 */
 	public static final Color ALERT_COLOR = new Color(255, 150, 150);
-	
+
 	/**
 	 * Nom de l'eleve courant
 	 */
@@ -52,8 +52,10 @@ public final class Constants {
 	public static final int MIN_WAIT_TIME_PERCENT = 0;
 	public static final int MAX_WAIT_TIME_PERCENT = 300;
 	public static final int DEFAULT_WAIT_TIME_PERCENT = 0;
-	public static final int PARAM_FRAME_HEIGHT = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height*9/10;
-	public static final int PARAM_FRAME_WIDTH = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width*4/11;
+	public static final int PARAM_FRAME_HEIGHT = GraphicsEnvironment.getLocalGraphicsEnvironment()
+			.getMaximumWindowBounds().height * 9 / 10;
+	public static final int PARAM_FRAME_WIDTH = GraphicsEnvironment.getLocalGraphicsEnvironment()
+			.getMaximumWindowBounds().width * 4 / 11;
 	public static final String PARAM_FRAME_TITLE = "Dialogo by roman and julien";
 	public static final boolean LOAD_FIRST_PHRASE = false;
 
@@ -91,7 +93,7 @@ public final class Constants {
 	 * Intervalle de temps sans clic possible apr�s un appuie sur la touche gauche
 	 */
 	public static final long LEFT_DELAY = 400;
-	
+
 	/**
 	 * Icone de la souris lors d'une phase d'�coute
 	 */
@@ -100,17 +102,18 @@ public final class Constants {
 	 * Icone de la souris lors d'une phase de prononciation
 	 */
 	public static final String CURSOR_SPEAK = "parler.png";
-	
+
 	/**
-	 * Temps de chargement apr�s chaque pression sur un bouton de contr�le suivant/pr�c�dent.
+	 * Temps de chargement apr�s chaque pression sur un bouton de contr�le
+	 * suivant/pr�c�dent.
 	 */
 	public static final long DISABLE_TIME = 200;
-	
+
 	/**
 	 * Hauteur des cellules des listes d�roulantes de la fen�tre des param�tres.
 	 */
 	public static final int COMBOBOX_CELL_HEIGHT = 30;
-	
+
 	/**
 	 * Couleurs disponibles pour l'utilisateur.
 	 */
@@ -125,7 +128,7 @@ public final class Constants {
 		COLORS.put("Rouge", new Color(255, 40, 40));
 		COLORS.put("Vert", Color.GREEN);
 	}
-	
+
 	public static final Map<String, Color> MORE_COLORS = new TreeMap<>();
 	static {
 		MORE_COLORS.put("Abricot", new Color(230, 126, 48));
@@ -159,17 +162,19 @@ public final class Constants {
 		MORE_COLORS.put("Vert pomme", new Color(52, 201, 36));
 		MORE_COLORS.put("Violet", new Color(127, 0, 255));
 	}
-	
+
 	public static final String SHOW_MORE_COLORS_TEXT = "Autre couleur...";
-	
+
 	public static final Color HINT_COLOR = new Color(100, 100, 100);
-	
-	public static final String[] FONT_FAMILIES = {"OpenDyslexic", "Andika", "Lexia", "Arial", "Times New Roman"};
-	
-	public static final Integer[] FONT_SIZES = {12, 16, 18, 20, 22, 24, 30, 36, 42};
+
+	public static final String[] FONT_FAMILIES = { "OpenDyslexic", "Andika", "Lexia", "Arial", "Times New Roman" };
+
+	public static final Integer[] FONT_SIZES = { 12, 16, 18, 20, 22, 24, 30, 36, 42 };
 
 	/**
-	 *  Temps d'apparition des mots a decouvrir tel que Temps = DEFAULT_TIME_APPARITION_BY_CARAC * N, avec N le nombre de caract�re dans le mot actuel
+	 * Temps d'apparition des mots a decouvrir tel que Temps =
+	 * DEFAULT_TIME_APPARITION_BY_CARAC * N, avec N le nombre de caract�re dans le
+	 * mot actuel
 	 */
 	public static final int DEFAULT_TIME_APPARITION_BY_CARAC = 0;
 
