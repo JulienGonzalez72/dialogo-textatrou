@@ -82,7 +82,6 @@ public class FenetreParametre extends JFrame {
 		getRootPane().addComponentListener(new ComponentListener() {
 			@Override
 			public void componentShown(ComponentEvent e) {
-
 			}
 			@Override
 			public void componentResized(ComponentEvent e) {
@@ -106,6 +105,7 @@ public class FenetreParametre extends JFrame {
 		public JComboBox<Object> fontFamilyComboBox;
 		public JComboBox<Integer> fontSizeComboBox;
 		public ColorComboBox bgColorComboBox;
+		public JLabel couleurSurlignage;
 		public ColorComboBox rightColorComboBox;
 		public JTextField firstPhraseField;
 		public JTextField maxPhraseByPage;
@@ -113,7 +113,7 @@ public class FenetreParametre extends JFrame {
 		public JCheckBox replayPhrase;
 		public JCheckBox fixedField;
 		public JCheckBox oneHole;
-		public JCheckBox surlignage;
+		public JCheckBox hightlightCheckBox;
 		public JSlider waitSlider;
 		public JSlider timeToShowWord;
 		public final Object[] fontFamilies;
@@ -138,10 +138,10 @@ public class FenetreParametre extends JFrame {
 			valider.addActionListener(controleur);
 			JLabel maxPhrase = fastLabel("Nombre de segments max par page");
 			JLabel police = fastLabel("Police : ");
-			JLabel couleurSurlignage = fastLabel("Couleur de surlignage : ");
 			JLabel taillePolice = fastLabel("Taille de la police : ");
 			JLabel couleurDeFond = fastLabel("Couleur de fond : ");
 			JLabel segments = fastLabel("Segment de départ : ");
+			couleurSurlignage = fastLabel("Couleur de surlignage : ");
 			JLabel attente = fastLabel("Temps d'attente en % du temps de lecture");
 			JLabel labelWordApparition = fastLabel("Temps d'apparition des mots par caracteres ( en ms )");
 
@@ -203,50 +203,48 @@ public class FenetreParametre extends JFrame {
 			firstPhraseField.addActionListener(controleur);
 
 			JPanel midPanel = new JPanel(new GridLayout(1, 2));
-			JPanel midRightPanel = new JPanel(new GridLayout(7, 1));
-			JPanel midLeftPanel = new JPanel(new GridLayout(7, 1));
-			
+			JPanel midRightPanel = new JPanel(new GridLayout(8, 1));
+			JPanel midLeftPanel = new JPanel(new GridLayout(8, 1));
 			maxPhraseByPage = fastTextField("100", new Font("OpenDyslexic", Font.PLAIN, 15), "100");
 			maxPhraseByPage.addActionListener(controleur);
 
-			midPanel.add(midRightPanel);
 			midPanel.add(midLeftPanel);
-
-			// MID RIGHT
-			midRightPanel.add(police);
-			fastCentering(fontFamilyComboBox, midRightPanel, "   ");
-			midRightPanel.add(taillePolice);
-			fastCentering(fontSizeComboBox, midRightPanel, "   ");
-			midRightPanel.add(couleurSurlignage);
-			fastCentering(rightColorComboBox, midRightPanel, "   ");
-			surlignage = fastCheckBox("Surlignage", controleur);
-			surlignage.setSelected(false);
-			JPanel temp3 = new JPanel();
-			temp3.add(surlignage);
-			midRightPanel.add(temp3);
+			midPanel.add(midRightPanel);
 
 			// MID LEFT
-			midLeftPanel.add(couleurDeFond);
-			fastCentering(bgColorComboBox, midLeftPanel, "   ");
-			midLeftPanel.add(segments);
+			midLeftPanel.add(police);
+			fastCentering(fontFamilyComboBox, midLeftPanel, "   ");
+			midLeftPanel.add(taillePolice);
+			fastCentering(fontSizeComboBox, midLeftPanel, "   ");
+			midLeftPanel.add(couleurSurlignage);
+			fastCentering(rightColorComboBox, midLeftPanel, "   ");
+			hightlightCheckBox = fastCheckBox("Surlignage", controleur);
+			JPanel temp3 = new JPanel();
+			temp3.add(hightlightCheckBox);
+			midLeftPanel.add(temp3);
+			temp3 = new JPanel();
+			temp3.add(replayPhrase);
+			midLeftPanel.add(temp3);
 
-			fastCentering(firstPhraseField, midLeftPanel, "   ");
-			midLeftPanel.add(maxPhrase);
-			fastCentering(maxPhraseByPage, midLeftPanel, "   ");
+			// MID RIGHT
+			midRightPanel.add(couleurDeFond);
+			fastCentering(bgColorComboBox, midRightPanel, "   ");
+			midRightPanel.add(segments);
+
+			fastCentering(firstPhraseField, midRightPanel, "   ");
+			midRightPanel.add(maxPhrase);
+			fastCentering(maxPhraseByPage, midRightPanel, "   ");
 
 			oneHole = fastCheckBox("Un trou par un trou ?", controleur);
 			oneHole.setSelected(false);
 			JPanel temp = new JPanel();
 			temp.add(oneHole);
-			midLeftPanel.add(temp);
+			midRightPanel.add(temp);
 			fixedField = fastCheckBox("Fenêtre de saisie fixe", controleur);
 			fixedField.setSelected(false);
 			temp = new JPanel();
 			temp.add(fixedField);
-			midLeftPanel.add(temp);
-			temp = new JPanel();
-			temp.add(replayPhrase);
-			midLeftPanel.add(temp);
+			midRightPanel.add(temp);
 
 			waitSlider = new JSlider();
 			waitSlider.setMaximum(Constants.MAX_WAIT_TIME_PERCENT);
@@ -304,7 +302,9 @@ public class FenetreParametre extends JFrame {
 			replayPhrase.setSelected(param.replayPhrase);
 			fixedField.setSelected(param.fixedField);
 			oneHole.setSelected(param.oneHole);
-			surlignage.setSelected(param.highlight);
+			hightlightCheckBox.setSelected(param.highlight);
+			rightColorComboBox.setEnabled(param.highlight);
+			couleurSurlignage.setEnabled(param.highlight);
 
 			waitSlider.setValue(param.timeToWaitToLetStudentRepeat);
 			timeToShowWord.setValue(param.timeToShowWord >= 0 ? param.timeToShowWord : timeToShowWord.getMaximum());
@@ -317,7 +317,7 @@ public class FenetreParametre extends JFrame {
 			param.replayPhrase = replayPhrase.isSelected();
 			param.fixedField = fixedField.isSelected();
 			param.oneHole = oneHole.isSelected();
-			param.highlight = surlignage.isSelected();
+			param.highlight = hightlightCheckBox.isSelected();
 			param.rightColor = rightColorComboBox.getBackground();
 			param.bgColor = bgColorComboBox.getBackground();
 			param.police = param.police.deriveFont(Float.valueOf((Integer) fontSizeComboBox.getSelectedItem()));
@@ -440,7 +440,7 @@ public class FenetreParametre extends JFrame {
 		pan.firstPhraseField.setEnabled(etat);
 		pan.maxPhraseByPage.setEnabled(etat);
 		pan.oneHole.setEnabled(etat);
-		pan.surlignage.setEnabled(etat);
+		pan.hightlightCheckBox.setEnabled(etat);
 		pan.fixedField.setEnabled(etat);
 		pan.replayPhrase.setEnabled(etat);
 		pan.fen.setResizable(etat);

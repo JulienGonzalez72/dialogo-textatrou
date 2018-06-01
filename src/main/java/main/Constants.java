@@ -23,7 +23,7 @@ public final class Constants {
 	public static Color BG_COLOR = new Color(255, 255, 150);
 
 	/**
-	 * Couleur de clignotement du fond lorsque l'utilisateur s'est tromp�
+	 * Couleur de clignotement du fond lorsque l'utilisateur s'est trompé
 	 */
 	public static final Color ALERT_COLOR = new Color(255, 150, 150);
 
@@ -45,7 +45,7 @@ public final class Constants {
 	public static final int SIZE_IMAGE_FRAME = 40;
 
 	/*
-	 * Valeurs par d�faut des param�tres
+	 * Valeurs par défaut des paramétres
 	 */
 	public static final int DEFAULT_FONT_SIZE = 12;
 	public static final int DEFAULT_FONT_STYLE = Font.BOLD;
@@ -65,14 +65,14 @@ public final class Constants {
 	public static final long PAGE_WAIT_TIME = 1000;
 
 	/**
-	 * Caract�re qui correspond � une c�sure
+	 * Caractére qui correspond é une césure
 	 */
 	public static final String PAUSE = "/";
 
 	public static final float TEXTPANE_MARGING = 20f;
 
 	/**
-	 * Vitesse de lecture (en fr�quence)
+	 * Vitesse de lecture (en fréquence)
 	 */
 	public static final long PLAYER_INTERVAL = 20;
 
@@ -85,17 +85,17 @@ public final class Constants {
 	 */
 	public static final String AUDIO_FILE_NAME = "Aha take on me";
 	/**
-	 * Indique si l'exercice courant � une consigne dans son texte
+	 * Indique si l'exercice courant é une consigne dans son texte
 	 */
 	public static final boolean HAS_INSTRUCTIONS = false;
 
 	/**
-	 * Intervalle de temps sans clic possible apr�s un appuie sur la touche gauche
+	 * Intervalle de temps sans clic possible aprés un appuie sur la touche gauche
 	 */
 	public static final long LEFT_DELAY = 400;
 
 	/**
-	 * Icone de la souris lors d'une phase d'�coute
+	 * Icone de la souris lors d'une phase d'écoute
 	 */
 	public static final String CURSOR_LISTEN = "ecouter.png";
 	/**
@@ -104,13 +104,13 @@ public final class Constants {
 	public static final String CURSOR_SPEAK = "parler.png";
 
 	/**
-	 * Temps de chargement apr�s chaque pression sur un bouton de contr�le
-	 * suivant/pr�c�dent.
+	 * Temps de chargement aprés chaque pression sur un bouton de contréle
+	 * suivant/précédent.
 	 */
 	public static final long DISABLE_TIME = 200;
 
 	/**
-	 * Hauteur des cellules des listes d�roulantes de la fen�tre des param�tres.
+	 * Hauteur des cellules des listes déroulantes de la fenétre des paramétres.
 	 */
 	public static final int COMBOBOX_CELL_HEIGHT = 30;
 
@@ -136,14 +136,14 @@ public final class Constants {
 		MORE_COLORS.put("Beurre", new Color(240, 227, 107));
 		MORE_COLORS.put("Bleu canard", new Color(4, 139, 154));
 		MORE_COLORS.put("Bleu ciel", new Color(119, 181, 254));
-		MORE_COLORS.put("Bleu givr�", new Color(128, 208, 208));
+		MORE_COLORS.put("Bleu givré", new Color(128, 208, 208));
 		MORE_COLORS.put("Bleu marine", new Color(3, 34, 76));
 		MORE_COLORS.put("Caramel", new Color(126, 51, 0));
 		MORE_COLORS.put("Carotte", new Color(244, 102, 27));
 		MORE_COLORS.put("Citrouille", new Color(223, 109, 20));
 		MORE_COLORS.put("Coquille d'oeuf", new Color(253, 233, 224));
 		MORE_COLORS.put("Corail", new Color(231, 62, 1));
-		MORE_COLORS.put("�meraude", new Color(1, 215, 88));
+		MORE_COLORS.put("Emeraude", new Color(1, 215, 88));
 		MORE_COLORS.put("Fraise", new Color(191, 48, 48));
 		MORE_COLORS.put("Framboise", new Color(199, 44, 72));
 		MORE_COLORS.put("Fuchsia", new Color(253, 63, 146));
@@ -173,7 +173,7 @@ public final class Constants {
 
 	/**
 	 * Temps d'apparition des mots a decouvrir tel que Temps =
-	 * DEFAULT_TIME_APPARITION_BY_CARAC * N, avec N le nombre de caract�re dans le
+	 * DEFAULT_TIME_APPARITION_BY_CARAC * N, avec N le nombre de caractères dans le
 	 * mot actuel
 	 */
 	public static final int DEFAULT_TIME_APPARITION_BY_CARAC = 0;
@@ -181,7 +181,7 @@ public final class Constants {
 	public static final int MAX_APPARITION_TIME = 1200;
 	
 	/**
-	 * Si les trous se r�partissent automatiquement de fa�on al�atoire sans prendre en compte ceux du texte.
+	 * Si les trous se répartissent automatiquement de façon aléatoire sans prendre en compte ceux du texte.
 	 */
 	public static final boolean RANDOM_HOLES = false;
 

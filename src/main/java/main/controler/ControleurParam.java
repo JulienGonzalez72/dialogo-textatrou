@@ -67,6 +67,11 @@ public class ControleurParam implements ActionListener, ChangeListener {
 				fen.fenetre.pan.rebuildPages();
 			}
 		}
+		if (arg0.getSource() == panneau.hightlightCheckBox) {
+			boolean selected = panneau.hightlightCheckBox.isSelected();
+			panneau.rightColorComboBox.setEnabled(selected);
+			panneau.couleurSurlignage.setEnabled(selected);
+		}
 		if (arg0.getSource() == panneau.valider) {
 			panneau.savePreferences();
 			fen.eMenuItem2.setEnabled(true);
