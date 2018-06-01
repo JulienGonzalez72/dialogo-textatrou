@@ -44,12 +44,12 @@ public class Fenetre extends JFrame {
 					pan.rebuildPages();
 					
 					/// corrige le rendimensionnement s'il empêche une mise en page correcte ///
-					if (!pan.correctSize() && (getWidth() < lastWidth || getHeight() < lastHeight)) {
+					/*if (!pan.correctSize() && (getWidth() < lastWidth || getHeight() < lastHeight)) {
 						setSize(getWidth() + 100, getHeight() + 100);
 						pan.rebuildPages();
 					}
 					
-					else {
+					else*/ {
 						lastWidth = getWidth();
 						lastHeight = getHeight();
 					}

@@ -55,7 +55,7 @@ public class Parametres {
 		prop.put("tempsApparitionMot", String.valueOf(timeToShowWord));
 		prop.put("tempsAttente", String.valueOf(timeToWaitToLetStudentRepeat));
 		prop.put("fenetreFixe", String.valueOf(fixedField));
-		//prop.put("premierSegment", String.valueOf(premierSegment));
+		prop.put("premierSegment", String.valueOf(firstPhrase));
 		prop.put("oneHole", String.valueOf(oneHole));
 		prop.put("surlignage", String.valueOf(highlight));
 		prop.put("rejouerSon", String.valueOf(replayPhrase));
@@ -126,7 +126,7 @@ public class Parametres {
 		p.panY = Integer.valueOf(pro.getProperty("y"));
 		p.panWidth = Integer.valueOf(pro.getProperty("w"));
 		p.panHeight = Integer.valueOf(pro.getProperty("h"));
-		//p.premierSegment = Integer.valueOf(pro.getProperty("premierSegment"));
+		p.firstPhrase = Integer.valueOf(pro.getProperty("premierSegment"));
 		p.fixedField = Boolean.valueOf(pro.getProperty("fenetreFixe"));
 		p.oneHole = Boolean.valueOf(pro.getProperty("oneHole"));
 		p.highlight = Boolean.valueOf(pro.getProperty("surlignage"));

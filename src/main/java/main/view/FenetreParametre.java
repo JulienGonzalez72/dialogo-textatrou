@@ -87,7 +87,7 @@ public class FenetreParametre extends JFrame {
 		public JComboBox<Integer> fontSizeComboBox;
 		public ColorComboBox bgColorComboBox;
 		public ColorComboBox rightColorComboBox;
-		public JTextField segmentDeDepart;
+		public JTextField firstPhraseField;
 		public JButton valider;
 		public JCheckBox replayPhrase;
 		public JCheckBox fixedField;
@@ -173,10 +173,8 @@ public class FenetreParametre extends JFrame {
 				}
 			};
 			
-			segmentDeDepart = fastTextField("1", new Font("OpenDyslexic", Font.PLAIN, 15), "1");
-			segmentDeDepart.setEnabled(false);
-			segments.setEnabled(false);
-			segmentDeDepart.addActionListener(controleur);
+			firstPhraseField = fastTextField("1", new Font("OpenDyslexic", Font.PLAIN, 15), "1");
+			firstPhraseField.addActionListener(controleur);
 
 			JPanel midPanel = new JPanel(new GridLayout(1, 2));
 			JPanel midRightPanel = new JPanel(new GridLayout(7, 1));
@@ -201,7 +199,7 @@ public class FenetreParametre extends JFrame {
 			midLeftPanel.add(couleurDeFond);
 			fastCentering(bgColorComboBox, midLeftPanel, "   ");
 			midLeftPanel.add(segments);
-			fastCentering(segmentDeDepart, midLeftPanel, "   ");
+			fastCentering(firstPhraseField, midLeftPanel, "   ");
 			oneHole = fastCheckBox("Un trou par un trou ?", controleur);
 			oneHole.setSelected(false);
 			JPanel temp = new JPanel();
@@ -264,7 +262,7 @@ public class FenetreParametre extends JFrame {
 			fontSizeComboBox.setSelectedItem(param.police.getSize());
 			fontFamilyComboBox.setSelectedItem(getCorrectFontName(param.police.getFontName()));
 
-			segmentDeDepart.setText("1");
+			firstPhraseField.setText(String.valueOf(param.firstPhrase));
 
 			appliquerCouleur(param.bgColor, bgColorComboBox);
 			appliquerCouleur(param.rightColor, rightColorComboBox);
@@ -275,7 +273,7 @@ public class FenetreParametre extends JFrame {
 			surlignage.setSelected(param.highlight);
 
 			waitSlider.setValue(param.timeToWaitToLetStudentRepeat);
-			timeToShowWord.setValue(param.timeToShowWord);
+			timeToShowWord.setValue(param.timeToShowWord >= 0 ? param.timeToShowWord : timeToShowWord.getMaximum());
 		}
 
 		/**
@@ -292,7 +290,7 @@ public class FenetreParametre extends JFrame {
 			param.police = ControleurParam.getFont((String) fontFamilyComboBox.getSelectedItem(),
 					fontFamilyComboBox.getSelectedIndex(), Font.BOLD, (Integer) fontSizeComboBox.getSelectedItem());
 			try {
-				param.firstPhrase = Integer.parseInt(segmentDeDepart.getText());
+				param.firstPhrase = Integer.parseInt(firstPhraseField.getText());
 			} catch (NumberFormatException e) {
 			}
 			param.timeToWaitToLetStudentRepeat = waitSlider.getValue();
@@ -382,8 +380,6 @@ public class FenetreParametre extends JFrame {
 	}
 
 	public void lancerExercice() {
-		Panneau.premierSegment = param.firstPhrase;
-
 		if (param.fixedField) {
 			fenetre.pan.panelSud.setLayout(new BorderLayout());
 			fenetre.pan.panelFenetreFixe = new JDesktopPane();
@@ -396,6 +392,7 @@ public class FenetreParametre extends JFrame {
 		}
 		
 		updateOptionsOnExoShow(false);
+		fenetre.pan.pilot.initialiseExo();
 
 		fenetre.pan.panelSud.setVisible(true);
 		fenetre.start();
@@ -403,7 +400,7 @@ public class FenetreParametre extends JFrame {
 	}
 
 	private void updateOptionsOnExoShow(boolean etat) {
-		pan.segmentDeDepart.setEnabled(etat);
+		pan.firstPhraseField.setEnabled(etat);
 		pan.oneHole.setEnabled(etat);
 		pan.surlignage.setEnabled(etat);
 		pan.fixedField.setEnabled(etat);
@@ -436,7 +433,7 @@ public class FenetreParametre extends JFrame {
 			/// réactive la taille et la police et le segment de départ
 			pan.fontFamilyComboBox.setEnabled(true);
 			pan.fontSizeComboBox.setEnabled(true);
-			pan.segmentDeDepart.setEnabled(true);
+			pan.firstPhraseField.setEnabled(true);
 			pan.fen.fenetre.setResizable(true);
 			stopExercice();
 		});
@@ -460,7 +457,6 @@ public class FenetreParametre extends JFrame {
 		fenetre.setVisible(false);
 		controlPanel.disableAll();
 		fenetre.pan.pilot.doStop();
-		fenetre.pan.pilot.initialiseExo();
 	}
 
 	public static Color stringToColor(String name) {

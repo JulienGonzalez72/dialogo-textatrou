@@ -112,7 +112,7 @@ public class ControleurParam implements ActionListener, ChangeListener {
 		// premier segment
 		int premierSegment = -1;
 		try {
-			premierSegment = Integer.valueOf((String) panneau.segmentDeDepart.getText());
+			premierSegment = Integer.valueOf((String) panneau.firstPhraseField.getText());
 			if (premierSegment + 2 > ((Panneau) fen.fenetre.getContentPane()).textHandler.getPhrasesCount()
 					|| premierSegment < 1) {
 				JOptionPane.showMessageDialog(panneau,
@@ -120,11 +120,11 @@ public class ControleurParam implements ActionListener, ChangeListener {
 								+ (((Panneau) fen.fenetre.getContentPane()).textHandler.getPhrasesCount() - 1),
 						"Erreur", JOptionPane.ERROR_MESSAGE);
 				premierSegment = 1;
-				panneau.segmentDeDepart.setText("1");
+				panneau.firstPhraseField.setText("1");
 				valide = false;
 			}
 		} catch (Exception e) {
-			panneau.segmentDeDepart.setText("1");
+			panneau.firstPhraseField.setText("1");
 			valide = false;
 		}
 		param.firstPhrase = premierSegment;

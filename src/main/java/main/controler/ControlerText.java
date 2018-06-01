@@ -20,7 +20,7 @@ public class ControlerText {
 	private Panneau p;
 
 	/**
-	 * Construit un contrï¿½leur ï¿½ partir du panneau correspondant.
+	 * Construit un contréleur é partir du panneau correspondant.
 	 */
 	public ControlerText(Panneau p) {
 		this.p = p;
@@ -48,15 +48,15 @@ public class ControlerText {
 	}
 
 	/**
-	 * Affiche la page indiquï¿½e.
+	 * Affiche la page indiquée.
 	 */
 	public void showPage(int page) {
 		p.showPage(page);
 	}
 
 	/**
-	 * Joue un fichier .wav correspondant ï¿½ un segment de phrase. On sortira de
-	 * cette fonction lorsque le fichier .wav aura ï¿½tï¿½ totalement jouï¿½.
+	 * Joue un fichier .wav correspondant é un segment de phrase. On sortira de
+	 * cette fonction lorsque le fichier .wav aura été totalement joué.
 	 */
 	public void play(int phrase) {
 		p.setCursor(Constants.CURSOR_LISTEN);
@@ -66,7 +66,7 @@ public class ControlerText {
 				p.setCursor(Cursor.getDefaultCursor());
 				break;
 			}
-			/// fixe toujours le curseur d'ï¿½coute pendant toute la durï¿½e de l'enregistrement
+			/// fixe toujours le curseur d'écoute pendant toute la durée de l'enregistrement
 			else if (!p.getCursorName().equals(Constants.CURSOR_LISTEN)) {
 				p.setCursor(Constants.CURSOR_LISTEN);
 			}
@@ -74,14 +74,14 @@ public class ControlerText {
 	}
 
 	/**
-	 * Retourne la durï¿½e en millisecondes de l'enregistrement courant.
+	 * Retourne la durée en millisecondes de l'enregistrement courant.
 	 */
 	public long getCurrentPhraseDuration() {
 		return p.player.getDuration();
 	}
 
 	/**
-	 * Retourne le temps d'attente en millisecondes correspondant ï¿½ l'enregistrement
+	 * Retourne le temps d'attente en millisecondes correspondant é l'enregistrement
 	 * courant.
 	 */
 	public long getCurrentWaitTime() {
@@ -94,7 +94,7 @@ public class ControlerText {
 	 * @param time
 	 *            le temps de pause, en millisecondes
 	 * @param cursorName
-	 *            le type de curseur ï¿½ dï¿½finir pendant l'attente (peut ï¿½tre
+	 *            le type de curseur é définir pendant l'attente (peut étre
 	 *            Constants.CURSOR_SPEAK ou Constants.CURSOR_LISTEN)
 	 */
 	public void doWait(long time, String cursorName) {
@@ -127,8 +127,8 @@ public class ControlerText {
 
 	/**
 	 * 
-	 * Affiche tous les trous correspondant ï¿½ la page et ï¿½ partir du trou indiquï¿½e.
-	 * Dï¿½saffiche au prï¿½alable tous les trous.
+	 * Affiche tous les trous correspondant é la page et é partir du trou indiquée.
+	 * Désaffiche au préalable tous les trous.
 	 */
 	public void showHolesInPage(int h) {
 		showHolesInPage(h, getPageOf(h));
@@ -136,17 +136,17 @@ public class ControlerText {
 
 	/**
 	 * 
-	 * Affiche tous les trous correspondant ï¿½ la page indiquï¿½ et ï¿½ partir du trou
-	 * indiquï¿½e. Dï¿½saffiche au prï¿½alable tous les trous.
+	 * Affiche tous les trous correspondant é la page indiqué et é partir du trou
+	 * indiquée. Désaffiche au préalable tous les trous.
 	 */
 	public void showHolesInPage(int h, int page) {
-		// rï¿½initialisation des trous
+		// réinitialisation des trous
 		removeAllMasks();
 		// pour tous les trous
 		for (int i = 0; i < p.textHandler.getHolesCount(); i++) {
 			// si ce trou est dans la meme page que h
 			if (getPageOf(i) == page) {
-				// si ce trou est aprï¿½s le trou h ou est le trou h
+				// si ce trou est aprés le trou h ou est le trou h
 				if (i >= h) {
 					// on affiche ce trou
 					showHole(i);
@@ -156,7 +156,7 @@ public class ControlerText {
 	}
 
 	private void showHole(int h) {
-		/// on cache le trou avant de montrer la fenï¿½tre ///
+		/// on cache le trou avant de montrer la fenétre ///
 		hideHole(h);
 
 		int startPhrase = p.segmentsEnFonctionDeLaPage.get(getPageOf(h)).get(0);
@@ -190,7 +190,7 @@ public class ControlerText {
 	}
 
 	/**
-	 * Retourne le nombre de trous associï¿½s au segment n.
+	 * Retourne le nombre de trous associés au segment n.
 	 */
 	public int getHolesCount(int n) {
 		return p.textHandler.getHolesCount(n);
@@ -245,7 +245,7 @@ public class ControlerText {
 		if(p.param.timeToShowWord == -1) {
 			m.setHint();
 		} else {
-			m.setHint(p.param.timeToShowWord*m.getNbCarac());
+			m.setHint(p.param.timeToShowWord * m.getNbCarac());
 		}
 	}
 
@@ -285,7 +285,7 @@ public class ControlerText {
 
 	/**
 	 * 
-	 * Crï¿½e une fenï¿½tre de saisie fixe qui attends le resultat du trou h
+	 * Crée une fenétre de saisie fixe qui attends le resultat du trou h
 	 * 
 	 * @param h
 	 * @return
@@ -329,7 +329,6 @@ public class ControlerText {
 			play(p.pilot.getCurrentPhraseIndex());
 			doWait(getCurrentWaitTime(), Constants.CURSOR_LISTEN);
 		}
-	
 	}
 
 	public void desactiverFenetreFixe() {
@@ -380,9 +379,9 @@ public class ControlerText {
 	public void readPhrase(int i) {
 		// on montre la page du segment
 		showPage(getPageOfPhrase(i));
-		// lire le fichier audio correspondant ï¿½ ce segment
+		// lire le fichier audio correspondant é ce segment
 		play(i);
-		// attendre le temps de pause nï¿½cessaire
+		// attendre le temps de pause nécessaire
 		doWait(getCurrentWaitTime(), Constants.CURSOR_LISTEN);
 	}
 
@@ -410,7 +409,7 @@ public class ControlerText {
 	}
 
 	/**
-	 * Surligne tout depuis le dï¿½but de la page jusqu'au segment de phrase indiquï¿½.
+	 * Surligne tout depuis le début de la page jusqu'au segment de phrase indiqué.
 	 */
 	public void highlightUntilPhrase(Color c, int n) {
 		p.surlignerJusquaSegment(c, n);
@@ -430,7 +429,7 @@ public class ControlerText {
 
 	/**
 	 * Supprime le surlignage qui se trouve sur le segment n. Ne fait rien si ce
-	 * segment n'est pas surlignï¿½.
+	 * segment n'est pas surligné.
 	 */
 	public void removeHighlightPhrase(int n) {
 		int debutRelatifSegment = p.textHandler.getRelativeStartPhrasePosition(p.getFirstPhraseShowed(), n);
@@ -450,7 +449,7 @@ public class ControlerText {
 	}
 
 	/**
-	 * Retourne un algorithme de lecture de trou associï¿½ aux paramï¿½tres actuels et au numï¿½ro de trou h.
+	 * Retourne un algorithme de lecture de trou associé aux paramétres actuels et au numéro de trou h.
 	 */
 	public HoleThread getHoleThread(int h) {
 

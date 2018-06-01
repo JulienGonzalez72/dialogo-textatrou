@@ -22,7 +22,6 @@ import main.reading.ReaderAllHoleFF;
 
 public class Panneau extends JDesktopPane {
 
-	public static int premierSegment;
 	public static int defautNBEssaisParSegment;
 
 	// panneau du texte
@@ -65,17 +64,17 @@ public class Panneau extends JDesktopPane {
 		this.fenetre = fenetre;
 		this.pilot = new Pilot(this);
 		String texteCesures = getTextFromFile("ressources/textes/" + Constants.TEXT_FILE_NAME);
-		/// enlï¿½ve la consigne ///
+		/// enlève la consigne ///
 		if (Constants.HAS_INSTRUCTIONS) {
 			texteCesures = texteCesures.substring(texteCesures.indexOf("/") + 1, texteCesures.length());
 		}
 		textHandler = new TextHandler(texteCesures, param);
 
-		if (!textHandler.oneHoleEqualOneWord()) {
+		/*if (!textHandler.oneHoleEqualOneWord()) {
 			fenetreParam.pan.fixedField.setSelected(true);
 			// fenetreParam.pan.fixedField.setText("Un seul mode disponible pour ce texte");
 			fenetreParam.pan.fixedField.setEnabled(false);
-		}
+		}*/
 
 		this.setLayout(new BorderLayout());
 		editorPane = new TextPane(param);
@@ -98,7 +97,7 @@ public class Panneau extends JDesktopPane {
 	public JDesktopPane panelFenetreFixe = null;
 
 	/**
-	 * S'exï¿½cute lorsque le panneau s'est bien intï¿½grï¿½ ï¿½ la fenï¿½tre.
+	 * S'exécute lorsque le panneau s'est bien intégrée la fenêtre.
 	 */
 	public void init() {
 		param.appliquerPreferenceTaillePosition(fenetre);
@@ -111,7 +110,7 @@ public class Panneau extends JDesktopPane {
 		/// construit la mise en page virtuelle ///
 		rebuildPages();
 
-		/// initialise le lecteur et le dï¿½marre ///
+		/// initialise le lecteur et le dèmarre ///
 		player = new Player(textHandler, param);
 		player.load(param.firstPhrase - 1);
 
@@ -120,6 +119,12 @@ public class Panneau extends JDesktopPane {
 		controlerKey = new ControlerKey(pilot);
 		editorPane.addKeyListener(controlerKey);
 		editorPane.requestFocus();
+		
+		/// si la mise en page est totalement impossible, même en plein écran ///
+		if (!correctBuild()) {
+			JOptionPane.showMessageDialog(null, "Mise en page impossible avec ce texte !", "Erreur", JOptionPane.ERROR_MESSAGE);
+			System.exit(0);
+		}
 	}
 
 	public void setCursor(String fileName) {
@@ -139,7 +144,7 @@ public class Panneau extends JDesktopPane {
 	}
 
 	/**
-	 * retourne le contenu du fichier .txt situï¿½ ï¿½ l'emplacement du paramï¿½tre
+	 * retourne le contenu du fichier .txt situè è l'emplacement du paramètre
 	 */
 	public static String getTextFromFile(String emplacement) throws IOException {
 		File fichierTxt = new File(emplacement);
@@ -166,7 +171,7 @@ public class Panneau extends JDesktopPane {
 	}
 
 	/**
-	 * Construit les pages et affiche la premiï¿½re.
+	 * Construit les pages et affiche la première.
 	 */
 	public void rebuildPages() {
 		buildPages(param.firstPhrase - 1);
@@ -226,7 +231,7 @@ public class Panneau extends JDesktopPane {
 			}
 
 			String newText = textHandler.getShowText().substring(lastOffset);
-			/// derniï¿½re page ///
+			/// dernière page ///
 			if (newText.equals(text)) {
 				if (!segmentsEnFonctionDeLaPage.get(page - 1).contains(textHandler.getPhraseIndex(off))
 						&& textHandler.getPhraseIndex(off) >= 0) {
@@ -237,6 +242,50 @@ public class Panneau extends JDesktopPane {
 				text = newText;
 			}
 		}
+	}
+	
+	/**
+	 * Analyse le mot ou le trou le plus grand et adapte la fenêtre si il la dépasse.
+	 * Retourne <code>false</code> si la fenêtre est redimensionné et que sa taille dépasse la taille de l'écran.
+	 */
+	public boolean correctBuild() {
+		/// dépassement maximum en dehors de la fenêtre ///
+		int dif = 0;
+		/// sauvegarde la page actuelle pour l'afficher à la fin ///
+		int oldPage = pageActuelle;
+		
+		for (int page = 1; page <= nbPages; page++) {
+			showPage(page);
+			for (int i = 0; i < editorPane.getText().length(); i++) {
+				try {
+					Rectangle r = editorPane.modelToView(i);
+					if (!getBounds().contains(r.x, getBounds().getCenterY())) {
+						dif = Math.max(r.x - getBounds().width, dif);
+					}
+				} catch (BadLocationException e) {
+					e.printStackTrace();
+				}
+			} 
+		}
+		
+		/// re-affiche la page actuelle ///
+		showPage(oldPage);
+		dif += Constants.TEXTPANE_MARGING;
+		/// vérifie si la fenêtre ne doit pas dépasser l'écran ///
+		int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
+		boolean correct = dif <= 0 || fenetre.getWidth() + dif <= screenWidth;
+		if (dif > 0) {
+			/// redimensionne la fenêtre pour l'adapter au plus gros trou ///
+			fenetre.setSize(fenetre.getWidth() + dif, fenetre.getHeight());
+			/// empêche de redimensionner plus petit ///
+			fenetre.setMinimumSize(new Dimension(fenetre.getWidth(), fenetre.getMinimumSize().height));
+			/// replace la fenêtre si elle dépasse à droite ///
+			if (fenetre.getX() + fenetre.getWidth() > screenWidth) {
+				fenetre.setLocation(screenWidth - fenetre.getWidth(), fenetre.getY());
+			}
+		}
+		
+		return correct;
 	}
 
 	/**
@@ -310,23 +359,23 @@ public class Panneau extends JDesktopPane {
 		try {
 			UIManager.put("OptionPane.background", Color.WHITE);
 			UIManager.put("Panel.background", Color.WHITE);
-			String message = "L'exercice est terminï¿½." + "\n" + "Le patient a fait " + nbErreurs + " erreur"
+			String message = "L'exercice est terminè." + "\n" + "Le patient a fait " + nbErreurs + " erreur"
 					+ (nbErreurs > 1 ? "s" : "");
 			JOptionPane.showMessageDialog(this, message, "Compte Rendu", JOptionPane.INFORMATION_MESSAGE);
 		} finally {
 			UIManager.put("OptionPane.background", optionPaneBG);
 			UIManager.put("Panel.background", panelBG);
 		}
-		/// rï¿½active la taille et la police et le segment de dï¿½part
+		/// rèactive la taille et la police et le segment de dèpart
 		fenetreParam.pan.fontFamilyComboBox.setEnabled(true);
 		fenetreParam.pan.fontSizeComboBox.setEnabled(true);
-		fenetreParam.pan.segmentDeDepart.setEnabled(true);
+		fenetreParam.pan.firstPhraseField.setEnabled(true);
 		fenetre.setResizable(true);
 		fenetreParam.stopExercice();
 	}
 
 	/**
-	 * Affiche une fenetre correspondant au mot dï¿½limitï¿½ par start et end, d'indice
+	 * Affiche une fenetre correspondant au mot dèlimitè par start et end, d'indice
 	 * numeroCourant, et met le masque correspondant dans la liste des masques
 	 */
 	public void afficherFrame(int start, int end, int h) throws BadLocationException {
@@ -379,31 +428,31 @@ public class Panneau extends JDesktopPane {
 	}
 
 	/**
-	 * Renvoie le nombre d'occurrences de la sous-chaine de caractï¿½res spï¿½cifiï¿½e
-	 * dans la chaine de caractï¿½res spï¿½cifiï¿½e
+	 * Renvoie le nombre d'occurrences de la sous-chaine de caractères spècifièe
+	 * dans la chaine de caractères spècifièe
 	 * 
 	 * @param text
-	 *            chaine de caractï¿½res initiale
+	 *            chaine de caractères initiale
 	 * @param string
-	 *            sous-chaine de caractï¿½res dont le nombre d'occurrences doit etre
-	 *            comptï¿½
-	 * @return le nombre d'occurrences du pattern spï¿½cifiï¿½ dans la chaine de
-	 *         caractï¿½res spï¿½cifiï¿½e
+	 *            sous-chaine de caractères dont le nombre d'occurrences doit etre
+	 *            comptè
+	 * @return le nombre d'occurrences du pattern spècifiè dans la chaine de
+	 *         caractères spècifièe
 	 */
 	public static final int stringOccur(String text, String string) {
 		return regexOccur(text, Pattern.quote(string));
 	}
 
 	/**
-	 * Renvoie le nombre d'occurrences du pattern spï¿½cifiï¿½ dans la chaine de
-	 * caractï¿½res spï¿½cifiï¿½e
+	 * Renvoie le nombre d'occurrences du pattern spècifiè dans la chaine de
+	 * caractères spècifièe
 	 * 
 	 * @param text
-	 *            chaine de caractï¿½res initiale
+	 *            chaine de caractères initiale
 	 * @param regex
-	 *            expression rï¿½guliï¿½re dont le nombre d'occurrences doit etre comptï¿½
-	 * @return le nombre d'occurrences du pattern spï¿½cifiï¿½ dans la chaine de
-	 *         caractï¿½res spï¿½cifiï¿½e
+	 *            expression règulière dont le nombre d'occurrences doit etre comptè
+	 * @return le nombre d'occurrences du pattern spècifiè dans la chaine de
+	 *         caractères spècifièe
 	 */
 	public static final int regexOccur(String text, String regex) {
 		Matcher matcher = Pattern.compile(regex).matcher(text);

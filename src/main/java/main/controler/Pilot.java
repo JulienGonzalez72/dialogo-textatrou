@@ -26,7 +26,7 @@ public class Pilot {
 		if (activeThread != null) {
 			activeThread.doStop();
 		}
-		this.phrase = 0;
+		this.phrase = p.param.firstPhrase - 1;
 		p.nbErreurs = 0;
 		controler.removeAllMasks();
 		p.textHandler.init();
@@ -36,7 +36,7 @@ public class Pilot {
 	 * Se place sur le segment n et démarre le lecteur.
 	 */
 	public void goToPhrase(int n) throws IllegalArgumentException {
-		if(n > p.textHandler.getPhrasesCount() - 1 || n < 0) {
+		if(n > p.textHandler.getPhrasesCount() - 1 || n < p.param.firstPhrase - 1) {
 			throw new IllegalArgumentException("Numero de segment invalide");
 		}
 

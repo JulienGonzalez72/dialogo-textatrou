@@ -30,24 +30,57 @@ public class TextHandler {
 	 * Liste des mots pour chaque segment.
 	 */
 	public Map<Integer, List<Hole>> motsParSegment;
-	
-	/**
-	 * Pour chaque mot, true si il est en texte plein ou false si il est caché.
-	 */
-	private Map<Integer, Boolean> filledWords;
 
 	Parametres param;
 
 	public TextHandler(String texteOriginal, Parametres param) {
 		this.originText = texteOriginal;
 		this.param = param;
+		
+		init();
+	}
+
+	public void init() {
 		this.holes = new HashMap<Integer, Hole>();
 		this.motsParSegment = new HashMap<>();
-		this.filledWords = new HashMap<>();
 		this.phrases = new HashMap<Integer, String>();
-
-		remplirMots(texteOriginal);
+		
+		if (Constants.RANDOM_HOLES) {
+			randomHoles(5);
+		}
+		
+		remplirMots(originText);
 		updateText();
+	}
+	
+	private void randomHoles(int interval) {
+		originText = originText.replace("[", "").replace("]", "");
+		StringBuilder text = new StringBuilder(originText);
+		Random r = new Random();
+		boolean word = false;
+		boolean hole = false;
+		for (int i = 0; i < text.length(); i++) {
+			if ((Character.isWhitespace(text.charAt(i)) || isPunctuation(text.charAt(i))) && i < text.length() - 1 && word) {
+				if (hole) {
+					text.insert(i, ']');
+					hole = false;
+				}
+				word = false;
+			}
+			else if (Character.isAlphabetic(text.charAt(i)) && !word) {
+				if (r.nextInt(interval) == 0) {
+					text.insert(i, '[');
+					hole = true;
+				}
+				word = true;
+			}
+		}
+		originText = text.toString();
+		System.out.println(originText);
+	}
+	
+	private static boolean isPunctuation(char c) {
+		return c == ',' || c == '.' || c == ';' || c == ':' || c == '!' || c == '?';
 	}
 
 	public boolean oneHoleEqualOneWord() {
@@ -92,7 +125,6 @@ public class TextHandler {
 				h.startOffset = offset - motCourant.length() + 1;
 				offset += h.getShift() + 1;
 				holes.put(numero, h);
-				filledWords.put(numero, false);
 				listStrings.add(h);
 				motCourant = "";
 				numero++;
@@ -430,15 +462,6 @@ public class TextHandler {
 			str += phrases.get(i);
 		}
 		return str;
-	}
-
-	public void init() {
-		this.holes = new HashMap<Integer, Hole>();
-		this.motsParSegment = new HashMap<>();
-		this.filledWords = new HashMap<>();
-		this.phrases = new HashMap<Integer, String>();
-		remplirMots(originText);
-		updateText();
 	}
 	
 }

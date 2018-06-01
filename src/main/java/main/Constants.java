@@ -172,5 +172,10 @@ public final class Constants {
 	public static final int DEFAULT_TIME_APPARITION_BY_CARAC = 0;
 
 	public static final int MAX_APPARITION_TIME = 1200;
+	
+	/**
+	 * Si les trous se répartissent automatiquement de façon aléatoire sans prendre en compte ceux du texte.
+	 */
+	public static final boolean RANDOM_HOLES = false;
 
 }

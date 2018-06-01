@@ -1,9 +1,6 @@
 package main.view;
 
 import java.awt.Color;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.util.*;
 import javax.swing.JTextPane;
 import javax.swing.text.*;
