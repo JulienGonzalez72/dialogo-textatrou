@@ -136,10 +136,10 @@ public class ControleurParam implements ActionListener, ChangeListener {
 	 */
 	private boolean couleursUniques() {
 		boolean r = true;
-		List<Color> couleursUtilisées = new ArrayList<Color>();
-		couleursUtilisées.add(param.bgColor);
-		couleursUtilisées.add(param.rightColor);
-		if (occurence(param.bgColor, couleursUtilisées) != 1 || occurence(param.rightColor,couleursUtilisées) != 1) {
+		List<Color> couleursUtilisÃ©es = new ArrayList<Color>();
+		couleursUtilisÃ©es.add(param.bgColor);
+		couleursUtilisÃ©es.add(param.rightColor);
+		if (occurence(param.bgColor, couleursUtilisÃ©es) != 1 || occurence(param.rightColor,couleursUtilisÃ©es) != 1) {
 			r = false;
 		}
 		return r;

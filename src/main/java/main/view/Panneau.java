@@ -294,14 +294,14 @@ public class Panneau extends JDesktopPane {
 	 * @param page
 	 */
 	public void showPage(int page) {
-		/// on ne fait rien si on est déjà sur cette page ///
+		/// on ne fait rien si on est dï¿½jï¿½ sur cette page ///
 		if (pageActuelle == page) {
 			return;
 		}
 
 		pageActuelle = page;
-		// mise a jour du titre de la fenêtre
-		fenetre.setTitle("Lexidia - Texte à Trou - Page " + page);
+		// mise a jour du titre de la fenï¿½tre
+		fenetre.setTitle("Lexidia - Texte Ã  Trou - Page " + page);
 		updateText();
 	}
 
@@ -318,6 +318,7 @@ public class Panneau extends JDesktopPane {
 			texteAfficher += liste.get(i);
 		}
 		
+
 		editorPane.setText(texteAfficher);
 
 		if (editorPane.lastPhraseToHG != -1) {
@@ -359,7 +360,7 @@ public class Panneau extends JDesktopPane {
 		try {
 			UIManager.put("OptionPane.background", Color.WHITE);
 			UIManager.put("Panel.background", Color.WHITE);
-			String message = "L'exercice est terminè." + "\n" + "Le patient a fait " + nbErreurs + " erreur"
+			String message = "L'exercice est terminé." + "\n" + "Le patient a fait " + nbErreurs + " erreur"
 					+ (nbErreurs > 1 ? "s" : "");
 			JOptionPane.showMessageDialog(this, message, "Compte Rendu", JOptionPane.INFORMATION_MESSAGE);
 		} finally {
