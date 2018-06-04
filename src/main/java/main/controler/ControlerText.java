@@ -94,7 +94,7 @@ public class ControlerText {
 	 * @param time
 	 *            le temps de pause, en millisecondes
 	 * @param cursorName
-	 *            le type de curseur � d�finir pendant l'attente (peut �tre
+	 *            le type de curseur à définir pendant l'attente (peut être
 	 *            Constants.CURSOR_SPEAK ou Constants.CURSOR_LISTEN)
 	 */
 	public void doWait(long time, String cursorName) {
@@ -127,8 +127,8 @@ public class ControlerText {
 
 	/**
 	 * 
-	 * Affiche tous les trous correspondant � la page et � partir du trou indiqu�e.
-	 * D�saffiche au pr�alable tous les trous.
+	 * Affiche tous les trous correspondant à la page et à partir du trou indiquée.
+	 * Désaffiche au préalable tous les trous.
 	 */
 	public void showHolesInPage(int h) {
 		showHolesInPage(h, getPageOf(h));
@@ -136,17 +136,17 @@ public class ControlerText {
 
 	/**
 	 * 
-	 * Affiche tous les trous correspondant � la page indiqu� et � partir du trou
-	 * indiqu�e. D�saffiche au pr�alable tous les trous.
+	 * Affiche tous les trous correspondant à la page indiquée et à partir du trou
+	 * indiquée. Désaffiche au préalable tous les trous.
 	 */
 	public void showHolesInPage(int h, int page) {
-		// r�initialisation des trous
+		// réinitialisation des trous ///
 		removeAllMasks();
 		// pour tous les trous
 		for (int i = 0; i < p.textHandler.getHolesCount(); i++) {
 			// si ce trou est dans la meme page que h
 			if (getPageOf(i) == page) {
-				// si ce trou est apr�s le trou h ou est le trou h
+				// si ce trou est après le trou h ou est le trou h
 				if (i >= h) {
 					// on affiche ce trou
 					showHole(i);
@@ -156,7 +156,7 @@ public class ControlerText {
 	}
 
 	private void showHole(int h) {
-		/// on cache le trou avant de montrer la fen�tre ///
+		/// on cache le trou avant de montrer la fenêtre ///
 		hideHole(h);
 
 		int startPhrase = p.segmentsEnFonctionDeLaPage.get(getPageOf(h)).get(0);
@@ -285,7 +285,7 @@ public class ControlerText {
 
 	/**
 	 * 
-	 * Cr�e une fen�tre de saisie fixe qui attends le resultat du trou h
+	 * Crée une fenêtre de saisie fixe qui attends le resultat du trou h
 	 * 
 	 * @param h
 	 * @return
@@ -392,8 +392,8 @@ public class ControlerText {
 	}
 
 	/**
-	 * Retourne le num�ro du premier trou � partir du segment indiqu�.<br>
-	 * Retourne -1 s'il n'y a plus de trous apr�s.
+	 * Retourne le numéro du premier trou à partir du segment indiqué.<br>
+	 * Retourne -1 s'il n'y a plus de trous après.
 	 */
 	public int getFirstHole(int n) {
 		return p.textHandler.getFirstHole(n);
@@ -427,7 +427,7 @@ public class ControlerText {
 
 	/**
 	 * Supprime le surlignage qui se trouve sur le segment n. Ne fait rien si ce
-	 * segment n'est pas surlign�.
+	 * segment n'est pas surligné.
 	 */
 	public void removeHighlightPhrase(int n) {
 		int debutRelatifSegment = p.textHandler.getRelativeStartPhrasePosition(p.getFirstPhraseShowed(), n);
@@ -440,19 +440,14 @@ public class ControlerText {
 	}
 
 	/**
-	 * Mets � jour la barre de progression en fonction du num�ro de trou
+	 * Mets à jour la barre de progression en fonction du num�ro de trou
 	 */
 	public void updateBar(int h) {
 		p.updateBar(h);
 	}
 
 	/**
-<<<<<<< HEAD
-	 * Retourne un algorithme de lecture de trou associ� aux param�tres actuels et au num�ro de trou h.
-=======
-	 * Retourne un algorithme de lecture de trou associ� aux param�tres actuels et
-	 * au num�ro de trou h.
->>>>>>> 8ebaf354bfd03a2f86d145c386bac33f8a593385
+	 * Retourne un algorithme de lecture de trou associé aux paramètres actuels et au numéro de trou h.
 	 */
 	public HoleThread getHoleThread(int h) {
 

@@ -10,7 +10,7 @@ public class PhraseThread extends ReaderThread {
 	public int n;
 	private HoleThread activeThread;
 	/**
-	 * Liste des écouteurs de fin de segment.
+	 * Liste des ï¿½couteurs de fin de segment.
 	 */
 	public List<Runnable> onPhraseEnd = new ArrayList<>();
 	
@@ -25,8 +25,11 @@ public class PhraseThread extends ReaderThread {
 			/// joue le segment ///
 			if (!controler.hasHole(n)) {
 				controler.updateBar(controler.getFirstHole(n) >= 0 ? controler.getFirstHole(n) : controler.getHolesCount() - 1);
+				/// fait disparaÃ®tre les trous de la page avant le segment courant ///
 				for (int i = 0; i < controler.getHolesCount(); i++) {
-					controler.replaceMaskByWord(i);
+					/*if (controler.getPhraseOf(i) < n)*/ {
+						controler.replaceMaskByWord(i);
+					}
 				}
 				controler.readPhrase(n);
 			}
@@ -44,7 +47,7 @@ public class PhraseThread extends ReaderThread {
 				return;
 			}
 			n++;
-			/// appel les écouteurs de fin de segment ///
+			/// appel les ï¿½couteurs de fin de segment ///
 			for (Runnable r : onPhraseEnd) {
 				r.run();
 			}

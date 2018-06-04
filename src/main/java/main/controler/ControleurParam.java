@@ -118,8 +118,8 @@ public class ControleurParam implements ActionListener, ChangeListener {
 	}
 
 	/**
-	 * Retourne vrai si : - Aucune couleur n'est s�lectionn�e en double - Les champs
-	 * saisies sont coh�rents
+	 * Retourne vrai si : - Aucune couleur n'est sélectionnée en double - Les champs
+	 * saisies sont cohérents
 	 */
 	public boolean verifierValiditeChamp() {
 		boolean valide = true;
@@ -133,11 +133,10 @@ public class ControleurParam implements ActionListener, ChangeListener {
 		int premierSegment = -1;
 		try {
 			premierSegment = Integer.valueOf((String) panneau.firstPhraseField.getText());
-			if (premierSegment + 2 > ((Panneau) fen.fenetre.getContentPane()).textHandler.getPhrasesCount()
-					|| premierSegment < 1) {
+			if (!isValidPhrase(premierSegment)) {
 				JOptionPane.showMessageDialog(panneau,
-						"Entrez un segment inferieur a "
-								+ (((Panneau) fen.fenetre.getContentPane()).textHandler.getPhrasesCount() - 1),
+						"Entrez un segment inférieur ou égal à "
+								+ (fen.fenetre.pan.textHandler.getPhrasesCount()),
 						"Erreur", JOptionPane.ERROR_MESSAGE);
 				premierSegment = 1;
 				panneau.firstPhraseField.setText("1");
@@ -196,6 +195,11 @@ public class ControleurParam implements ActionListener, ChangeListener {
 	@Override
 	public void stateChanged(ChangeEvent arg0) {
 
+	}
+	
+	public boolean isValidPhrase(int n) {
+		return n <= fen.fenetre.pan.textHandler.getPhrasesCount()
+				&& n >= 1;
 	}
 
 }

@@ -9,7 +9,9 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.Dictionary;
 import java.util.Iterator;
@@ -61,16 +63,17 @@ public class FenetreParametre extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(true);
+
+		fenetre = new Fenetre(param.title, param.panWidth, param.panHeight, this, param);
+		fenetre.setLocation(param.panX, param.panY);
+		controlPanel = new ControlPanel(fenetre.pan, this, param);
+		
 		pan = null;
 		try {
 			pan = new PanneauParam(this);
 		} catch (NumberFormatException | IOException e) {
 			e.printStackTrace();
 		}
-
-		fenetre = new Fenetre(param.title, param.panWidth, param.panHeight, this, param);
-		fenetre.setLocation(param.panX, param.panY);
-		controlPanel = new ControlPanel(fenetre.pan, this, param);
 
 		JTabbedPane generalTab = new JTabbedPane();
 		generalTab.addTab("Paramètres", pan);
@@ -107,8 +110,8 @@ public class FenetreParametre extends JFrame {
 		public ColorComboBox bgColorComboBox;
 		public JLabel couleurSurlignage;
 		public ColorComboBox rightColorComboBox;
-		public JTextField firstPhraseField;
-		public JTextField maxPhraseByPage;
+		public NumberField firstPhraseField;
+		public NumberField maxPhraseByPage;
 		public JButton valider;
 		public JCheckBox replayPhrase;
 		public JCheckBox fixedField;
@@ -199,13 +202,15 @@ public class FenetreParametre extends JFrame {
 				}
 			};
 			
-			firstPhraseField = fastTextField("1", new Font("OpenDyslexic", Font.PLAIN, 15), "1");
+			firstPhraseField = new NumberField();//fastTextField("1", new Font("OpenDyslexic", Font.PLAIN, 15), "1");
+			firstPhraseField.setBounds(1, fenetre.pan.textHandler.getPhrasesCount());
 			firstPhraseField.addActionListener(controleur);
 
 			JPanel midPanel = new JPanel(new GridLayout(1, 2));
 			JPanel midRightPanel = new JPanel(new GridLayout(8, 1));
 			JPanel midLeftPanel = new JPanel(new GridLayout(8, 1));
-			maxPhraseByPage = fastTextField("100", new Font("OpenDyslexic", Font.PLAIN, 15), "100");
+			maxPhraseByPage = new NumberField();//fastTextField("100", new Font("OpenDyslexic", Font.PLAIN, 15), "100");
+			maxPhraseByPage.setBounds(1, 200);
 			maxPhraseByPage.addActionListener(controleur);
 
 			midPanel.add(midLeftPanel);
@@ -231,8 +236,10 @@ public class FenetreParametre extends JFrame {
 			fastCentering(bgColorComboBox, midRightPanel, "   ");
 			midRightPanel.add(segments);
 
+			//firstPhraseField.addKeyListener(numberKey);
 			fastCentering(firstPhraseField, midRightPanel, "   ");
 			midRightPanel.add(maxPhrase);
+			//maxPhraseByPage.addKeyListener(numberKey);
 			fastCentering(maxPhraseByPage, midRightPanel, "   ");
 
 			oneHole = fastCheckBox("Un trou par un trou ?", controleur);
@@ -295,6 +302,7 @@ public class FenetreParametre extends JFrame {
 			fontFamilyComboBox.setSelectedItem(getCorrectFontName(param.police.getFontName()));
 
 			firstPhraseField.setText(String.valueOf(param.firstPhrase));
+			maxPhraseByPage.setText(String.valueOf(param.maxPhraseByPage));
 
 			appliquerCouleur(param.bgColor, bgColorComboBox);
 			appliquerCouleur(param.rightColor, rightColorComboBox);

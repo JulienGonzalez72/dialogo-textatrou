@@ -23,7 +23,7 @@ public class ReaderAllHoleUF extends HoleThread {
 				return;
 			}
 			
-			/// affiche tous et uniquement les trous de la page à partir du trou actuel ///
+			/// affiche tous et uniquement les trous de la page Ã  partir du trou actuel ///
 			controler.showHolesInPage(h);
 			controler.readPhrase(controler.getPhraseOf(h));
 		} else if (!needToDead) {
@@ -38,7 +38,7 @@ public class ReaderAllHoleUF extends HoleThread {
 				return;
 			}
 
-			/// affiche tous et uniquement les trous de la page à partir du trou actuel ///
+			/// affiche tous et uniquement les trous de la page Ã  partir du trou actuel ///
 			controler.showHolesInPage(h);
 		}
 
@@ -57,7 +57,7 @@ public class ReaderAllHoleUF extends HoleThread {
 			return;
 		}
 
-		/// appel des écouteurs de fin de trou ///
+		/// appel des ï¿½couteurs de fin de trou ///
 		for (Runnable r : onHoleEnd) {
 			r.run();
 		}

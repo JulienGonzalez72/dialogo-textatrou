@@ -90,12 +90,6 @@ public class Panneau extends JDesktopPane {
 		}
 		textHandler = new TextHandler(texteCesures, param);
 
-		/*if (!textHandler.oneHoleEqualOneWord()) {
-			fenetreParam.pan.fixedField.setSelected(true);
-			// fenetreParam.pan.fixedField.setText("Un seul mode disponible pour ce texte");
-			fenetreParam.pan.fixedField.setEnabled(false);
-		}*/
-
 		this.setLayout(new BorderLayout());
 		editorPane = new TextPane(param);
 		editorPane.setEditable(false);
@@ -115,16 +109,13 @@ public class Panneau extends JDesktopPane {
 	public JDesktopPane panelFenetreFixe = null;
 
 	/**
-<<<<<<< HEAD
-	 * S'exécute lorsque le panneau s'est bien intégrée la fenétre.
-=======
-	 * S'exécute lorsque le panneau s'est bien intégré é la fenétre.
->>>>>>> 8ebaf354bfd03a2f86d145c386bac33f8a593385
+	 * S'exécute lorsque le panneau s'est bien intégrée la fenêtre.
 	 */
 	public void init() {
 		param.appliquerPreferenceTaillePosition(fenetre);
 		fenetreParam.editorPane = editorPane;
-		updateBar(param.firstPhrase);
+		int firstHole = textHandler.getFirstHole(param.firstPhrase - 1);
+		updateBar(firstHole >= 0 ? firstHole : textHandler.getHolesCount());
 		editorPane.setBackground(param.bgColor);
 		editorPane.setFont(param.police);
 		pageActuelle = 0;
@@ -166,11 +157,7 @@ public class Panneau extends JDesktopPane {
 	}
 
 	/**
-<<<<<<< HEAD
-	 * retourne le contenu du fichier .txt situé é l'emplacement du paramétre
-=======
-	 * retourne le contenu du fichier .txt situé é l'emplacement du paramétre
->>>>>>> 8ebaf354bfd03a2f86d145c386bac33f8a593385
+	 * retourne le contenu du fichier .txt situé à l'emplacement du paramètre
 	 */
 	public static String getTextFromFile(String emplacement) throws IOException {
 		File fichierTxt = new File(emplacement);
@@ -197,11 +184,7 @@ public class Panneau extends JDesktopPane {
 	}
 
 	/**
-<<<<<<< HEAD
-	 * Construit les pages et affiche la premiére.
-=======
-	 * Construit les pages et affiche la premiére.
->>>>>>> 8ebaf354bfd03a2f86d145c386bac33f8a593385
+	 * Construit les pages et affiche la première.
 	 */
 	public void rebuildPages() {
 		buildPages(param.firstPhrase - 1);
@@ -408,11 +391,7 @@ public class Panneau extends JDesktopPane {
 	}
 
 	/**
-<<<<<<< HEAD
 	 * Affiche une fenetre correspondant au mot délimité par start et end, d'indice
-=======
-	 * Affiche une fenetre correspondant au mot délimité par start et end, d'indice
->>>>>>> 8ebaf354bfd03a2f86d145c386bac33f8a593385
 	 * numeroCourant, et met le masque correspondant dans la liste des masques
 	 */
 	public void afficherFrame(int start, int end, int h) throws BadLocationException {

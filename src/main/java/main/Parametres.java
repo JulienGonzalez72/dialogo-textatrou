@@ -135,7 +135,8 @@ public class Parametres {
 		p.fixedField = Boolean.valueOf(pro.getProperty("fenetreFixe"));
 		p.oneHole = Boolean.valueOf(pro.getProperty("oneHole"));
 		p.highlight = Boolean.valueOf(pro.getProperty("surlignage"));
-		p.replayPhrase = Boolean.valueOf(pro.getProperty("rejouerSon"));		
+		p.replayPhrase = Boolean.valueOf(pro.getProperty("rejouerSon"));
+		p.maxPhraseByPage = Integer.valueOf(pro.getProperty("maxPhrase"));
 		return p;
 	}
 
